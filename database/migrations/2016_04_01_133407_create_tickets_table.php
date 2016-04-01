@@ -17,17 +17,13 @@ class CreateTicketsTable extends Migration
             $table->integer('tweet_id');
             $table->boolean('premium');
             $table->integer('customer_id')->unsigned();
-            $table->integer('status_id')->unsigned();
+            $table->integer('status');
             $table->integer('opened_by')->unsigned();
             $table->integer('assigned_to')->unsigned();
             $table->integer('urgency');
             $table->foreign('customer_id')
                 ->references('id')
                 ->on('customers')
-                ->onDelete('cascade');
-            $table->foreign('status_id')
-                ->references('id')
-                ->on('statuses')
                 ->onDelete('cascade');
             $table->foreign('opened_by')
                 ->references('id')

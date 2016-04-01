@@ -11,4 +11,6 @@ class Ticket extends Model
     ];
 
     protected $table = 'tickets';
+
+
 }
