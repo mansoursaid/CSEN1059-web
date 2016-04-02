@@ -38,6 +38,15 @@ class ProjectsController extends Controller
     public function destroy(Project $project){
         $project->delete();
     }
-    
+    public function edit($id){
+        $project = Project::findOrfail($id);
+        return view('projects.edit')->with('project',$project);
+    }
+    public function update($id){
+        $project = Project::findOrfail($id);
+        $project->name = Input::get('name');
+        $project->save();
+        return $project;
+    }
 
 }
