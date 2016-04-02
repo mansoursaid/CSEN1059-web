@@ -13,4 +13,9 @@ class ProjectsController extends Controller
         $projects = Project::all();
         return $projects;
     }
+
+    public function show($id){
+        $project = Project::findOrfail($id);
+        return $project;
+    }
 }
