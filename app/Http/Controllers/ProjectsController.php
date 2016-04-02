@@ -24,8 +24,8 @@ class ProjectsController extends Controller
     }
     public function store(Request $request){
         $rules = array(
-            'name'=>'name',
-            'created_by'=>'created_by'
+            'name'=>'required',
+            'created_by'=>'required'
         );
         $this->validate($request,$rules);
         $project = new Project;
