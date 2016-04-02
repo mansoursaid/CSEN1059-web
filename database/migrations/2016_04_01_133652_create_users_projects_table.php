@@ -12,7 +12,7 @@ class CreateUsersProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_projects', function (Blueprint $table) {
+        Schema::create('user_project', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')
