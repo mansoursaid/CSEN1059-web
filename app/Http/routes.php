@@ -18,3 +18,4 @@ Route::get('tickets','TicketsController@index');
 Route::get('tickets/create','TicketsController@create');
 Route::get('tickets/{id}','TicketsController@show');
 Route::post('tickets/store','TicketsController@store');
+Route::delete('tickets/{id}','TicketsController@destroy');

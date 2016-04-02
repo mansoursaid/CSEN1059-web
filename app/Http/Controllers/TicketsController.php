@@ -45,5 +45,8 @@ class TicketsController extends Controller
         return $ticket;
     }
 
+    public function destroy(Ticket $ticket){
+        $ticket->delete();
+    }
 
 }
