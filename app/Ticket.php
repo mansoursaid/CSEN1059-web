@@ -32,4 +32,9 @@ class Ticket extends Model
     {
         return $this->belongsToMany('App\User');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo('App\Customer');
+    }
 }

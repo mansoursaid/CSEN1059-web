@@ -11,4 +11,9 @@ class Customer extends Model
     ];
 
     protected $table = 'customers';
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Ticket');
+    }
 }
