@@ -13,4 +13,23 @@ class Ticket extends Model
     protected $table = 'tickets';
 
 
+    public function opened_by()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function assigned_to()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany('App\Invitation');
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

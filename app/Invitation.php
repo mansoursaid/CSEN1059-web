@@ -11,4 +11,19 @@ class Invitation extends Model
     ];
 
     protected $table = 'invitations';
+
+    public function created_by()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function user_invited()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function ticket()
+    {
+        return $this->belongsTo('App\Ticket');
+    }
 }
