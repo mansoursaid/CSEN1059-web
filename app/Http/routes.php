@@ -19,3 +19,5 @@ Route::get('tickets/create','TicketsController@create');
 Route::get('tickets/{id}','TicketsController@show');
 Route::post('tickets/store','TicketsController@store');
 Route::delete('tickets/{id}','TicketsController@destroy');
+Route::get('tickets/{id}/edit','TicketsController@edit');
+Route::post('tickets/{id}/edited','TicketsController@update');

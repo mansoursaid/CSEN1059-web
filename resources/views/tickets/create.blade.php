@@ -12,6 +12,8 @@
     <input type="text" name = "assigned_to"><br><br>
     Customer id:<br>
     <input type="text" name = "customer_id"><br><br>
+    Status:<br>
+    <input type="text" name = "status"><br><br>
     <input type="submit" value="Submit">
 </form>
 @if (count($errors) > 0)

@@ -41,6 +41,7 @@ class TicketsController extends Controller
         $ticket->opened_by = Input::get('opened_by');
         $ticket->assigned_to = Input::get('assigned_to');
         $ticket->customer_id = Input::get('customer_id');
+        $ticket->status = Input::get('status');
         $ticket->save();
         return $ticket;
     }
@@ -49,4 +50,15 @@ class TicketsController extends Controller
         $ticket->delete();
     }
 
+    public function edit($id){
+        $ticket = Ticket::findOrfail($id);
+        return view('tickets.edit')->with('ticket',$ticket);
+    }
+
+    public function update($id){
+        $ticket = Ticket::findOrfail($id);
+        $ticket->status = Input::get('status');
+        $ticket->save();
+        return $ticket;
+    }
 }
