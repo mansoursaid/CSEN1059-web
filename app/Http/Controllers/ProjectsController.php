@@ -35,6 +35,9 @@ class ProjectsController extends Controller
         $project->save();
         return $project;
     }
-   
+    public function destroy(Project $project){
+        $project->delete();
+    }
+    
 
 }
