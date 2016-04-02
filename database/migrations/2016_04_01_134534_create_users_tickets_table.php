@@ -12,7 +12,7 @@ class CreateUsersTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_ticket', function (Blueprint $table) {
+        Schema::create('ticket_user', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('ticket_id')->unsigned();
             $table->foreign('ticket_id')
