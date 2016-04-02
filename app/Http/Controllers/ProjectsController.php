@@ -22,5 +22,19 @@ class ProjectsController extends Controller
     public function create(){
         return view('projects.create');
     }
-    
+    public function store(Request $request){
+        $rules = array(
+            'name'=>'name',
+            'created_by'=>'created_by'
+        );
+        $this->validate($request,$rules);
+        $project = new Project;
+        $project->name = Input::get('name');
+        $project->description    = Input::get('description');
+        $project->created_by = Input::get('created_by');
+        $project->save();
+        return $project;
+    }
+   
+
 }
