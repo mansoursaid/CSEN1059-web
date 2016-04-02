@@ -18,4 +18,9 @@ class ProjectsController extends Controller
         $project = Project::findOrfail($id);
         return $project;
     }
+
+    public function create(){
+        return view('projects.create');
+    }
+    
 }
