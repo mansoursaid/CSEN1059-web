@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ticket;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 
 class TicketsController extends Controller
 {
@@ -15,31 +14,35 @@ class TicketsController extends Controller
     }
 
     public function show($id){
-        $ticket = Ticket::find($id);
+        $ticket = Ticket::findOrfail($id);
         return $ticket;
     }
 
-    /*public function create(){
-
-    }*/
+    public function create(){
+        return view('tickets.create');
+    }
 
     public function store(Request $request){
-        $rules = array(
+       $rules = array(
                 'tweet_id' => 'required',
                 'premium'  => 'required',
-                'urgency'  => 'required'
+                'urgency'  => 'required',
+                'opened_by'=> 'required',
+                'assigned_to'=>'required',
+                'customer_id'=>'required'
+
             );
 
-        $validator = Validator::make(Input::all(), $rules);
-
-        if (!$validator->fails()) {
-            $ticket = new Ticket;
-            $ticket->tweet_id = Input::get('tweet_id');
-            $ticket->premium    = Input::get('premium');
-            $ticket->urgency = Input::get('urgency');
-            $ticket->save();
-        }
-
+        $this->validate($request,$rules);
+        $ticket = new Ticket;
+        $ticket->tweet_id = Input::get('tweet_id');
+        $ticket->premium    = Input::get('premium');
+        $ticket->urgency = Input::get('urgency');
+        $ticket->opened_by = Input::get('opened_by');
+        $ticket->assigned_to = Input::get('assigned_to');
+        $ticket->customer_id = Input::get('customer_id');
+        $ticket->save();
+        return $ticket;
     }
 
 
