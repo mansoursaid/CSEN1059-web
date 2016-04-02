@@ -12,7 +12,7 @@ class CreateUsersProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_project', function (Blueprint $table) {
+        Schema::create('project_user', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')
@@ -34,6 +34,6 @@ class CreateUsersProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('user_projects');
+        Schema::drop('project_user');
     }
 }
