@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests;
 
-use Illuminate\Http\Request;
-
-use Requests;
+use App\User;
 
 class UsersController extends Controller
 {
@@ -24,6 +23,14 @@ class UsersController extends Controller
     public function create()
     {
         return view('users.create');
+    }
+
+    public function store(Requests\CreateUserRequest $request)
+    {
+        // validations
+
+        User::create($request->all());
+        return redirect('users');
     }
 
 }

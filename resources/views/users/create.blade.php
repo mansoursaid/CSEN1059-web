@@ -1,6 +1,6 @@
 <h1>Create a new user:</h1>
 
-{!! Form::open(['url' => 'articles']) !!}
+{!! Form::open(['url' => 'users']) !!}
 	{!! Form::label('name', 'Name: ') !!}
 	{!! Form::text('name') !!}
 	<br>
@@ -11,7 +11,7 @@
 	{!! Form::text('email') !!}
 	<br>
 	{!! Form::label('password', 'password: ') !!}
-	{!! Form::text('password') !!}
+	{!! Form::password('password') !!}
 	<br>
 	<br>
 	{!! Form::submit('Create User') !!}
