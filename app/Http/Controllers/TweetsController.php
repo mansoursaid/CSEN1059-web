@@ -12,7 +12,6 @@ use App\Http\Requests;
 
 class TweetsController extends Controller
 {
-    
 
 	public function index() {
 		$connection = TwitterApiConnection::connectToTwitterAPI();
@@ -22,8 +21,5 @@ class TweetsController extends Controller
 		dd($mentions);
 
 	}
-
-
-
 
 }
