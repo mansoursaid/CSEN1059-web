@@ -14,3 +14,31 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('tickets','TicketsController@index');
+Route::get('tickets/create','TicketsController@create');
+Route::get('tickets/{id}','TicketsController@show');
+Route::post('tickets/store','TicketsController@store');
+Route::delete('tickets/{id}','TicketsController@destroy');
+Route::get('tickets/{id}/edit','TicketsController@edit');
+Route::post('tickets/{id}/edited','TicketsController@update');
+
+
+Route::get('projects','ProjectsController@index');
+Route::get('projects/create','ProjectsController@create');
+Route::get('projects/{id}','ProjectsController@show');
+Route::post('projects/store','ProjectsController@store');
+Route::delete('projects/{id}','ProjectsController@destroy');
+Route::get('projects/{id}/edit','ProjectsController@edit');
+Route::post('projects/{id}/edited','ProjectsController@update');
+
+Route::get('mentions', 'TweetsController@index');
+
+Route::get('admin', function () {
+    return view('admin_template');
+});
+
+Route::controllers([
+    'auth' => '\App\Http\Controllers\Auth\AuthController',
+    'password' => '\App\Http\Controllers\Auth\PasswordController',
+]);
