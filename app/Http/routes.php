@@ -22,3 +22,6 @@ Route::post('projects/store','ProjectsController@store');
 Route::delete('projects/{id}','ProjectsController@destroy');
 Route::get('projects/{id}/edit','ProjectsController@edit');
 Route::post('projects/{id}/edited','ProjectsController@update');
+
+Route::get('mentions', 'TweetsController@index');
+
