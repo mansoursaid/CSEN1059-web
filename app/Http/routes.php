@@ -23,7 +23,6 @@ Route::delete('tickets/{id}','TicketsController@destroy');
 Route::get('tickets/{id}/edit','TicketsController@edit');
 Route::post('tickets/{id}/edited','TicketsController@update');
 
-
 Route::get('projects','ProjectsController@index');
 Route::get('projects/create','ProjectsController@create');
 Route::get('projects/{id}','ProjectsController@show');
@@ -33,6 +32,15 @@ Route::get('projects/{id}/edit','ProjectsController@edit');
 Route::post('projects/{id}/edited','ProjectsController@update');
 
 Route::get('mentions', 'TweetsController@index');
+
+Route::get('users','UsersController@index');
+Route::get('users/create','UsersController@create');
+Route::post('users','UsersController@store');
+Route::get('users/{id}','UsersController@show');
+Route::delete('users/{id}','UsersController@destroy');
+Route::get('users/{id}/edit','UsersController@edit');
+Route::PATCH('users/{id}','UsersController@update');
+Route::DELETE('users','UsersController@delete');
 
 Route::get('admin', function () {
     return view('admin_template');
