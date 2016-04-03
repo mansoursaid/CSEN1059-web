@@ -1,6 +1,6 @@
-<h1>Create a new user:</h1>
+<h1>Edit user {{$user->name}} </h1>
 
-{!! Form::open(['url' => 'users']) !!}
+{!! Form::model($user, ['method'=>'PATCH', 'action' => ['UsersController@update', $user->id]]) !!}
 	{!! Form::label('name', 'Name: ') !!}
 	{!! Form::text('name') !!}
 	<br>

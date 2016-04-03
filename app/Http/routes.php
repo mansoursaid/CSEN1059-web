@@ -39,7 +39,8 @@ Route::post('users','UsersController@store');
 Route::get('users/{id}','UsersController@show');
 Route::delete('users/{id}','UsersController@destroy');
 Route::get('users/{id}/edit','UsersController@edit');
-Route::post('users/{id}/edited','ProjectsController@update');
+Route::PATCH('users/{id}','UsersController@update');
+Route::DELETE('users','UsersController@delete');
 
 Route::get('admin', function () {
     return view('admin_template');
