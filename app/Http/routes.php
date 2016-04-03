@@ -34,4 +34,8 @@ Route::post('projects/{id}/edited','ProjectsController@update');
 
 Route::get('mentions', 'TweetsController@index');
 
+Route::get('admin', function () {
+    return view('admin_template');
+});
+
 
