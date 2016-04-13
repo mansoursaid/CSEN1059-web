@@ -53,3 +53,18 @@ Route::controllers([
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
+
+
+Route::get('fire', function () {
+    // this fires the event
+    event(new App\Events\NotificationsEvent());
+    return "event fired";
+});
+
+
+Route::resource('notification', 'NotificationsController',
+    ['only' => ['index', 'show']]);
+
+
+
+
