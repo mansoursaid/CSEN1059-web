@@ -62,8 +62,8 @@ Route::get('fire', function () {
 });
 
 
-Route::resource('notification', 'NotificationsController',
-    ['only' => ['index', 'show']]);
+Route::resource('notifications', 'NotificationsController',
+    ['only' => ['index']]);
 
 
 

@@ -48,7 +48,7 @@
 
                 <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
-                    @include('notifications.not')
+                    @include('notifications.notify')
                     <!-- Menu toggle button -->
 
                 </li>

@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Projects');
     }
+
+    public function notifications()
+    {
+        return $this->belongsToMany('App\Notification');
+    }
 }

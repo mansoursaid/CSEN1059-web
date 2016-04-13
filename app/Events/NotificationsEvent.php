@@ -20,7 +20,8 @@ class NotificationsEvent extends Event implements ShouldBroadcast
     public function __construct()
     {
         $this->data = array(
-            'message'=> 'You can claim a new ticket now.'
+            'message'=> 'You can claim a new ticket now.',
+            'at' => '10pm'
         );
     }
 
