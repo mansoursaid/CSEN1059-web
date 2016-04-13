@@ -50,3 +50,6 @@ Route::controllers([
     'auth' => '\App\Http\Controllers\Auth\AuthController',
     'password' => '\App\Http\Controllers\Auth\PasswordController',
 ]);
+
+Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
+Route::get('/genlink', 'GenLinkPaypalController@generateLink');
