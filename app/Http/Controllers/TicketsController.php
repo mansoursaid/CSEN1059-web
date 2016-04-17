@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Mockery\CountValidator\Exception;
 
 class TicketsController extends Controller
 {
@@ -14,7 +16,11 @@ class TicketsController extends Controller
     }
 
     public function show($id){
-        $ticket = Ticket::findOrfail($id);
+        try {
+            $ticket = Ticket::findOrfail($id);
+        }catch (ModelNotFoundException $ex){
+            return "whooops";
+        }
         return $ticket;
     }
 
@@ -49,7 +55,12 @@ class TicketsController extends Controller
     }
 
     public function edit($id){
-        $ticket = Ticket::findOrfail($id);
+        try {
+            $ticket = Ticket::findOrfail($id);
+        }catch (ModelNotFoundException $ex){
+            //exception handling logic
+            return "mfeesh el kalam da";
+        }
         return view('tickets.edit')->with('ticket',$ticket);
     }
 
