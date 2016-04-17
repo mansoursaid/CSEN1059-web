@@ -27,8 +27,6 @@ class TicketsController extends Controller
                 'tweet_id' => 'required',
                 'premium'  => 'required',
                 'urgency'  => 'required',
-                'opened_by'=> 'required',
-                'assigned_to'=>'required',
                 'customer_id'=>'required'
 
             );
