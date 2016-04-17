@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
+use App\Ticket_User;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -60,5 +62,18 @@ class TicketsController extends Controller
         $ticket->status = Input::get('status');
         $ticket->save();
         return $ticket;
+    }
+
+    public function getTicketsPerAgent(){
+        $users = User::all();
+        $allTickets = array();
+        foreach ($users as $user){
+            $id = $user->id;
+            $name = $user->name;
+            $tickets = Ticket_User::where('user_id', $id)->get();
+            $tmp = array($name => sizeof($tickets));
+            $allTickets[] = $tmp;
+        }
+        return $allTickets;
     }
 }
