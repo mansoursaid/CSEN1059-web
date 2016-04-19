@@ -53,3 +53,7 @@ Route::controllers([
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
+
+
+Route::get('/conv/{id}', 'TweetsController@getConversation');
+
