@@ -69,6 +69,15 @@ Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecre
 
 
 
+Route::get('fire', function () {
+    // this fires the event
+    event(new App\Events\NotificationsEvent());
+    return "event fired";
+});
+
+
+Route::resource('notifications', 'NotificationsController',
+    ['only' => ['index']]);
 
 
 
