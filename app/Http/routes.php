@@ -56,4 +56,6 @@ Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
 
 Route::get('/conv/{id}', 'TweetsController@getConversation');
+Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
+
 
