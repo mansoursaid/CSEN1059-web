@@ -18,7 +18,7 @@ class TweetsController extends Controller
 
 		$mentions = $connection->get("statuses/mentions_timeline", []);
 
-		dd($mentions);
+		//dd($mentions);
 
 		$startConersationTweets = [];
 
