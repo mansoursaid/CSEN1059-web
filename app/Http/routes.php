@@ -55,6 +55,20 @@ Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
 
+
+Route::get('app_settings', 'AppSettingsController@showSettings');
+
+Route::post('change_twitter_consumer_key', 'AppSettingsController@changeTwitterConsumerKey');
+Route::post('change_twitter_consumer_key_secret', 'AppSettingsController@changeTwitterConsumerKeySecret');
+Route::post('change_twitter_access_token', 'AppSettingsController@changeTwitterAccessToken');
+Route::post('change_twitter_access_token_secret', 'AppSettingsController@changeTwitterAccessTokenSecret');
+
+Route::post('change_paypal_client_id', 'AppSettingsController@changePaypalClientID');
+Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecretKey');
+
+
+
+
 Route::get('fire', function () {
     // this fires the event
     event(new App\Events\NotificationsEvent());
@@ -64,6 +78,7 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
+
 
 
 
