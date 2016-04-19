@@ -1,0 +1,1 @@
+You have closed the ticket with id : {{ $id }}

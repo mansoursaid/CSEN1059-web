@@ -1,0 +1,1 @@
+You have claimed the ticket with id : {{ $id }}

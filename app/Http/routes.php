@@ -53,3 +53,15 @@ Route::controllers([
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
+
+
+
+Route::get('/mail', function() {
+    $user = new \App\User();
+    $user->email = "asktajweed@gmail.com";
+    $ticket = new \App\Ticket();
+    $ticket->id = 5;
+    \App\MailNotification::mailClaim([$user], $ticket);
+    echo 'hello';
+});
+
