@@ -56,6 +56,17 @@ Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
 
 
+
+Route::get('/mail', function() {
+    $user = new \App\User();
+    $user->email = "asktajweed@gmail.com";
+    $ticket = new \App\Ticket();
+    $ticket->id = 5;
+    \App\MailNotification::mailClaim([$user], $ticket);
+    echo 'hello';
+});
+
+
 Route::get('app_settings', 'AppSettingsController@showSettings');
 
 Route::post('change_twitter_consumer_key', 'AppSettingsController@changeTwitterConsumerKey');
@@ -78,8 +89,6 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
-
-
 
 
 
