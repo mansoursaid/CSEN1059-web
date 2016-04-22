@@ -67,11 +67,25 @@ class TicketsController extends Controller
     public function getTicketsPerAgent(){
         $users = User::all();
         $allTickets = array();
+        $status1 = 0;
+        $status2 = 0;
+        $status3 = 0;
         foreach ($users as $user){
             $id = $user->id;
             $name = $user->name;
             $tickets = Ticket_User::where('user_id', $id)->get();
-            $tmp = array($name => sizeof($tickets));
+            foreach ($tickets as $ticket){
+                $status = $ticket->status;
+                if($status == 0){
+                    $status1++;
+                }else if($status == 1){
+                    $status2++;
+                }else{
+                    $status3++;
+                }
+            }
+            #$tmp = array($name => sizeof($tickets));
+            $tmp = array($name => array('status1' => $status1 ,'status2' => $status2 ,'status3' => $status3 ));
             $allTickets[] = $tmp;
         }
         return $allTickets;
