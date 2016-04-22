@@ -61,4 +61,11 @@ class TicketsController extends Controller
         $ticket->save();
         return $ticket;
     }
+    public function deleteStatus($id){
+        $ticket = Ticket::findOrfail($id);
+        $ticket->status = 0;
+        $ticket->save();
+        return $ticket;
+    }
+    
 }
