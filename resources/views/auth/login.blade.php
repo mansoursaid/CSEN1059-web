@@ -22,14 +22,14 @@
                                             <label for="email" class="col-sm-2 control-label">Email</label>
 
                                             <div class="col-sm-10">
-                                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email">
+                                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
                                             <div class="col-sm-10">
-                                                <input type="password" name="password" id="password">
+                                                <input type="password" name="password" id="password" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
