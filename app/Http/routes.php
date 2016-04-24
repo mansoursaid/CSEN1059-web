@@ -60,7 +60,7 @@ Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 //Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
 
 Route::get('home', 'HomeController@getHome');
-
+Route::get('get_tweets/{maxId}', 'TweetsController@getTweets');
 
 
 Route::get('/mail', function() {
@@ -95,6 +95,9 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
+
+
+
 
 
 

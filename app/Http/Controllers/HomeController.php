@@ -19,7 +19,8 @@ class HomeController extends Controller
 
 		date_default_timezone_set('Africa/Cairo');
 
-		$count = 200;
+
+		$count = 2;
 		$max_id = 0;
 
 		if (Cache::has('new_tweets'.$count."-".$max_id))
@@ -28,20 +29,17 @@ class HomeController extends Controller
 
 		} else {
 			$newTweets = TwitterFunctions::getTweets($count, $max_id);
-			$expiresAt = Carbon::now()->addMinutes(5);
+			$expiresAt = Carbon::now()->addMinutes(2);
 			Cache::add('new_tweets'.$count."-".$max_id, $newTweets, $expiresAt);
 		}
-
-
-
-
-
 
 
 
 		return view('home.index', compact('newTweets'));
 
 	}
+
+
 
 	public function store(Request $request) {
 
