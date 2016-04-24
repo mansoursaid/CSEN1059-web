@@ -48,8 +48,6 @@ Route::get('admin', function () {
     return view('admin_template');
 });
 
-
-
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
