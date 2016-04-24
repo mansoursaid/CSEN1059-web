@@ -16,7 +16,17 @@ class UsersController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrfail($id);
+        // Will return a ModelNotFoundException if no user with that id
+        try
+        {
+            $user = User::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e))
+            dd($e)
+        }
+
         return view('users.show', compact('user'));
     }
 
@@ -34,20 +44,51 @@ class UsersController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrfail($id);
+        // Will return a ModelNotFoundException if no user with that id
+        try
+        {
+            $user = User::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e))
+            dd($e)
+        }
+
         return view('users.edit', compact('user'));
     }
 
     public function update($id, Requests\UpdateUserRequest $request)
     {
-        $user = User::findOrfail($id);
+
+        // Will return a ModelNotFoundException if no user with that id
+        try
+        {
+            $user = User::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e))
+            dd($e)
+        }
+
         $user->update($request->all());
         return redirect('users');
     }
 
     public function destroy($id){
 
-        $user = User::findOrfail($id);
+        // Will return a ModelNotFoundException if no user with that id
+        try
+        {
+            $user = User::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e))
+            dd($e)
+        }
+
         $user->delete();
         return redirect('users');
     }

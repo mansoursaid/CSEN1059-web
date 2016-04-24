@@ -30,13 +30,13 @@ class UsersTableSeeder extends Seeder
             'name' => 'supportSupervisor1',
             'email' => 'supportSupervisor1@gmail.com',
             'password' => bcrypt('123456789'),
-            'type' => 00,
+            'type' => 01,
         ]);
         DB::table('users')->insert([
             'name' => 'supportSupervisor2',
             'email' => 'supportSupervisor2@gmail.com',
             'password' => bcrypt('123456789'),
-            'type' => 00,
+            'type' => 01,
         ]);
 
         //Support Agent
@@ -44,13 +44,13 @@ class UsersTableSeeder extends Seeder
             'name' => 'supportAgent1',
             'email' => 'supportAgent1@gmail.com',
             'password' => bcrypt('123456789'),
-            'type' => 00,
+            'type' => 10,
         ]);
         DB::table('users')->insert([
             'name' => 'supportAgent2',
             'email' => 'supportAgent2@gmail.com',
             'password' => bcrypt('123456789'),
-            'type' => 00,
+            'type' => 10,
         ]);
     }
 }
