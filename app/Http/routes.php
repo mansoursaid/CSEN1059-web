@@ -31,7 +31,7 @@ Route::delete('projects/{id}','ProjectsController@destroy');
 Route::get('projects/{id}/edit','ProjectsController@edit');
 Route::post('projects/{id}/edited','ProjectsController@update');
 
-Route::get('mentions', 'TweetsController@index');
+//Route::get('mentions', 'TweetsController@index');
 
 Route::get('users','UsersController@index');
 Route::get('users/create','UsersController@create');
@@ -55,7 +55,9 @@ Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
 
-Route::get('/conv/{id}', 'TweetsController@getConversation');
-Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
+//Route::get('/conv/{id}', 'TweetsController@getConversation');
+//Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
+
+Route::get('home', 'HomeController@getHome');
 
 
