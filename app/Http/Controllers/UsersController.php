@@ -23,8 +23,8 @@ class UsersController extends Controller
         }
         catch(ModelNotFoundException $e)
         {
-            dd(get_class_methods($e))
-            dd($e)
+            dd(get_class_methods($e));
+            dd($e);
         }
 
         return view('users.show', compact('user'));
@@ -51,8 +51,8 @@ class UsersController extends Controller
         }
         catch(ModelNotFoundException $e)
         {
-            dd(get_class_methods($e))
-            dd($e)
+            dd(get_class_methods($e));
+            dd($e);
         }
 
         return view('users.edit', compact('user'));
@@ -68,8 +68,8 @@ class UsersController extends Controller
         }
         catch(ModelNotFoundException $e)
         {
-            dd(get_class_methods($e))
-            dd($e)
+            dd(get_class_methods($e));
+            dd($e);
         }
 
         $user->update($request->all());
@@ -85,8 +85,8 @@ class UsersController extends Controller
         }
         catch(ModelNotFoundException $e)
         {
-            dd(get_class_methods($e))
-            dd($e)
+            dd(get_class_methods($e));
+            dd($e);
         }
 
         $user->delete();

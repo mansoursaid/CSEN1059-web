@@ -30,12 +30,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Route::resource('tickets', 'TicketsController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('users', 'UsersController');
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('mentions', 'TweetsController@index');
 
@@ -43,10 +48,7 @@ Route::get('admin', function () {
     return view('admin_template');
 });
 
-Route::controllers([
-    'auth' => '\App\Http\Controllers\Auth\AuthController',
-    'password' => '\App\Http\Controllers\Auth\PasswordController',
-]);
+
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');

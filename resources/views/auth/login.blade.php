@@ -15,27 +15,28 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Sign in</h3>
                                 </div>
-                                <form class="form-horizontal" action="home.html">
+                                <form class="form-horizontal" method="POST" action="/auth/login">
+                                    {{ csrf_field() }}
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                            <label for="email" class="col-sm-2 control-label">Email</label>
 
                                             <div class="col-sm-10">
-                                                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
                                             <div class="col-sm-10">
-                                                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                                <input type="password" name="password" id="password">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox"> Remember me
+                                                        <input type="checkbox" name="remember"> Remember me
                                                     </label>
                                                 </div>
                                             </div>
