@@ -56,6 +56,10 @@ class UsersController extends Controller
         ]);
 
         User::create($request->all());
+
+        //send email to user with his user name and password
+        //Show the suppor agent block
+        //for now I will keep this as it is
         return redirect('users');
     }
 
