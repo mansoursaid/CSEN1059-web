@@ -62,34 +62,7 @@
 
         </div>
 
-        <div class="col-md-6">
-
-            <div class="box" hidden>
-                <div class="box-header">
-                    <h3 class="box-title">Mark as tickets</h3>
-                </div>
-                <div class="box-body">
-
-                    <div class="margin">
-                        <p>Tweet basic info</p>
-                        <div class="form-group">
-                            <label>Assign to</label>
-                            <select class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="float: right;">
-                            <button class="btn btn-default">Cancel</button>
-                            <button class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-
-                </div><!-- /.box-body -->
-            </div>
+        <div class="col-md-6" id="toAddATicket">
 
 
             <div class="box box-info">
@@ -159,6 +132,8 @@
 @section('custom_scripts')
     <script src="{{asset('/spin.js')}}"></script>
     <script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
+
+    {{--<script src="{{ asset('/home_script.js') }}"></script>--}}
     <script>
 
         var opts = {
@@ -184,10 +159,12 @@
             , position: 'absolute' // Element positioning
         }
 
-        $(document).ready(function() {
+
+
+
+        $(document).ready(function () {
 
             $('#load_more').click(function (e) {
-
 
 
                 var target = document.getElementById('foo')
@@ -196,8 +173,8 @@
 
                 var maxID = bigInt($('#main_timeline li:last').attr('id'));
 
-                $( "ul#main_timeline li.openTicket" ).each(function( index ) {
-                    var tempID =  bigInt($( this ).attr('id'));
+                $("ul#main_timeline li.openTicket").each(function (index) {
+                    var tempID = bigInt($(this).attr('id'));
 
                     if (tempID.lesserOrEquals(maxID)) {
                         maxID = tempID;
@@ -229,35 +206,141 @@
                             var id = data[i].id;
                             $newDivText += "<li class='time-label'><span class='bg-red'>" +
 
-                                "{{ date('Y M d h:i:s', strtotime(" + created_at + "))}}" +
+                                    "{{ date('Y M d h:i:s', strtotime(" + created_at + "))}}" +
 
-                                "</span>" +
-                                "</li>" +
+                                    "</span>" +
+                                    "</li>" +
 
-                            "<li id='" + id + "' class='openTicket'>" +
-                            " <i class='fa fa-envelope bg-blue'></i> " +
-                            " <div class='timeline-item'>" +
-                            " <span class='time'><i class='fa fa-clock-o'></i></span>" +
-                            "<h3 class='timeline-header'><a href='#'>" + user + "</a></h3>" +
-                            "<div class='timeline-body'>" + text + "</div></div></li>";
+                                    "<li id='" + id + "' class='openTicket' onclick='x($(this))'>" +
+                                    " <i class='fa fa-envelope bg-blue'></i> " +
+                                    " <div class='timeline-item'>" +
+                                    " <span class='time'><i class='fa fa-clock-o'></i></span>" +
+                                    "<h3 class='timeline-header'><a href='#'>" + user + "</a></h3>" +
+                                    "<div class='timeline-body'>" + text + "</div></div></li>";
                         }
+
+
 
                         $('#main_timeline').append($newDivText);
                     },
 
-                    error: function(req, status, error) {
+                    error: function (req, status, error) {
                         spinner.stop();
                         $('#load_more').css("visibility", "visible");
                         $('#foo').text('No more tweets');
                     }
 
-                    });
+                });
 
 //                e.preventDefault();
 
             });
 
-        } );
+
+            $('li.openTicket').click(function() {
+                var tweetId = $(this).attr('id');
+                console.log("tweet id : " + tweetId);
+
+                var user = $(this).find('h3.timeline-header a').text();
+
+                console.log("user : " + user);
+
+                var body = $(this).find('div.timeline-body').text();
+                console.log("body : " + body);
+
+                $newTicket = "<div class='box'>" +
+                        "<div class='box-header'>" +
+                        "<h3 class='box-title'>Mark as tickets</h3>" +
+                        "</div>" +
+                        "<div class='box-body'>" +
+
+                        "<div class='margin'><a href='#'>" + user + "</a></div>" +
+
+                        "<div class='margin'>" +
+                        "<p>" + body + "</p>" +
+                        "<div class='form-group'>" +
+                        "<label>Assign to</label>" +
+                        "<select class='form-control'>" +
+                        "<optgroup label='Admins'></optgroup>" +
+                        "@foreach($admins as $admin)" +
+                        "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
+                        "@endforeach" +
+
+                        "<optgroup label='Support supervisors'></optgroup>" +
+                        "@foreach($supportSupervisors as $supportSupervisor)" +
+                        "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
+                        "@endforeach" +
+                        "<optgroup label='Support agents'></optgroup>" +
+                        "@foreach($supportAgents as $supportAgent)" +
+                        "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
+                        "@endforeach" +
+                        "</select>" +
+                        "</div>" +
+                        "<div class='form-group' style='float: right;'>" +
+                        "<button class='btn btn-default'>Cancel</button>" +
+                        "<button class='btn btn-primary'>Save</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div><!-- /.box-body -->" +
+                        "</div>";
+
+
+                $('div#toAddATicket').prepend($newTicket);
+            });
+
+
+        });
+
+        var x = function openTicket(myObj) {
+            var tweetId = myObj.attr('id');
+            console.log("tweet id : " + tweetId);
+
+            var user = myObj.find('h3.timeline-header a').text();
+
+            console.log("user : " + user);
+
+            var body = myObj.find('div.timeline-body').text();
+            console.log("body : " + body);
+
+            $newTicket = "<div class='box'>" +
+                    "<div class='box-header'>" +
+                    "<h3 class='box-title'>Mark as tickets</h3>" +
+                    "</div>" +
+                    "<div class='box-body'>" +
+
+                    "<div class='margin'><a href='#'>" + user + "</a></div>" +
+
+                    "<div class='margin'>" +
+                    "<p>" + body + "</p>" +
+                    "<div class='form-group'>" +
+                    "<label>Assign to</label>" +
+                    "<select class='form-control'>" +
+                    "<optgroup label='Admins'></optgroup>" +
+                    "@foreach($admins as $admin)" +
+                    "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
+                    "@endforeach" +
+
+                    "<optgroup label='Support supervisors'></optgroup>" +
+                    "@foreach($supportSupervisors as $supportSupervisor)" +
+                    "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
+                    "@endforeach" +
+                    "<optgroup label='Support agents'></optgroup>" +
+                    "@foreach($supportAgents as $supportAgent)" +
+                    "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
+                    "@endforeach" +
+                    "</select>" +
+                    "</div>" +
+                    "<div class='form-group' style='float: right;'>" +
+                    "<button class='btn btn-default'>Cancel</button>" +
+                    "<button class='btn btn-primary'>Save</button>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div><!-- /.box-body -->" +
+                    "</div>";
+
+
+            $('div#toAddATicket').prepend($newTicket);
+        }
 
     </script>
 @endsection
