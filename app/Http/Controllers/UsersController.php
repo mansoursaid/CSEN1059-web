@@ -16,17 +16,7 @@ class UsersController extends Controller
 
     public function show($id)
     {
-        // Will return a ModelNotFoundException if no user with that id
-        try
-        {
-            $user = User::findOrFail($id);
-        }
-        catch(ModelNotFoundException $e)
-        {
-            dd(get_class_methods($e));
-            dd($e);
-        }
-
+        $user = get_user($id);
         return view('users.show', compact('user'));
     }
 
@@ -38,47 +28,54 @@ class UsersController extends Controller
     public function store(Requests\CreateUserRequest $request)
     {
         // validations
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'type' => 'required|max:2',
+        ]);
+
         User::create($request->all());
         return redirect('users');
     }
 
     public function edit($id)
     {
-        // Will return a ModelNotFoundException if no user with that id
-        try
-        {
-            $user = User::findOrFail($id);
-        }
-        catch(ModelNotFoundException $e)
-        {
-            dd(get_class_methods($e));
-            dd($e);
-        }
-
+        $user = get_user($id);
         return view('users.edit', compact('user'));
     }
 
     public function update($id, Requests\UpdateUserRequest $request)
     {
+        $user = get_user($id);
 
-        // Will return a ModelNotFoundException if no user with that id
-        try
-        {
-            $user = User::findOrFail($id);
-        }
-        catch(ModelNotFoundException $e)
-        {
-            dd(get_class_methods($e));
-            dd($e);
-        }
+        // validations
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'type' => 'required|max:2',
+        ]);
 
         $user->update($request->all());
         return redirect('users');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
+        $user = get_user($id);
+        $user->delete();
+        return redirect('users');
+    }
 
-        // Will return a ModelNotFoundException if no user with that id
+    /**
+     * Returns a user if found, otherwise returns an exception
+     *
+     * @param intval  $id
+     *
+     * @return $user | ModelNotFoundException
+     */
+    public function get_user($id) {
         try
         {
             $user = User::findOrFail($id);
@@ -88,9 +85,6 @@ class UsersController extends Controller
             dd(get_class_methods($e));
             dd($e);
         }
-
-        $user->delete();
-        return redirect('users');
     }
 
 }
