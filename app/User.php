@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Notification');
     }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }
