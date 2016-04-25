@@ -96,6 +96,11 @@ Route::get('fire', function () {
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
 
+Route::get('upload', function() {
+    return View::make('upload');
+});
+Route::post('upload', 'AppSettingsController@changeAppLogo');
+
 
 
 

@@ -6,7 +6,9 @@ use App\PaypalConfig;
 use App\TwitterConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-
+use Validator;
+use Session;
+use Redirect;
 use App\Http\Requests;
 
 class AppSettingsController extends Controller
@@ -115,7 +117,28 @@ class AppSettingsController extends Controller
         return redirect()->action('AppSettingsController@showSettings');
     }
 
-
+    public function changeAppLogo() {
+        $file = array('file' => Input::file('file'));
+        $rules = array('file' => 'required|image',);
+        $validator = Validator::make($file, $rules);
+        if ($validator->fails()) {
+            return Redirect::to('upload')->withInput()->withErrors($validator);
+        }
+        else {
+            if (Input::file('file')->isValid()) {
+                $destinationPath = base_path() . '/public';
+                $extension = Input::file('file')->getClientOriginalExtension();
+                $fileName = rand(11111,99999).'.'.$extension;
+                Input::file('file')->move($destinationPath, $fileName);
+                Session::flash('success', 'Upload successfully');
+                return Redirect::to('upload');
+            }
+            else {
+                Session::flash('error', 'uploaded file is not valid');
+                return Redirect::to('upload');
+            }
+        }
+    }
 
 
 
