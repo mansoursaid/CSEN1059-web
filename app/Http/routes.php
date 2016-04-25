@@ -44,9 +44,9 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('mentions', 'TweetsController@index');
 
-Route::get('admin', function () {
+Route::get('admin', ['middleware' => ['admin'], function () {
     return view('admin_template');
-});
+}]);
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');

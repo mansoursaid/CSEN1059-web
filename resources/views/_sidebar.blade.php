@@ -10,9 +10,16 @@
                 <img src="{{ asset("/bower_components/admin-lte/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
-                    <p>Alexander Pierce</p>
+                    <p>{{ Auth::user()->name }}</p>
                     <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+<!--                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
+                    @if (Auth::user()->type == 0)
+                        Admin
+                    @elseif (Auth::user()->type == 1)
+                        Support Supervisor
+                    @else
+                        Support Agent
+                    @endif
                 </div>
             </div>
 
@@ -32,17 +39,19 @@
                 <li class="header">Sections</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li><a href="home.html"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Admin panel</span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu" style="display: none;">
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="administrators.html">Administrators</a></li>
-                        <li><a href="supervisors.html">Support supervisors</a></li>
-                        <li class="active"><a href="agents.html">Support agents</a></li>
-                        <li><a href="customers.html">Customers</a></li>
-                        <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>
-                    </ul>
-                </li>
+                @if (Auth::user()->type == 0)
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-link"></i> <span>Admin panel</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="projects.html">Projects</a></li>
+                            <li><a href="administrators.html">Administrators</a></li>
+                            <li><a href="supervisors.html">Support supervisors</a></li>
+                            <li class="active"><a href="agents.html">Support agents</a></li>
+                            <li><a href="customers.html">Customers</a></li>
+                            <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>
+                        </ul>
+                    </li>
+                @endif
                 <li><a href="all_tickets.html"><i class="fa fa-link"></i> <span>All tickets</span></a></li>
                 <li><a href="statistics.html"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
                 <li><a href="my_settings.html"><i class="fa fa-link"></i> <span>Settings</span></a></li>
