@@ -14,8 +14,9 @@ class TicketsController extends Controller
     }
 
     public function show($id){
-        $ticket = Ticket::findOrfail($id);
-        return $ticket;
+//        $ticket = Ticket::findOrfail($id);
+//        return $ticket;
+        return view('tickets.show');
     }
 
     public function create(){
