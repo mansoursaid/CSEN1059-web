@@ -45,7 +45,7 @@
                         <ul class="treeview-menu" style="display: none;">
                             <li><a href="projects.html">Projects</a></li>
                             <li><a href="administrators.html">Administrators</a></li>
-                            <li><a href="supervisors.html">Support supervisors</a></li>
+                            <li><a href="/supervisors">Support supervisors</a></li>
                             <li class="active"><a href="agents.html">Support agents</a></li>
                             <li><a href="customers.html">Customers</a></li>
                             <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>

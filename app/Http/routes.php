@@ -36,6 +36,7 @@ Route::get('/', function () {
 Route::resource('tickets', 'TicketsController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('users', 'UsersController');
+Route::get('/supervisors', 'UsersController@supervisors');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

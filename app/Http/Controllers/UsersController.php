@@ -51,7 +51,7 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
             'type' => 'required|max:2',
         ]);
 
@@ -88,4 +88,7 @@ class UsersController extends Controller
         return redirect('users');
     }
 
+    public function supervisors(){
+        return view('users.supervisors');
+    }
 }
