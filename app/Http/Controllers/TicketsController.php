@@ -55,10 +55,8 @@ class TicketsController extends Controller
         return view('tickets.edit')->with('ticket',$ticket);
     }
 
-    public function update($id){
-        $ticket = Ticket::findOrfail($id);
-        $ticket->status = Input::get('status');
-        $ticket->save();
+    public function update(Request $request, Ticket $ticket){
+        $ticket->update($request->all());
         return $ticket;
     }
 }
