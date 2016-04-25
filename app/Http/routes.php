@@ -42,6 +42,7 @@ Route::get('/supervisors', 'UsersController@supervisors');
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
+//Route::get('mentions', 'TweetsController@index');
 
 Route::get('mentions', 'TweetsController@index');
 
@@ -52,6 +53,11 @@ Route::get('admin', ['middleware' => ['admin'], function () {
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
+//Route::get('/conv/{id}', 'TweetsController@getConversation');
+//Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
+
+Route::get('home', 'HomeController@getHome');
+Route::get('get_tweets/{maxId}', 'TweetsController@getTweets');
 
 Route::get('/mail', function() {
     $user = new \App\User();
