@@ -109,9 +109,12 @@
                 <!-- form start -->
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <p>Assigned to :     <b>Salma</b></p><br>
-                        <p>Status : <span class="pull-right badge bg-green">In progress</span></p><br>
-                        <p>Urgency : <span class="pull-right badge bg-red">High</span></p>
+                        <p>Assigned to :     <b>{{  }}</b></p><br>
+                        <p>Status : <span class="pull-right badge bg-green">{{ $ticket->status }}</span></p><br>
+                        <p>Urgency : <span class="pull-right badge bg-red">{{ $ticket->urgency }}</span></p>
+                        @if($ticket->premium)
+                            <p><span class="pull-right badge bg-red">Premium</span></p>
+                        @endif
                     </div><!-- /.box-body -->
 
                 </form>
