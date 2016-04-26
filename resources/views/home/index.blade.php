@@ -27,7 +27,8 @@
                     <i class="fa fa-envelope bg-blue"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i></span>
-                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
+                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a><span class="storeHandle">{{ $newTweet->user->screen_name }}</span></h3>
+
                         <div class="timeline-body">
                             {{ $newTweet->text }}
                         </div>
@@ -199,6 +200,7 @@
 
                             var text = data[i].text;
                             var user = data[i].user.name;
+                            var screen_name = data[i].user.screen_name;
                             var created_at = data[i].created_at;
                             var id = data[i].id;
                             $newDivText += "<li class='time-label'><span class='bg-red'>" +
@@ -212,7 +214,8 @@
                                     " <i class='fa fa-envelope bg-blue'></i> " +
                                     " <div class='timeline-item'>" +
                                     " <span class='time'><i class='fa fa-clock-o'></i></span>" +
-                                    "<h3 class='timeline-header'><a href='#'>" + user + "</a></h3>" +
+                                    "<h3 class='timeline-header'><a href='#'>" + user + "</a> <span class='storeHandle'>" + screen_name + "</span></h3>" +
+
                                     "<div class='timeline-body'>" + text + "</div></div></li>";
                         }
 

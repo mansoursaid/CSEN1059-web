@@ -34,6 +34,7 @@ class HomeController extends Controller
 			Cache::add('new_tweets'.$count."-".$max_id, $newTweets, $expiresAt);
 		}
 
+
 		$admins = \App\User::ofType(0)->get();
 		$supportSupervisors = \App\User::ofType(1)->get();
 		$supportAgents = \App\User::ofType(10)->get();
