@@ -8,6 +8,26 @@ use App\User;
 class UsersController extends Controller
 {
 
+    /**
+     * Returns a user if found, otherwise returns an exception
+     *
+     * @param intval  $id
+     *
+     * @return $user | ModelNotFoundException
+     */
+    public function get_user($id) {
+        try
+        {
+            $user = User::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e));
+            dd($e);
+        }
+        return $user;
+    }
+
     public function index()
     {
         $users = User::all();
@@ -16,7 +36,7 @@ class UsersController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrfail($id);
+        $user = $this->get_user($id);
         return view('users.show', compact('user'));
     }
 
@@ -28,28 +48,51 @@ class UsersController extends Controller
     public function store(Requests\CreateUserRequest $request)
     {
         // validations
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6',
+            'type' => 'required|max:2',
+        ]);
+
         User::create($request->all());
+
+        //send email to user with his user name and password
+        //Show the suppor agent block
+        //for now I will keep this as it is
         return redirect('users');
     }
 
     public function edit($id)
     {
-        $user = User::findOrfail($id);
+        $user = $this->get_user($id);
         return view('users.edit', compact('user'));
     }
 
     public function update($id, Requests\UpdateUserRequest $request)
     {
-        $user = User::findOrfail($id);
+        $user = $this->get_user($id);
+
+        // validations
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'type' => 'required|max:2',
+        ]);
+
         $user->update($request->all());
         return redirect('users');
     }
 
-    public function destroy($id){
-
-        $user = User::findOrfail($id);
+    public function destroy($id)
+    {
+        $user = $this->get_user($id);
         $user->delete();
         return redirect('users');
     }
 
+    public function supervisors(){
+        return view('users.supervisors');
+    }
 }
