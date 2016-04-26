@@ -243,7 +243,7 @@
                 var body = $(this).find('div.timeline-body').text();
 
 
-                $newTicket = "<div class='box' class='divOpenedTicket'>" +
+                $newTicket = "<div class='box divOpenedTicket'>" +
                         "<div class='box-header'>" +
                         "<h3 class='box-title'>Mark as tickets</h3>" +
                         "</div>" +
@@ -296,7 +296,7 @@
 
             var body = myObj.find('div.timeline-body').text();
 
-            $newTicket = "<div class='box' class='divOpenedTicket'>" +
+            $newTicket = "<div class='box divOpenedTicket'>" +
                     "<div class='box-header'>" +
                     "<h3 class='box-title'>Mark as tickets</h3>" +
                     "</div>" +
