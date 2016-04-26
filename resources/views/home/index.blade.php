@@ -1,4 +1,3 @@
-
 @extends('admin_template')
 
 
@@ -14,31 +13,31 @@
             <ul class="timeline" id="main_timeline">
                 @foreach($newTweets as $newTweet)
 
-                    <!-- timeline time label -->
-                    <li class="time-label">
+                        <!-- timeline time label -->
+                <li class="time-label">
                         <span class="bg-red">
 
                             {{ date('Y M d h:i:s', strtotime($newTweet->created_at))  }}
 
                         </span>
-                    </li>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <li id="{{ $newTweet->id }}" class="openTicket">
-                        <i class="fa fa-envelope bg-blue"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i></span>
-                            <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
-                            <div class="timeline-body">
-                                {{ $newTweet->text }}
-                            </div>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li id="{{ $newTweet->id }}" class="openTicket">
+                    <i class="fa fa-envelope bg-blue"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i></span>
+                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
+                        <div class="timeline-body">
+                            {{ $newTweet->text }}
                         </div>
-                    </li>
-                    <!-- END timeline item -->
+                    </div>
+                </li>
+                <!-- END timeline item -->
 
                 @endforeach
 
-                 <!-- END timeline item -->
+                        <!-- END timeline item -->
 
             </ul>
 
@@ -50,12 +49,12 @@
 
 
             {{--<div id="foo" class="col-md-6">--}}
-            <span class="pull-right badg" id = "foo"></span>
+            <span class="pull-right badg" id="foo"></span>
 
             {{--</div>--}}
 
             {{--<ul class="pagination pagination-sm no-margin pull-right">--}}
-                <button id="load_more"><a href="#">Load more</a></button>
+            <button id="load_more"><a href="#">Load more</a></button>
 
             {{--</ul>--}}
 
@@ -160,8 +159,6 @@
         }
 
 
-
-
         $(document).ready(function () {
 
             $('#load_more').click(function (e) {
@@ -183,7 +180,7 @@
                 });
 
 
-                console.log("final " + maxID.toString());
+
                 var form = $(this);
                 var method = 'GET';
                 var url = '/get_tweets/' + maxID.toString();
@@ -220,7 +217,6 @@
                         }
 
 
-
                         $('#main_timeline').append($newDivText);
                     },
 
@@ -237,18 +233,17 @@
             });
 
 
-            $('li.openTicket').click(function() {
+            $('li.openTicket').click(function () {
                 var tweetId = $(this).attr('id');
-                console.log("tweet id : " + tweetId);
+
 
                 var user = $(this).find('h3.timeline-header a').text();
 
-                console.log("user : " + user);
 
                 var body = $(this).find('div.timeline-body').text();
-                console.log("body : " + body);
 
-                $newTicket = "<div class='box'>" +
+
+                $newTicket = "<div class='box' class='divOpenedTicket'>" +
                         "<div class='box-header'>" +
                         "<h3 class='box-title'>Mark as tickets</h3>" +
                         "</div>" +
@@ -277,8 +272,8 @@
                         "</select>" +
                         "</div>" +
                         "<div class='form-group' style='float: right;'>" +
-                        "<button class='btn btn-default'>Cancel</button>" +
-                        "<button class='btn btn-primary'>Save</button>" +
+                        "<button class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
+                        "<button class='btn btn-primary' class='saveTicket'>Save</button>" +
                         "</div>" +
                         "</div>" +
                         "</div><!-- /.box-body -->" +
@@ -291,18 +286,17 @@
 
         });
 
+
         var x = function openTicket(myObj) {
             var tweetId = myObj.attr('id');
-            console.log("tweet id : " + tweetId);
+
 
             var user = myObj.find('h3.timeline-header a').text();
 
-            console.log("user : " + user);
 
             var body = myObj.find('div.timeline-body').text();
-            console.log("body : " + body);
 
-            $newTicket = "<div class='box'>" +
+            $newTicket = "<div class='box' class='divOpenedTicket'>" +
                     "<div class='box-header'>" +
                     "<h3 class='box-title'>Mark as tickets</h3>" +
                     "</div>" +
@@ -331,8 +325,8 @@
                     "</select>" +
                     "</div>" +
                     "<div class='form-group' style='float: right;'>" +
-                    "<button class='btn btn-default'>Cancel</button>" +
-                    "<button class='btn btn-primary'>Save</button>" +
+                    "<button class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
+                    "<button class='btn btn-primary' class='saveTicket'>Save</button>" +
                     "</div>" +
                     "</div>" +
                     "</div><!-- /.box-body -->" +
@@ -341,6 +335,13 @@
 
             $('div#toAddATicket').prepend($newTicket);
         }
+
+        var hideNewTicket = function (myObj) {
+
+           myObj.closest('div.divOpenedTicket').hide();
+
+        }
+
 
     </script>
 @endsection
