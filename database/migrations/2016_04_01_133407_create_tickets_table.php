@@ -14,13 +14,13 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tweet_id');
-            $table->boolean('premium');
+            $table->string('tweet_id')->nullable();
+            $table->boolean('premium')->default(0);
             $table->integer('customer_id')->unsigned();
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->integer('opened_by')->unsigned();
             $table->integer('assigned_to')->unsigned();
-            $table->integer('urgency');
+            $table->integer('urgency')->default(0);
             $table->foreign('customer_id')
                 ->references('id')
                 ->on('customers')
@@ -32,7 +32,7 @@ class CreateTicketsTable extends Migration
             $table->foreign('assigned_to')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
+                ->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }
