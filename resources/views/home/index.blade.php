@@ -64,32 +64,7 @@
 
         <div class="col-md-6">
 
-            <div class="box" hidden>
-                <div class="box-header">
-                    <h3 class="box-title">Mark as tickets</h3>
-                </div>
-                <div class="box-body">
 
-                    <div class="margin">
-                        <p>Tweet basic info</p>
-                        <div class="form-group">
-                            <label>Assign to</label>
-                            <select class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="float: right;">
-                            <button class="btn btn-default">Cancel</button>
-                            <button class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-
-                </div><!-- /.box-body -->
-            </div>
 
 
             <div class="box box-info">

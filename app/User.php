@@ -61,8 +61,21 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Notification');
     }
 
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
 }
