@@ -25,7 +25,7 @@ class TicketsController extends Controller
 
     public function store(Request $request){
 
-        if (Input::get('tweet_handle') == null) {
+        if (Input::get('online') == null) {
             $rules = array(
                 'tweet_id' => 'required',
                 'premium'  => 'required',
@@ -51,25 +51,34 @@ class TicketsController extends Controller
         } else {
             $rules = array(
                 'tweet_id' => 'required',
-                'opened_by'=> 'required',
-                'assigned_to'=>'required'
+                'assigned_to'=>'required',
+                'tweet_handle' => 'required',
+                'status' => 'required',
+                'urgency' => 'required',
+                'premium' => 'required'
             );
 
-            $customer = new Customer();
-            $customer->tweet_handle = Input::get('tweet_handle');
-            $customer->save;
+//            dd(Input::get());
+
+            $customer = Customer::where('twitter_handle', Input::get('tweet_handle'))->first();
+            if ($customer == null) {
+                $customer = new Customer();
+                $customer->twitter_handle = Input::get('tweet_handle');
+                $customer->save();
+            }
 
             $this->validate($request,$rules);
             $ticket = new Ticket;
             $ticket->tweet_id = Input::get('tweet_id');
 
-            $ticket->opened_by = Input::get('opened_by');
+            $ticket->opened_by = 1; // will be changed later
             $ticket->assigned_to = Input::get('assigned_to');
-            $ticket->customer_id = Input::get('customer_id');
-            $ticket->status = Input::get('status');
+            $ticket->customer_id = $customer->id; // will be changed later
+            $ticket->status = Input::get('status'); // will be changed later
+            $ticket->urgency = Input::get('urgency'); // will be changed later
+            $ticket->premium = Input::get('premium');
             $ticket->save();
-            return $ticket;
-
+            return redirect()->action('TicketsController@show', [$ticket->id]);
 
         }
 
