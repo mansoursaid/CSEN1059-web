@@ -7,6 +7,8 @@ use App\TwitterFunctions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 class TicketsController extends Controller
 {
@@ -22,7 +24,7 @@ class TicketsController extends Controller
         try {
             $ticket = Ticket::findOrfail($id);
         } catch (ModelNotFoundException $e) {
-            return view('404');
+            return view('errors.404');
         }
 
 
@@ -30,14 +32,25 @@ class TicketsController extends Controller
         $supportSupervisors = \App\User::ofType(1)->get();
         $supportAgents = \App\User::ofType(10)->get();
 
-        $assignedToUser = $ticket->assigned_to()->get();
 
-        dd($assignedToUser);
+        $assignedToUser = $ticket->with('assigned_to')->first();
 
 
-        $conversation = TwitterFunctions::getConversation($ticket->tweet_id);
+        if (Cache::has('conv'."-".$ticket->tweet_id))
+        {
+            $conversation = Cache::get('conv'."-".$ticket->tweet_id);
 
-        return view('tickets.show', compact('ticket', 'conversation'));
+        } else {
+            $conversation = TwitterFunctions::getConversation($ticket->tweet_id);
+            $expiresAt = Carbon::now()->addMinutes(1);
+            Cache::add('conv'."-".$ticket->tweet_id, $conversation, $expiresAt);
+        }
+
+       // $conversation = array_reverse($conversation);
+
+
+
+        return view('tickets.show', compact('ticket', 'conversation', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser'));
     }
 
     public function create()

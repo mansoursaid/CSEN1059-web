@@ -7,80 +7,42 @@
         <div class="col-md-6">
             <h2 class="page-header">Ticket's conversation</h2>
 
-            <ul class="timeline">
-                <!-- timeline time label -->
+            <ul class="timeline" id="main_timeline">
+                @foreach($conversation as $newTweet)
+
+                        <!-- timeline time label -->
                 <li class="time-label">
-                            <span class="bg-red">
-                                10 Feb. 2014
-                            </span>
+                        <span class="bg-red">
+
+                            {{ date('Y M d h:i:s', strtotime($newTweet->created_at))  }}
+
+                        </span>
                 </li>
                 <!-- /.timeline-label -->
                 <!-- timeline item -->
-                <li>
+                <li id="{{ $newTweet->id }}" class="openTicket">
                     <i class="fa fa-envelope bg-blue"></i>
                     <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+                        <span class="time"><i class="fa fa-clock-o"></i></span>
+                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
                         <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
+                            {{ $newTweet->text }}
                         </div>
                     </div>
                 </li>
                 <!-- END timeline item -->
 
-                <li class="time-label">
-                            <span class="bg-green">
-                                3 Jan. 2014
-                            </span>
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <li>
-                    <i class="fa fa-camera bg-purple"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                        <div class="timeline-body">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        </div>
-                    </div>
-                </li>
-                <!-- END timeline item -->
-                <!-- timeline item -->
-                <li>
-                    <i class="fa fa-video-camera bg-maroon"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 5 days ago</span>
-                        <h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>
-                        <div class="timeline-body">
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tMWkeBIohBs" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="timeline-footer">
-                            <a href="#" class="btn btn-xs bg-maroon">See comments</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- END timeline item -->
+                @endforeach
+
+                        <!-- END timeline item -->
+
+            </ul>
+
+            <ul class="timeline">
                 <li>
                     <i class="fa fa-clock-o bg-gray"></i>
                 </li>
             </ul>
-
-            <!--<ul class="pagination pagination-sm no-margin pull-right">-->
-            <!--<li><a href="#">«</a></li>-->
-            <!--&lt;!&ndash;<li><a href="#">1</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="#">2</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="#">3</a></li>&ndash;&gt;-->
-            <!--<li><a href="#">»</a></li>-->
-            <!--</ul>-->
 
             <form class="form-horizontal">
                 <div class="box-body">
@@ -109,7 +71,7 @@
                 <!-- form start -->
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <p>Assigned to :     <b>{{  }}</b></p><br>
+                        <p>Assigned to :   <a href="/users/{{ $assignedToUser->id }}"> <b>{{ $assignedToUser->name }}</b></a> </p><br>
                         <p>Status : <span class="pull-right badge bg-green">{{ $ticket->status }}</span></p><br>
                         <p>Urgency : <span class="pull-right badge bg-red">{{ $ticket->urgency }}</span></p>
                         @if($ticket->premium)
@@ -131,15 +93,25 @@
                         <div class="form-group">
                             <label>Reassign to</label>
                             <select class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                                <optgroup label="--Admins--">
+                                    @foreach($admins as $admin)
+                                        <option value="{{ $admin->id }}">{{ $admin->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="--Support supervisors--">
+                                    @foreach($supportSupervisors as $supportSupervisor)
+                                        <option value="{{ $supportSupervisor->id }}">{{ $supportSupervisor->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="--Support agents--">
+                                    @foreach($supportAgents as $supportAgent)
+                                        <option value="{{ $supportAgent->id }}">{{ $supportAgent->name }}</option>
+                                    @endforeach
+                                </optgroup>
                             </select>
                         </div>
                         <div class="form-group" style="float: right;">
-                            <button class="btn btn-default">Cancel</button>
+                            {{--<button class="btn btn-default">Cancel</button>--}}
                             <button class="btn btn-primary">Save</button>
                         </div>
                     </div>
@@ -157,15 +129,25 @@
                         <div class="form-group">
                             <label>Invite</label>
                             <select class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                                <optgroup label="--Admins--">
+                                    @foreach($admins as $admin)
+                                        <option value="{{ $admin->id }}">{{ $admin->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="--Support supervisors--">
+                                    @foreach($supportSupervisors as $supportSupervisor)
+                                        <option value="{{ $supportSupervisor->id }}">{{ $supportSupervisor->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="--Support agents--">
+                                    @foreach($supportAgents as $supportAgent)
+                                        <option value="{{ $supportAgent->id }}">{{ $supportAgent->name }}</option>
+                                    @endforeach
+                                </optgroup>
                             </select>
                         </div>
                         <div class="form-group" style="float: right;">
-                            <button class="btn btn-default">Cancel</button>
+                            {{--<button class="btn btn-default">Cancel</button>--}}
                             <button class="btn btn-primary">Save</button>
                         </div>
                     </div>
