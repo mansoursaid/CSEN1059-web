@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\TwitterFunctions;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
@@ -25,7 +26,7 @@ class HomeController extends Controller
 
 		if (Cache::has('new_tweets'.$count."-".$max_id))
 		{
-			$newTweets = Cache::get('new_tweets'.$count."-".$max_id);
+		$newTweets = Cache::get('new_tweets'.$count."-".$max_id);
 
 		} else {
 			$newTweets = TwitterFunctions::getTweets($count, $max_id);
@@ -34,8 +35,14 @@ class HomeController extends Controller
 		}
 
 
+		$admins = \App\User::ofType(0)->get();
+		$supportSupervisors = \App\User::ofType(1)->get();
+		$supportAgents = \App\User::ofType(10)->get();
 
-		return view('home.index', compact('newTweets'));
+
+
+
+		return view('home.index', compact('newTweets', 'admins', 'supportSupervisors', 'supportAgents'));
 
 	}
 

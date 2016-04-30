@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     protected $fillable = [
-        'tweet_id', 'premium', 'urgency'
+        'tweet_id', 'premium', 'urgency', 'assigned_to', 'opened_by', 'customer_id'
     ];
 
     protected $table = 'tickets';
