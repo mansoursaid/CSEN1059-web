@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'type',
     ];
 
     protected $table = 'users';
@@ -54,5 +54,10 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->belongsToMany('App\Projects');
+    }
+
+    public function notifications()
+    {
+        return $this->belongsToMany('App\Notification');
     }
 }
