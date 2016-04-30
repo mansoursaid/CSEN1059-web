@@ -64,6 +64,10 @@ class TwitterFunctions {
         while(true) {
             $current = $connection->get("statuses/show", ['id' => $currentId, 'include_entities' => false]);
 
+//            if ($current->errors != null) {
+//                break;
+//            }
+
             if ($push) {
                 array_push($tweetsOfConversation, $current);
             }
@@ -72,7 +76,7 @@ class TwitterFunctions {
             $reply = null;
 
             foreach($timeine_tweets as $timeine_tweet) {
-                if ($timeine_tweet->in_reply_to_status_id == $current->id) {
+                if ($timeine_tweet->in_reply_to_status_id_str != null && $timeine_tweet->in_reply_to_status_id_str == $current->id_str) {
                     $reply = $timeine_tweet;
                     break;
                 }
@@ -80,7 +84,7 @@ class TwitterFunctions {
 
             if ($reply == null) {
                 foreach($mentions as $mention) {
-                    if ($mention->in_reply_to_status_id == $current->id) {
+                    if ($mention->in_reply_to_status_id_str != null && $mention->in_reply_to_status_id_str == $current->id_str) {
                         $reply = $mention;
                         break;
                     }
@@ -88,7 +92,7 @@ class TwitterFunctions {
             }
 
             if ($reply == null) {
-                $currentId = $current->id;
+                $currentId = $current->id_str;
 
                 $last_timeline_tweet = end($timeine_tweets);
                 $last_mention = end($mentions);
@@ -96,7 +100,7 @@ class TwitterFunctions {
                 $push = false;
 
                 if ($getNewMentions == true && $last_mention != null) {
-                    $new_mentions = $connection->get("statuses/mentions_timeline", ['since_id' => $last_mention->id, 'count' => 200]);
+                    $new_mentions = $connection->get("statuses/mentions_timeline", ['since_id' => $last_mention->id_str, 'count' => 200]);
                     if (sizeof($new_mentions) == 1) {
                         $getNewMentions = false;
                     } else {
@@ -106,7 +110,7 @@ class TwitterFunctions {
                 }
 
                 if ($getNewTimelineTweets == true && $last_timeline_tweet != null) {
-                    $new_timeline_tweets = $connection->get("statuses/user_timeline", ['since_id' => $last_timeline_tweet->id, 'count' => 200]);
+                    $new_timeline_tweets = $connection->get("statuses/user_timeline", ['since_id' => $last_timeline_tweet->id_str, 'count' => 200]);
                     if (sizeof($new_timeline_tweets) == 1) {
                         $getNewTimelineTweets = false;
                     } else {
@@ -123,7 +127,7 @@ class TwitterFunctions {
 
                 break;
             } else {
-                $currentId = $reply->id;
+                $currentId = $reply->id_str;
                 $push = true;
             }
 
