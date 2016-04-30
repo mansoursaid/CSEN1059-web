@@ -65,6 +65,7 @@
         <div class="col-md-6" id="toAddATicket">
 
 
+
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Create ticket</h3>
