@@ -95,7 +95,7 @@ class TwitterFunctions {
 
                 $push = false;
 
-                if ($getNewMentions == true) {
+                if ($getNewMentions == true && $last_mention != null) {
                     $new_mentions = $connection->get("statuses/mentions_timeline", ['since_id' => $last_mention->id, 'count' => 200]);
                     if (sizeof($new_mentions) == 1) {
                         $getNewMentions = false;
@@ -105,7 +105,7 @@ class TwitterFunctions {
                     }
                 }
 
-                if ($getNewTimelineTweets == true) {
+                if ($getNewTimelineTweets == true && $last_timeline_tweet != null) {
                     $new_timeline_tweets = $connection->get("statuses/user_timeline", ['since_id' => $last_timeline_tweet->id, 'count' => 200]);
                     if (sizeof($new_timeline_tweets) == 1) {
                         $getNewTimelineTweets = false;
