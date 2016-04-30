@@ -254,7 +254,7 @@
                         "</div>" +
                         "<div class='box-body'>" +
                         "<div class='margin'><a href='#'>" + user + "</a></div>" +
-                        "<form method='POST' action='/tickets/store'>" +
+                        "<form method='POST' action='{{ action('TicketsController@store') }}'>" +
                         "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
                         "<input type='text' name='online' value=' ' hidden>" +
                         "<div class='margin'>" +
@@ -343,7 +343,7 @@
                     "<div class='box-body'>" +
 
                     "<div class='margin'><a href='#'>" + user + "</a></div>" +
-                    "<form method='POST' action='/tickets/store'>" +
+                    "<form method='POST' action='{{ action('TicketsController@store') }}'>" +
                     "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
                     "<input type='text' name='online' value=' ' hidden>" +
                     "<div class='margin'>" +
