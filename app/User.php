@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
     /**
@@ -71,6 +72,7 @@ class User extends Authenticatable
     {
         return $query->where('type', $type);
     }
+
 
 
     public function setPasswordAttribute($password)

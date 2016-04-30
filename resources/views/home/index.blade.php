@@ -1,4 +1,3 @@
-
 @extends('admin_template')
 
 
@@ -14,31 +13,32 @@
             <ul class="timeline" id="main_timeline">
                 @foreach($newTweets as $newTweet)
 
-                    <!-- timeline time label -->
-                    <li class="time-label">
+                        <!-- timeline time label -->
+                <li class="time-label">
                         <span class="bg-red">
 
                             {{ date('Y M d h:i:s', strtotime($newTweet->created_at))  }}
 
                         </span>
-                    </li>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <li id="{{ $newTweet->id }}" class="openTicket">
-                        <i class="fa fa-envelope bg-blue"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i></span>
-                            <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
-                            <div class="timeline-body">
-                                {{ $newTweet->text }}
-                            </div>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li id="{{ $newTweet->id }}" class="openTicket">
+                    <i class="fa fa-envelope bg-blue"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i></span>
+                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a><span class="storeHandle">{{ $newTweet->user->screen_name }}</span></h3>
+
+                        <div class="timeline-body">
+                            {{ $newTweet->text }}
                         </div>
-                    </li>
-                    <!-- END timeline item -->
+                    </div>
+                </li>
+                <!-- END timeline item -->
 
                 @endforeach
 
-                 <!-- END timeline item -->
+                        <!-- END timeline item -->
 
             </ul>
 
@@ -50,20 +50,19 @@
 
 
             {{--<div id="foo" class="col-md-6">--}}
-            <span class="pull-right badg" id = "foo"></span>
+            <span class="pull-right badg" id="foo"></span>
 
             {{--</div>--}}
 
             {{--<ul class="pagination pagination-sm no-margin pull-right">--}}
-                <button id="load_more"><a href="#">Load more</a></button>
+            <button id="load_more"><a href="#">Load more</a></button>
 
             {{--</ul>--}}
 
 
         </div>
 
-        <div class="col-md-6">
-
+        <div class="col-md-6" id="toAddATicket">
 
 
 
@@ -134,6 +133,8 @@
 @section('custom_scripts')
     <script src="{{asset('/spin.js')}}"></script>
     <script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
+
+    {{--<script src="{{ asset('/home_script.js') }}"></script>--}}
     <script>
 
         var opts = {
@@ -159,10 +160,10 @@
             , position: 'absolute' // Element positioning
         }
 
-        $(document).ready(function() {
+
+        $(document).ready(function () {
 
             $('#load_more').click(function (e) {
-
 
 
                 var target = document.getElementById('foo')
@@ -171,8 +172,8 @@
 
                 var maxID = bigInt($('#main_timeline li:last').attr('id'));
 
-                $( "ul#main_timeline li.openTicket" ).each(function( index ) {
-                    var tempID =  bigInt($( this ).attr('id'));
+                $("ul#main_timeline li.openTicket").each(function (index) {
+                    var tempID = bigInt($(this).attr('id'));
 
                     if (tempID.lesserOrEquals(maxID)) {
                         maxID = tempID;
@@ -181,7 +182,7 @@
                 });
 
 
-                console.log("final " + maxID.toString());
+
                 var form = $(this);
                 var method = 'GET';
                 var url = '/get_tweets/' + maxID.toString();
@@ -200,39 +201,220 @@
 
                             var text = data[i].text;
                             var user = data[i].user.name;
+                            var screen_name = data[i].user.screen_name;
                             var created_at = data[i].created_at;
                             var id = data[i].id;
                             $newDivText += "<li class='time-label'><span class='bg-red'>" +
 
-                                "{{ date('Y M d h:i:s', strtotime(" + created_at + "))}}" +
+                                    "{{ date('Y M d h:i:s', strtotime(" + created_at + "))}}" +
 
-                                "</span>" +
-                                "</li>" +
+                                    "</span>" +
+                                    "</li>" +
 
-                            "<li id='" + id + "' class='openTicket'>" +
-                            " <i class='fa fa-envelope bg-blue'></i> " +
-                            " <div class='timeline-item'>" +
-                            " <span class='time'><i class='fa fa-clock-o'></i></span>" +
-                            "<h3 class='timeline-header'><a href='#'>" + user + "</a></h3>" +
-                            "<div class='timeline-body'>" + text + "</div></div></li>";
+                                    "<li id='" + id + "' class='openTicket' onclick='x($(this))'>" +
+                                    " <i class='fa fa-envelope bg-blue'></i> " +
+                                    " <div class='timeline-item'>" +
+                                    " <span class='time'><i class='fa fa-clock-o'></i></span>" +
+                                    "<h3 class='timeline-header'><a href='#'>" + user + "</a> <span class='storeHandle'>" + screen_name + "</span></h3>" +
+
+                                    "<div class='timeline-body'>" + text + "</div></div></li>";
                         }
+
 
                         $('#main_timeline').append($newDivText);
                     },
 
-                    error: function(req, status, error) {
+                    error: function (req, status, error) {
                         spinner.stop();
                         $('#load_more').css("visibility", "visible");
                         $('#foo').text('No more tweets');
                     }
 
-                    });
+                });
 
 //                e.preventDefault();
 
             });
 
-        } );
+
+            $('li.openTicket').click(function () {
+                var tweetId = $(this).attr('id');
+
+
+                var user = $(this).find('h3.timeline-header a').text();
+
+                var user_handle = $(this).find('span.storeHandle').text();
+
+                var body = $(this).find('div.timeline-body').text();
+
+
+                $newTicket = "<div class='box divOpenedTicket'>" +
+                        "<div class='box-header'>" +
+                        "<h3 class='box-title'>Mark as tickets</h3>" +
+                        "</div>" +
+                        "<div class='box-body'>" +
+                        "<div class='margin'><a href='#'>" + user + "</a></div>" +
+                        "<form method='POST' action='/tickets/store'>" +
+                        "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
+                        "<input type='text' name='online' value=' ' hidden>" +
+                        "<div class='margin'>" +
+                        "<p>" + body + "</p>" +
+                        "<div class='form-group'>" +
+                        "<label>Assign to</label>" +
+                        "<select name='assigned_to' class='form-control'>" +
+                        "<optgroup label='Admins'></optgroup>" +
+                        "@foreach($admins as $admin)" +
+                        "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
+                        "@endforeach" +
+
+                        "<optgroup label='Support supervisors'></optgroup>" +
+                        "@foreach($supportSupervisors as $supportSupervisor)" +
+                        "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
+                        "@endforeach" +
+                        "<optgroup label='Support agents'></optgroup>" +
+                        "@foreach($supportAgents as $supportAgent)" +
+                        "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
+                        "@endforeach" +
+                        "</select>" +
+                        "</div>" +
+
+
+                        "<div class='form-group'>" +
+                        "<label>Status</label>" +
+                        "<select name='status' class='form-control'>" +
+                            "<option value='0'>0</option>" +
+                            "<option value='1'>1</option>" +
+                            "<option value='10'>10</option>" +
+                        "</select>" +
+                        "</div>" +
+
+                        "<div class='form-group'>" +
+                        "<label>Urgency</label>" +
+                        "<select name='urgency' class='form-control'>" +
+                        "<option value='0'>0</option>" +
+                        "<option value='1'>1</option>" +
+                        "<option value='10'>10</option>" +
+                        "</select>" +
+                        "</div>" +
+
+                        "<div class='form-group'>" +
+                        "<label>Premium</label>" +
+                        "<select name='premium' class='form-control'>" +
+                        "<option value='0'>No</option>" +
+                        "<option value='1'>Yes</option>" +
+                        "</select>" +
+                        "</div>" +
+
+
+                        "<input type='text' name='tweet_id' value='" + tweetId + "' hidden>" +
+                        "<input type='text' name='tweet_handle' value='" + user_handle + "' hidden>" +
+                        "<div class='form-group' style='float: right;'>" +
+                        "<button type='button' class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
+                        "<input type='submit' class='btn btn-primary' class='saveTicket'/>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div><!-- /.box-body -->" +
+                        "</div>" +
+                    "</form>";
+
+
+                $('div#toAddATicket').prepend($newTicket);
+            });
+
+
+        });
+
+
+        var x = function openTicket(myObj) {
+            var tweetId = myObj.attr('id');
+
+
+            var user = myObj.find('h3.timeline-header a').text();
+
+            var user_handle = myObj.find('span.storeHandle').text();
+
+
+            var body = myObj.find('div.timeline-body').text();
+
+            $newTicket = "<div class='box divOpenedTicket'>" +
+                    "<div class='box-header'>" +
+                    "<h3 class='box-title'>Mark as tickets</h3>" +
+                    "</div>" +
+                    "<div class='box-body'>" +
+
+                    "<div class='margin'><a href='#'>" + user + "</a></div>" +
+                    "<form method='POST' action='/tickets/store'>" +
+                    "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
+                    "<input type='text' name='online' value=' ' hidden>" +
+                    "<div class='margin'>" +
+                    "<p>" + body + "</p>" +
+                    "<div class='form-group'>" +
+                    "<label>Assign to</label>" +
+                    "<select name='assigned_to' class='form-control'>" +
+                    "<optgroup label='Admins'></optgroup>" +
+                    "@foreach($admins as $admin)" +
+                    "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
+                    "@endforeach" +
+
+                    "<optgroup label='Support supervisors'></optgroup>" +
+                    "@foreach($supportSupervisors as $supportSupervisor)" +
+                    "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
+                    "@endforeach" +
+                    "<optgroup label='Support agents'></optgroup>" +
+                    "@foreach($supportAgents as $supportAgent)" +
+                    "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
+                    "@endforeach" +
+                    "</select>" +
+                    "</div>" +
+
+                    "<div class='form-group'>" +
+                    "<label>Status</label>" +
+                    "<select name='status' class='form-control'>" +
+                    "<option value='0'>0</option>" +
+                    "<option value='1'>1</option>" +
+                    "<option value='10'>10</option>" +
+                    "</select>" +
+                    "</div>" +
+
+                    "<div class='form-group'>" +
+                    "<label>Urgency</label>" +
+                    "<select name='urgency' class='form-control'>" +
+                    "<option value='0'>0</option>" +
+                    "<option value='1'>1</option>" +
+                    "<option value='10'>10</option>" +
+                    "</select>" +
+                    "</div>" +
+
+                    "<div class='form-group'>" +
+                    "<label>Premium</label>" +
+                    "<select name='premium' class='form-control'>" +
+                    "<option value='0'>No</option>" +
+                    "<option value='1'>Yes</option>" +
+                    "</select>" +
+                    "</div>" +
+
+
+
+                    "<input type='text' name='tweet_id' value='" + tweetId + "' hidden>" +
+                    "<input type='text' name='tweet_handle' value='" + user_handle + "' hidden>" +
+                    "<div class='form-group' style='float: right;'>" +
+                    "<button type='button' class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
+                    "<input type='submit' class='btn btn-primary' class='saveTicket'/>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div><!-- /.box-body -->" +
+                    "</div>";
+
+
+            $('div#toAddATicket').prepend($newTicket);
+        }
+
+        var hideNewTicket = function (myObj) {
+
+           myObj.closest('div.divOpenedTicket').hide();
+
+        }
+
 
     </script>
 @endsection

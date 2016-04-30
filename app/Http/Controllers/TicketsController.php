@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Ticket;
 use App\TwitterFunctions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -58,29 +59,72 @@ class TicketsController extends Controller
         return view('tickets.create');
     }
 
-    public function store(Request $request)
-    {
-        $rules = array(
-            'tweet_id' => 'required',
-            'premium' => 'required',
-            'urgency' => 'required',
-            'opened_by' => 'required',
-            'assigned_to' => 'required',
-            'customer_id' => 'required'
+
+    public function store(Request $request){
+
+        if (Input::get('online') == null) {
+            $rules = array(
+                'tweet_id' => 'required',
+                'premium'  => 'required',
+                'urgency'  => 'required',
+                'opened_by'=> 'required',
+                'assigned_to'=>'required',
+                'customer_id'=>'required'
+
 
         );
 
-        $this->validate($request, $rules);
-        $ticket = new Ticket;
-        $ticket->tweet_id = Input::get('tweet_id');
-        $ticket->premium = Input::get('premium');
-        $ticket->urgency = Input::get('urgency');
-        $ticket->opened_by = Input::get('opened_by');
-        $ticket->assigned_to = Input::get('assigned_to');
-        $ticket->customer_id = Input::get('customer_id');
-        $ticket->status = Input::get('status');
-        $ticket->save();
-        return $ticket;
+
+            $this->validate($request,$rules);
+            $ticket = new Ticket;
+            $ticket->tweet_id = Input::get('tweet_id');
+            $ticket->premium    = Input::get('premium');
+            $ticket->urgency = Input::get('urgency');
+            $ticket->opened_by = Input::get('opened_by');
+            $ticket->assigned_to = Input::get('assigned_to');
+            $ticket->customer_id = Input::get('customer_id');
+            $ticket->status = Input::get('status');
+            $ticket->save();
+            return $ticket;
+
+        } else {
+            $rules = array(
+                'tweet_id' => 'required',
+                'assigned_to'=>'required',
+                'tweet_handle' => 'required',
+                'status' => 'required',
+                'urgency' => 'required',
+                'premium' => 'required'
+            );
+
+//            dd(Input::get());
+
+            $customer = Customer::where('twitter_handle', Input::get('tweet_handle'))->first();
+            if ($customer == null) {
+                $customer = new Customer();
+                $customer->twitter_handle = Input::get('tweet_handle');
+                $customer->save();
+            }
+
+            $this->validate($request,$rules);
+            $ticket = new Ticket;
+            $ticket->tweet_id = Input::get('tweet_id');
+
+            $ticket->opened_by = 1; // will be changed later
+            $ticket->assigned_to = Input::get('assigned_to');
+            $ticket->customer_id = $customer->id; // will be changed later
+            $ticket->status = Input::get('status'); // will be changed later
+            $ticket->urgency = Input::get('urgency'); // will be changed later
+            $ticket->premium = Input::get('premium');
+            $ticket->save();
+            return redirect()->action('TicketsController@show', [$ticket->id]);
+
+        }
+
+
+
+
+
     }
 
     public function destroy(Ticket $ticket)
