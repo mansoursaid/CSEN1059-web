@@ -7,6 +7,7 @@ use App\Ticket;
 use App\TwitterFunctions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
@@ -111,8 +112,7 @@ class TicketsController extends Controller
 
             $ticket = new Ticket;
             $ticket->tweet_id = Input::get('tweet_id');
-
-            $ticket->opened_by = 1; // will be changed later
+            $ticket->opened_by = Auth::user(); // will be changed later
             $ticket->assigned_to = Input::get('assigned_to');
             $ticket->customer_id = $customer->id; // will be changed later
             $ticket->status = Input::get('status'); // will be changed later

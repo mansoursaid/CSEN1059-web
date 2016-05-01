@@ -247,101 +247,35 @@
 
                 var body = $(this).find('div.timeline-body').text();
 
-
-                $newTicket = "<div class='box divOpenedTicket'>" +
-                        "<div class='box-header'>" +
-                        "<h3 class='box-title'>Mark as tickets</h3>" +
-                        "</div>" +
-                        "<div class='box-body'>" +
-                        "<div class='margin'><a href='#'>" + user + "</a></div>" +
-                        "<form method='POST' action='{{ action('TicketsController@store') }}'>" +
-                        "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
-                        "<input type='text' name='online' value=' ' hidden>" +
-                        "<div class='margin'>" +
-                        "<p>" + body + "</p>" +
-                        "<div class='form-group'>" +
-                        "<label>Assign to</label>" +
-                        "<select name='assigned_to' class='form-control'>" +
-                        "<optgroup label='Admins'></optgroup>" +
-                        "@foreach($admins as $admin)" +
-                        "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
-                        "@endforeach" +
-
-                        "<optgroup label='Support supervisors'></optgroup>" +
-                        "@foreach($supportSupervisors as $supportSupervisor)" +
-                        "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
-                        "@endforeach" +
-                        "<optgroup label='Support agents'></optgroup>" +
-                        "@foreach($supportAgents as $supportAgent)" +
-                        "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
-                        "@endforeach" +
-                        "</select>" +
-                        "</div>" +
+                var newId = "DIV" + tweetId + "DIV";
 
 
-                        "<div class='form-group'>" +
-                        "<label>Status</label>" +
-                        "<select name='status' class='form-control'>" +
-                            "<option value='0'>0</option>" +
-                            "<option value='1'>1</option>" +
-                            "<option value='10'>10</option>" +
-                        "</select>" +
-                        "</div>" +
+                if (divWithId(newId)) {
+                    alert('created before');
+                } else {
+                    var newTicket = newTicketText(tweetId, user, user_handle, body, newId);
 
-                        "<div class='form-group'>" +
-                        "<label>Urgency</label>" +
-                        "<select name='urgency' class='form-control'>" +
-                        "<option value='0'>0</option>" +
-                        "<option value='1'>1</option>" +
-                        "<option value='10'>10</option>" +
-                        "</select>" +
-                        "</div>" +
-
-                        "<div class='form-group'>" +
-                        "<label>Premium</label>" +
-                        "<select name='premium' class='form-control'>" +
-                        "<option value='0'>No</option>" +
-                        "<option value='1'>Yes</option>" +
-                        "</select>" +
-                        "</div>" +
-
-
-                        "<input type='text' name='tweet_id' value='" + tweetId + "' hidden>" +
-                        "<input type='text' name='tweet_handle' value='" + user_handle + "' hidden>" +
-                        "<div class='form-group' style='float: right;'>" +
-                        "<button type='button' class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
-                        "<input type='submit' class='btn btn-primary' class='saveTicket'/>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div><!-- /.box-body -->" +
-                        "</div>" +
-                    "</form>";
-
-
-                $('div#toAddATicket').prepend($newTicket);
+                    $('div#toAddATicket').prepend(newTicket);
+                }
             });
-
 
         });
 
+        var divWithId = function(divId) {
+            if ($('#'+divId).length > 0) {
+                return true;
+            } else {
+                return false;
+            }
 
-        var x = function openTicket(myObj) {
-            var tweetId = myObj.attr('id');
+        }
 
-
-            var user = myObj.find('h3.timeline-header a').text();
-
-            var user_handle = myObj.find('span.storeHandle').text();
-
-
-            var body = myObj.find('div.timeline-body').text();
-
-            $newTicket = "<div class='box divOpenedTicket'>" +
+        var newTicketText = function createTicketText(tweetId, user, user_handle, body, newId) {
+            var newTicket = "<div class='box divOpenedTicket' id=" + newId + ">" +
                     "<div class='box-header'>" +
-                    "<h3 class='box-title'>Mark as tickets</h3>" +
+                    "<h3 class='box-title'>Mark Tweet as tickets</h3>" +
                     "</div>" +
                     "<div class='box-body'>" +
-
                     "<div class='margin'><a href='#'>" + user + "</a></div>" +
                     "<form method='POST' action='{{ action('TicketsController@store') }}'>" +
                     "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
@@ -366,6 +300,7 @@
                     "@endforeach" +
                     "</select>" +
                     "</div>" +
+
 
                     "<div class='form-group'>" +
                     "<label>Status</label>" +
@@ -394,7 +329,6 @@
                     "</div>" +
 
 
-
                     "<input type='text' name='tweet_id' value='" + tweetId + "' hidden>" +
                     "<input type='text' name='tweet_handle' value='" + user_handle + "' hidden>" +
                     "<div class='form-group' style='float: right;'>" +
@@ -403,15 +337,39 @@
                     "</div>" +
                     "</div>" +
                     "</div><!-- /.box-body -->" +
-                    "</div>";
+                    "</div>" +
+                    "</form>";
+
+            return newTicket;
+        }
 
 
-            $('div#toAddATicket').prepend($newTicket);
+        var x = function openTicket(myObj) {
+            var tweetId = myObj.attr('id');
+
+
+            var user = myObj.find('h3.timeline-header a').text();
+
+            var user_handle = myObj.find('span.storeHandle').text();
+
+
+            var body = myObj.find('div.timeline-body').text();
+
+            var newId = "DIV" + tweetId + "DIV";
+
+            if (divWithId(newId)) {
+                alert('created before');
+            } else {
+                var newTicket = newTicketText(tweetId, user, user_handle, body, newId);
+
+                $('div#toAddATicket').prepend(newTicket);
+            }
         }
 
         var hideNewTicket = function (myObj) {
 
-           myObj.closest('div.divOpenedTicket').hide();
+           var elm = myObj.closest('div.divOpenedTicket');
+            elm.remove();
 
         }
 
