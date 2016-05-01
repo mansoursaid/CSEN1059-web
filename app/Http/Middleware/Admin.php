@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Closure;
 use App\User;
@@ -24,7 +25,7 @@ class Admin
 
         // the authenticated user
         $user = Auth::user();
-        if ($user->type !== 0)
+        if ($user->type != 0)
         {
             return view('errors.404');
         }

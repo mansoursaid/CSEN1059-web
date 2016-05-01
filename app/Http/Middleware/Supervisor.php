@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Closure;
 use App\User;
@@ -24,7 +25,7 @@ class Suppervisor
 
         // the authenticated user
         $user = Auth::user();
-        if ($user->type !== 1)
+        if ($user->type !== 01)
         {
             return view('errors.404');
         }
