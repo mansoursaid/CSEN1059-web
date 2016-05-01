@@ -99,6 +99,8 @@ class TicketsController extends Controller
 
 //            dd(Input::get());
 
+            $this->validate($request,$rules);
+
             $customer = Customer::where('twitter_handle', Input::get('tweet_handle'))->first();
             if ($customer == null) {
                 $customer = new Customer();
@@ -106,7 +108,7 @@ class TicketsController extends Controller
                 $customer->save();
             }
 
-            $this->validate($request,$rules);
+
             $ticket = new Ticket;
             $ticket->tweet_id = Input::get('tweet_id');
 
@@ -145,4 +147,7 @@ class TicketsController extends Controller
         $ticket->save();
         return $ticket;
     }
+
+
+
 }

@@ -11,10 +11,15 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 use App\TwitterApiConnection;
 
-class TwitterFunctions {
+use Illuminate\Support\Facades\Cache;
 
 
-    public static function getTweets($count, $maxId) {
+class TwitterFunctions
+{
+
+
+    public static function getTweets($count, $maxId)
+    {
         $connection = TwitterApiConnection::connectToTwitterAPI();
         $mentions = [];
         if ($maxId == 0) {
@@ -24,7 +29,7 @@ class TwitterFunctions {
         }
 
 
-        //dd($mentions);
+//        dd($mentions);
 
 //        $startConersationTweets = [];
 //
@@ -40,14 +45,14 @@ class TwitterFunctions {
     }
 
 
-    public static function getConversation($tweetId) {
+    public static function getConversation($tweetId)
+    {
 
         $connection = TwitterApiConnection::connectToTwitterAPI();
 
         $timeine_tweets = $connection->get("statuses/user_timeline", ['since_id' => $tweetId, 'count' => 200]);
         $mentions = $connection->get("statuses/mentions_timeline", ['since_id' => $tweetId, 'count' => 200]);
 
-//		dd($timeine_tweets);
 
         $tweetsOfConversation = [];
 
@@ -61,12 +66,23 @@ class TwitterFunctions {
 //		$new_timeline_tweets = $timeine_tweets;
 //		$new_mentions = $mentions;
 
-        while(true) {
+        while (true) {
             $current = $connection->get("statuses/show", ['id' => $currentId, 'include_entities' => false]);
 
-//            if ($current->errors != null) {
-//                break;
-//            }
+            // to handle No status with that ID error
+            $cont = true;
+
+            try {
+                $temp = $current->id_str;
+            } catch (\Exception $e) {
+//                dd($current);
+                $cont = false;
+            }
+
+            if (!$cont) {
+                break;
+            }
+            // end
 
             if ($push) {
                 array_push($tweetsOfConversation, $current);
@@ -75,16 +91,16 @@ class TwitterFunctions {
 
             $reply = null;
 
-            foreach($timeine_tweets as $timeine_tweet) {
-                if ($timeine_tweet->in_reply_to_status_id_str != null && $timeine_tweet->in_reply_to_status_id_str == $current->id_str) {
+            foreach ($timeine_tweets as $timeine_tweet) {
+                if ($timeine_tweet != null && $current != null && $timeine_tweet->in_reply_to_status_id_str == $current->id_str) {
                     $reply = $timeine_tweet;
                     break;
                 }
             }
 
             if ($reply == null) {
-                foreach($mentions as $mention) {
-                    if ($mention->in_reply_to_status_id_str != null && $mention->in_reply_to_status_id_str == $current->id_str) {
+                foreach ($mentions as $mention) {
+                    if ($mention != null && $current != null && $mention->in_reply_to_status_id_str == $current->id_str) {
                         $reply = $mention;
                         break;
                     }
@@ -138,16 +154,19 @@ class TwitterFunctions {
     }
 
 
-    public static function replyToTweet($tweetId, $status) {
+    public static function replyToTweet($tweetId, $status, $ticketTweetId)
+    {
         $connection = TwitterApiConnection::connectToTwitterAPI();
 
-        $post_status = $connection->post("statuses/update", ["status" => $status, 'in_reply_to_status_id' => $tweetId]);
+        $connection->post("statuses/update", ["status" => $status, 'in_reply_to_status_id' => $tweetId]);
 
-        return $post_status;
+        Cache::forget('conv' . "-" . $ticketTweetId);
+
+//        dd($post_status);
+
+//        return $post_status;
 
     }
-
-
 
 
 }

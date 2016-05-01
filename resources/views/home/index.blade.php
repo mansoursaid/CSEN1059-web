@@ -23,7 +23,7 @@
                 </li>
                 <!-- /.timeline-label -->
                 <!-- timeline item -->
-                <li id="{{ $newTweet->id }}" class="openTicket">
+                <li id="{{ $newTweet->id_str }}" class="openTicket">
                     <i class="fa fa-envelope bg-blue"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i></span>
@@ -203,7 +203,7 @@
                             var user = data[i].user.name;
                             var screen_name = data[i].user.screen_name;
                             var created_at = data[i].created_at;
-                            var id = data[i].id;
+                            var id = data[i].id_str;
                             $newDivText += "<li class='time-label'><span class='bg-red'>" +
 
                                     "{{ date('Y M d h:i:s', strtotime(" + created_at + "))}}" +

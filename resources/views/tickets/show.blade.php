@@ -44,12 +44,15 @@
                 </li>
             </ul>
 
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="POST" action="{{ action('TweetsController@replyToTicket') }}">
                 <div class="box-body">
+                    <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
                     <div class="form-group">
                         <label>Reply</label>
-                        <textarea class="form-control" rows="3" placeholder="reply ..."></textarea>
+                        <textarea name="status" class="form-control" rows="3" placeholder="reply ..."></textarea>
                     </div>
+                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}"/>
+                    <input id="lastTweetId" type="hidden" name="last_tweet_id" value=""/>
                 </div>
                 <!-- /.box-body -->
                 <!--<div class="box-footer">-->
@@ -163,5 +166,16 @@
 
 
 
+
+@endsection
+
+@section('custom_scripts')
+
+    <script>
+        $(document).ready(function (){
+            var lastTimeLineLiId = $("ul#main_timeline li:last-child").attr('id');
+            $('#lastTweetId').val(lastTimeLineLiId);
+        });
+    </script>
 
 @endsection
