@@ -1,4 +1,5 @@
-<form  action="/tickets/{{$ticket->id}}/edited" method="post" >
+<form  action="/tickets/{{$ticket->id}}" method="post" >
+    {!! method_field('patch') !!}
     <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
     <br>Tweet id {{ $ticket->tweet_id }}<br>
     Status:<br>

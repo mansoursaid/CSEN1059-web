@@ -10,13 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Redirect;
 
 class TicketsController extends Controller
 {
+
+
     public function index()
     {
+
         $tickets = Ticket::all();
-        return $tickets;
+        return view('tickets.index', compact('tickets'));
     }
 
     public function show($id)
@@ -24,6 +28,7 @@ class TicketsController extends Controller
 
         try {
             $ticket = Ticket::findOrfail($id);
+            return $ticket;
         } catch (ModelNotFoundException $e) {
             return view('errors.404');
         }
@@ -132,17 +137,34 @@ class TicketsController extends Controller
         $ticket->delete();
     }
 
-    public function edit($id)
-    {
-        $ticket = Ticket::findOrfail($id);
-        return view('tickets.edit')->with('ticket', $ticket);
+
+    public function edit($id){
+        try {
+            $ticket = Ticket::findOrFail($id);
+            return view('tickets.edit')->with('ticket', $ticket);
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+
     }
 
-    public function update($id)
-    {
-        $ticket = Ticket::findOrfail($id);
-        $ticket->status = Input::get('status');
+    public function update($id){
+        try {
+            $ticket = Ticket::findOrFail($id);
+            $ticket->status = Input::get('status');
+            $ticket->save();
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+
+    }
+
+    /*public function deleteStatus($id){
+        $ticket = get_ticket($id);
+        $ticket->status = 0;
         $ticket->save();
         return $ticket;
-    }
+    }*/
+    
 }

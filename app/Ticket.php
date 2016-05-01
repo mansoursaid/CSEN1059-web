@@ -37,4 +37,15 @@ class Ticket extends Model
     {
         return $this->belongsTo('App\Customer');
     }
+     public function get_status($id){
+        if($id == 1){
+            return 'in progress';
+        }
+        if($id == 2){
+            return 'closed';
+        }
+        if($id == 0){
+            return 'open';
+        }
+    }
 }
