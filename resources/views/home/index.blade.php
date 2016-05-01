@@ -27,7 +27,8 @@
                     <i class="fa fa-envelope bg-blue"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i></span>
-                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a><span class="storeHandle">{{ $newTweet->user->screen_name }}</span></h3>
+                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a><span
+                                    class="storeHandle">{{ $newTweet->user->screen_name }}</span></h3>
 
                         <div class="timeline-body">
                             {{ $newTweet->text }}
@@ -63,7 +64,6 @@
         </div>
 
         <div class="col-md-6" id="toAddATicket">
-
 
 
             <div class="box box-info">
@@ -182,7 +182,6 @@
                 });
 
 
-
                 var form = $(this);
                 var method = 'GET';
                 var url = '/get_tweets/' + maxID.toString();
@@ -259,10 +258,33 @@
                 }
             });
 
+
         });
 
-        var divWithId = function(divId) {
-            if ($('#'+divId).length > 0) {
+        var submitForm = function (myObj) {
+            // this is the id of the form
+            var form = myObj.closest('form.formOpenTicket');
+//            console.log(form.attr('action'));
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(), // serializes the form's elements.
+                success: function (data) {
+                    alert('The ticket is opened successfully.'); // show response from the php script.
+                    form.closest('div.divOpenedTicket').remove();
+//                    console.log('opened');
+                },
+                error: function () {
+                    alert('The ticket can not be opened. Try again!');
+//                    console.log('not opened');
+                }
+            });
+
+        }
+
+        var divWithId = function (divId) {
+            if ($('#' + divId).length > 0) {
                 return true;
             } else {
                 return false;
@@ -277,7 +299,7 @@
                     "</div>" +
                     "<div class='box-body'>" +
                     "<div class='margin'><a href='#'>" + user + "</a></div>" +
-                    "<form method='POST' action='{{ action('TicketsController@store') }}'>" +
+                    "<form method='POST' action='{{ action('TicketsController@store') }}' class='formOpenTicket'>" +
                     "<input type='hidden' name='_token' value='{{ csrf_token()}}'/>" +
                     "<input type='text' name='online' value=' ' hidden>" +
                     "<div class='margin'>" +
@@ -333,7 +355,7 @@
                     "<input type='text' name='tweet_handle' value='" + user_handle + "' hidden>" +
                     "<div class='form-group' style='float: right;'>" +
                     "<button type='button' class='btn btn-default' class='cancelTicket' onClick='hideNewTicket($(this))'>Cancel</button>" +
-                    "<input type='submit' class='btn btn-primary' class='saveTicket'/>" +
+                    "<button type='button' class='btn btn-primary' class='saveTicket' onclick='submitForm($(this))'>Open</Button>" +
                     "</div>" +
                     "</div>" +
                     "</div><!-- /.box-body -->" +
@@ -368,7 +390,7 @@
 
         var hideNewTicket = function (myObj) {
 
-           var elm = myObj.closest('div.divOpenedTicket');
+            var elm = myObj.closest('div.divOpenedTicket');
             elm.remove();
 
         }
