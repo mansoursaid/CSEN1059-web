@@ -31,16 +31,16 @@ class TwitterFunctions
 
 //        dd($mentions);
 
-//        $startConersationTweets = [];
-//
-//        foreach($mentions as $mention) {
-//            if ($mention->in_reply_to_status_id == null) {
-//                array_push($startConersationTweets, $mention);
-//            }
-//
-//        }
+        $startConersationTweets = [];
 
-        return $mentions;
+        foreach($mentions as $mention) {
+            if ($mention->in_reply_to_status_id == null) {
+                array_push($startConersationTweets, $mention);
+            }
+
+        }
+
+        return $startConersationTweets;
 
     }
 
