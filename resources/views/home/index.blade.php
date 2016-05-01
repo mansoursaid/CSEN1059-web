@@ -329,7 +329,7 @@
                     "<select name='status' class='form-control'>" +
                     "<option value='0'>0</option>" +
                     "<option value='1'>1</option>" +
-                    "<option value='10'>10</option>" +
+                    "<option value='2'>2</option>" +
                     "</select>" +
                     "</div>" +
 
@@ -338,7 +338,7 @@
                     "<select name='urgency' class='form-control'>" +
                     "<option value='0'>0</option>" +
                     "<option value='1'>1</option>" +
-                    "<option value='10'>10</option>" +
+                    "<option value='2'>2</option>" +
                     "</select>" +
                     "</div>" +
 
