@@ -1,5 +1,4 @@
 <!-- resources/views/auth/login.blade.php -->
-
 <!DOCTYPE html>
 <html>
     @include('_head')
@@ -11,6 +10,22 @@
                     <section class="content-header"></section>
                     <section class="content">
                         <div class="col-md-6 col-md-offset-3">
+                        <!--  -->
+                            @if (count($errors))
+                                <div class="box box-solid box-warning">
+                                    <div class="box-header">
+                                      <h3 class="box-title">Warning!</h3>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <ul>
+                                            @foreach($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div><!-- /.box-body -->
+                                  </div>
+                            @endif
+                        <!--  -->
                             <div class="box box-info">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Sign in</h3>
