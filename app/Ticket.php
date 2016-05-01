@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     protected $fillable = [
-        'tweet_id', 'premium', 'urgency'
+        'tweet_id', 'premium', 'urgency', 'assigned_to', 'opened_by', 'customer_id'
     ];
 
     protected $table = 'tickets';
@@ -36,5 +36,16 @@ class Ticket extends Model
     public function customer()
     {
         return $this->belongsTo('App\Customer');
+    }
+     public function get_status($id){
+        if($id == 1){
+            return 'in progress';
+        }
+        if($id == 2){
+            return 'closed';
+        }
+        if($id == 0){
+            return 'open';
+        }
     }
 }

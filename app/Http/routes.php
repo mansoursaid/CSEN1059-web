@@ -11,51 +11,55 @@
 |
 */
 
+/**
+*
+*   Route::resource('users', 'UsersController');
+*
+*   Gives you these named routes:
+*
+*       Verb    Path                        Action  Route Name
+*       GET     /users                      index   users.index
+*       GET     /users/create               create  users.create
+*       POST    /users                      store   users.store
+*       GET     /users/{user}               show    users.show
+*       GET     /users/{user}/edit          edit    users.edit
+*       PUT     /users/{user}               update  users.update
+*       DELETE  /users/{user}               destroy users.destroy
+*
+*   The generated routes can be checked using 'php artisan route:list' command
+*/
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
-Route::get('tickets','TicketsController@index');
-Route::get('tickets/create','TicketsController@create');
-Route::get('tickets/{id}','TicketsController@show');
-Route::post('tickets/store','TicketsController@store');
-Route::delete('tickets/{id}','TicketsController@destroy');
-Route::get('tickets/{id}/edit','TicketsController@edit');
-Route::post('tickets/{id}/edited','TicketsController@update');
 
-Route::get('projects','ProjectsController@index');
-Route::get('projects/create','ProjectsController@create');
-Route::get('projects/{id}','ProjectsController@show');
-Route::post('projects/store','ProjectsController@store');
-Route::delete('projects/{id}','ProjectsController@destroy');
-Route::get('projects/{id}/edit','ProjectsController@edit');
-Route::post('projects/{id}/edited','ProjectsController@update');
+Route::resource('tickets', 'TicketsController');
+
+Route::resource('projects', 'ProjectsController');
+Route::resource('users', 'UsersController');
+Route::get('/supervisors', 'UsersController@supervisors');
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+//Route::get('mentions', 'TweetsController@index');
 
 Route::get('mentions', 'TweetsController@index');
 
-Route::get('users','UsersController@index');
-Route::get('users/create','UsersController@create');
-Route::post('users','UsersController@store');
-Route::get('users/{id}','UsersController@show');
-Route::delete('users/{id}','UsersController@destroy');
-Route::get('users/{id}/edit','UsersController@edit');
-Route::PATCH('users/{id}','UsersController@update');
-Route::DELETE('users','UsersController@delete');
-
-Route::get('admin', function () {
+Route::get('admin', ['middleware' => ['admin'], function () {
     return view('admin_template');
-});
-
-Route::controllers([
-    'auth' => '\App\Http\Controllers\Auth\AuthController',
-    'password' => '\App\Http\Controllers\Auth\PasswordController',
-]);
+}]);
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
 
+//Route::get('/conv/{id}', 'TweetsController@getConversation');
+//Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
 
-
+Route::get('home', 'HomeController@getHome');
+Route::get('get_tweets/{maxId}', 'TweetsController@getTweets');
 
 Route::get('/mail', function() {
     $user = new \App\User();
@@ -78,8 +82,6 @@ Route::post('change_paypal_client_id', 'AppSettingsController@changePaypalClient
 Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecretKey');
 
 
-
-
 Route::get('fire', function () {
     // this fires the event
     event(new App\Events\NotificationsEvent());
@@ -89,6 +91,3 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
-
-
-
