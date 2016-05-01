@@ -112,7 +112,8 @@ class TicketsController extends Controller
 
             $ticket = new Ticket;
             $ticket->tweet_id = Input::get('tweet_id');
-            $ticket->opened_by = Auth::user(); // will be changed later
+            $user = Auth::user();
+            $ticket->opened_by = $user->id; 
             $ticket->assigned_to = Input::get('assigned_to');
             $ticket->customer_id = $customer->id; // will be changed later
             $ticket->status = Input::get('status'); // will be changed later
