@@ -8,6 +8,27 @@ use Illuminate\Support\Facades\Input;
 
 class TicketsController extends Controller
 {
+    /**
+     * Returns a user if found, otherwise returns an exception
+     *
+     * @param intval  $id
+     *
+     * @return $ticket | ModelNotFoundException
+     */
+    public function get_ticket($id) {
+        try
+        {
+            $ticket = Ticket::findOrFail($id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            dd(get_class_methods($e));
+            dd($e);
+        }
+        return $ticket;
+    }
+
+
     public function index(){
         $tickets = Ticket::all();
         return $tickets;
@@ -51,21 +72,22 @@ class TicketsController extends Controller
     }
 
     public function edit($id){
-        $ticket = Ticket::findOrfail($id);
+        $ticket =  $this->get_ticket($id);
         return view('tickets.edit')->with('ticket',$ticket);
     }
 
     public function update($id){
-        $ticket = Ticket::findOrfail($id);
+        $ticket =  $this->get_ticket($id);
         $ticket->status = Input::get('status');
         $ticket->save();
         return $ticket;
     }
-    public function deleteStatus($id){
-        $ticket = Ticket::findOrfail($id);
+
+    /*public function deleteStatus($id){
+        $ticket = get_ticket($id);
         $ticket->status = 0;
         $ticket->save();
         return $ticket;
-    }
+    }*/
     
 }
