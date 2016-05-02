@@ -20,6 +20,10 @@
     .alert {
         margin-bottom: 0px;
     }
+
+    #visually-hidden {
+        display: none;
+    }
     </style>
 
     @yield('custom_links')
