@@ -20,6 +20,8 @@ class NotificationsController extends Controller
         $user = Auth::user();
         $notifications = Notification::where('user_id', $user->id)->get();
 
+        Notification::where('user_id', $user->id)->where('read', 0)->update(array('read' => 1));
+
         return view('notifications.index', compact('notifications'));
     }
 
