@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Notification;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
 {
@@ -16,7 +17,8 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        $notifications = Notification::all();
+        $user = Auth::user();
+        $notifications = Notification::where('user_id', $user->id)->get();
 
         return view('notifications.index', compact('notifications'));
     }

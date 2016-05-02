@@ -6,6 +6,7 @@ use App\Events\Event;
 use Carbon\Carbon;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Notification;
 
 
 class NotificationsEvent extends Event implements ShouldBroadcast
@@ -19,13 +20,20 @@ class NotificationsEvent extends Event implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $user)
     {
         date_default_timezone_set('Africa/Cairo');
+        $date = Carbon::now()->toDateTimeString();
+        $notification = new Notification();
+        $notification->message = $message;
+        $notification->user_id = $user->id;
+        $notification->read = false;
+        $notification->save();
         $this->data = array(
             'message'=> $message,
-            'at' => Carbon::now()->toDateTimeString()
+            'at' => $notification->created_at
         );
+
     }
 
     /**

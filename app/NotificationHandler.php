@@ -40,12 +40,12 @@ class NotificationHandler
 
         if ($mailClose) {
             MailNotification::mailClaim([$user], $ticket);
-            event(new NotificationsEvent("The ticket with id ". $ticket->id." has been closed. You can claim another one."));
+            event(new NotificationsEvent("The ticket with id ". $ticket->id." has been closed. You can claim another one.", $user));
         }
 
         if ($mailCanNotClaim) {
             MailNotification::mailCannotClaim([$user], $ticket);
-            event(new NotificationsEvent("You have 3 tickets now. You can claim another one before closing any of them."));
+            event(new NotificationsEvent("You have 3 tickets now. You can not claim another one before closing any of them.", $user));
         }
 
     }
