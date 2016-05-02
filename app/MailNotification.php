@@ -52,8 +52,6 @@ class MailNotification {
         foreach ($users as $user) {
             array_push($emails, $user->email);
         }
-        error_log($name);
-        error_log(">>>>>>>>>>>>>>>>>");
 
         Mail::send('mails.mailInvitation', ['name' => $name, 'email' => $email,
                 'password' => $password, 'type' => $type],
@@ -61,9 +59,6 @@ class MailNotification {
             {
                 $message->to($emails)->subject('Welcome Abroad');
             });
-
-        error_log("eeeeeeeeeeeeeeeee");
-
-    }
+        }
 
 }

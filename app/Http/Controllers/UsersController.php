@@ -11,6 +11,11 @@ use DB;
 class UsersController extends Controller
 {
 
+
+    public function __construct() {
+        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex']]);
+    }
+
     /**
      * Returns a user if found, otherwise returns an exception
      *
@@ -115,13 +120,13 @@ class UsersController extends Controller
         return redirect('users');
     }
 
-    public function users_add_and_index(Request $request){
+    public function usersAddAndIndex(Request $request){
 
         $usersTypeStr = $request->path();
         $usersTypeInt = User::strTypeToInt($usersTypeStr);
 
         $users =  User::where('type', '=', $usersTypeInt)->get();
 
-        return view('users.users_add_and_index', compact('usersTypeStr', 'usersTypeInt','users'));
+        return view('users.usersAddAndIndex', compact('usersTypeStr', 'usersTypeInt','users'));
     }
 }

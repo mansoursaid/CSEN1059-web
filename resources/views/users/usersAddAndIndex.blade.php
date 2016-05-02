@@ -17,7 +17,6 @@
 @endsection
 
 @section('content')
-
        <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>

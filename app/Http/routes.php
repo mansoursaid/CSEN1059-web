@@ -39,7 +39,9 @@ Route::group(['middleware' => ['auth']], function()
     Route::resource('tickets', 'TicketsController');
     Route::resource('projects', 'ProjectsController');
     Route::resource('users', 'UsersController');
-    Route::get('/supervisors', 'UsersController@users_add_and_index');
+    Route::get('/supervisors', 'UsersController@usersAddAndIndex');
+    Route::get('/agents', 'UsersController@usersAddAndIndex');
+    Route::get('/admins', 'UsersController@usersAddAndIndex');
 
     // Authentication routes...
     Route::get('auth/login', 'Auth\AuthController@getLogin');
