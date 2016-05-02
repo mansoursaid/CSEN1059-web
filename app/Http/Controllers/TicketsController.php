@@ -7,16 +7,21 @@ use App\Ticket;
 use App\TwitterFunctions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Redirect;
 
 class TicketsController extends Controller
 {
+
+
     public function index()
     {
+
         $tickets = Ticket::all();
-        return $tickets;
+        return view('tickets.index', compact('tickets'));
     }
 
     public function show($id)
@@ -24,6 +29,7 @@ class TicketsController extends Controller
 
         try {
             $ticket = Ticket::findOrfail($id);
+//            return $ticket;
         } catch (ModelNotFoundException $e) {
             return view('errors.404');
         }
@@ -99,6 +105,8 @@ class TicketsController extends Controller
 
 //            dd(Input::get());
 
+            $this->validate($request,$rules);
+
             $customer = Customer::where('twitter_handle', Input::get('tweet_handle'))->first();
             if ($customer == null) {
                 $customer = new Customer();
@@ -106,11 +114,11 @@ class TicketsController extends Controller
                 $customer->save();
             }
 
-            $this->validate($request,$rules);
+
             $ticket = new Ticket;
             $ticket->tweet_id = Input::get('tweet_id');
-
-            $ticket->opened_by = 1; // will be changed later
+            $user = Auth::user();
+            $ticket->opened_by = $user->id; 
             $ticket->assigned_to = Input::get('assigned_to');
             $ticket->customer_id = $customer->id; // will be changed later
             $ticket->status = Input::get('status'); // will be changed later
@@ -132,17 +140,41 @@ class TicketsController extends Controller
         $ticket->delete();
     }
 
-    public function edit($id)
-    {
-        $ticket = Ticket::findOrfail($id);
-        return view('tickets.edit')->with('ticket', $ticket);
+
+    public function edit($id){
+        try {
+            $ticket = Ticket::findOrFail($id);
+            return view('tickets.edit')->with('ticket', $ticket);
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+
     }
 
-    public function update($id)
-    {
-        $ticket = Ticket::findOrfail($id);
-        $ticket->status = Input::get('status');
+    public function update($id){
+        try {
+            $ticket = Ticket::findOrFail($id);
+            $ticket->status = Input::get('status');
+            $ticket->save();
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+
+    }
+
+    /*public function deleteStatus($id){
+        $ticket = get_ticket($id);
+        $ticket->status = 0;
         $ticket->save();
         return $ticket;
+
     }
+
+
+
+
+    }*/
+    
+
 }

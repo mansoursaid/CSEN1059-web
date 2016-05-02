@@ -33,7 +33,6 @@ Route::get('/', function(){
     return view('auth/login');
 });
 
-
 Route::resource('tickets', 'TicketsController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('users', 'UsersController');
@@ -47,6 +46,7 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('mentions', 'TweetsController@index');
+Route::post('reply', 'TweetsController@replyToTicket');
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');
@@ -87,4 +87,3 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
-
