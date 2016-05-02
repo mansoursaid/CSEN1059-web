@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests;
+use Illuminate\Http\Request;
 
 use App\User;
+use DB;
+// use MailNotification;
 
 class UsersController extends Controller
 {
@@ -45,7 +47,7 @@ class UsersController extends Controller
         return view('users.create');
     }
 
-    public function store(Requests\CreateUserRequest $request)
+    public function store(Request $request)
     {
         // validations
         $this->validate($request, [
@@ -55,11 +57,17 @@ class UsersController extends Controller
             'type' => 'required|max:2',
         ]);
 
-        User::create($request->all());
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $type = $request->type;
+
+        // create a new user
+        $user = User::create($request->all());
 
         //send email to user with his user name and password
-        //Show the suppor agent block
-        //for now I will keep this as it is
+        \App\MailNotification::mailInvitation([$user], $name, $email, $password, $type);
+
         return redirect('users');
     }
 
@@ -69,7 +77,7 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update($id, Requests\UpdateUserRequest $request)
+    public function update($id, Request $request)
     {
         $user = $this->get_user($id);
 
@@ -92,7 +100,13 @@ class UsersController extends Controller
         return redirect('users');
     }
 
-    public function supervisors(){
-        return view('users.supervisors');
+    public function users_add_and_index(Request $request){
+
+        $usersTypeStr = $request->path();
+        $usersTypeInt = User::strTypeToInt($usersTypeStr);
+
+        $users =  User::where('type', '=', $usersTypeInt)->get();
+
+        return view('users.users_add_and_index', compact('usersTypeStr', 'usersTypeInt','users'));
     }
 }

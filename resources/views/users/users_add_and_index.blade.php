@@ -5,7 +5,7 @@
        <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Support Supervisors
+                Support {{ $usersTypeStr }}
             </h1>
         </section>
 
@@ -16,7 +16,7 @@
                 <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Add a new supervisor</h3>
+                            <h3 class="box-title">Add a new Support {{ $usersTypeStr }}</h3>
                         </div>
 
                         {!! Form::open(array('url' => '/users', 'method' => 'POST', 'class' => 'form-horizontal')) !!}
@@ -39,7 +39,7 @@
                                         {!! Form::password('password', array('class' => 'form-control')) !!}
                                     </div>
                                 </div>
-                                {{ Form::hidden('type', '01') }}
+                                {{ Form::hidden('type', $usersTypeInt) }}
                             </div>
                             <div class="box-footer">
                                 {!! Form::submit('Cancel', array('class' => 'btn btn-default')) !!}

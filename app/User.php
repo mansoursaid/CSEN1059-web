@@ -74,10 +74,38 @@ class User extends Authenticatable
     }
 
 
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
+    public static function strTypeToInt($strType)
+    {
+        if($strType == 'admins')
+        {
+            return '00';
+        }
+        elseif($strType == 'supervisors')
+        {
+            return '01';
+        }
+        else {
+            return '10';
+        }
+    }
+
+    public static function IntTypeToStr($intType)
+    {
+        if($intType == 00 )
+        {
+            return 'admins';
+        }
+        elseif($intType == 01)
+        {
+            return 'supervisor';
+        }
+        else {
+            return 'agent';
+        }
+    }
 }
