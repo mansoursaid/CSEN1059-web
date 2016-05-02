@@ -22,10 +22,20 @@
                 <i class="icon fa fa-ban"></i>
                 Failed to delete user!
             </div>
-        @else (session('status') == 'do_not_delete_self')
+        @elseif (session('status') == 'do_not_delete_self')
             <div class="alert alert-danger alert-dismissible">
                 <i class="icon fa fa-ban"></i>
                 You can not delete yourself!
+            </div>
+        @elseif (session('status') == 'user_update_success')
+            <div class="alert alert-success alert-dismissible">
+                <i class="icon fa fa-check"></i>
+                User updated successfully!
+            </div>
+        @elseif (session('status') == 'user_update_failure')
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                User was not updated success!
             </div>
         @endif
     @endif
@@ -138,8 +148,13 @@
                                         <!--  -->
                                         <li id="visually-hidden">
                                             {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
-                                            {!! Form::submit($user->id, array('id' => 'delete_user_form', 'value' => $user->id)) !!}
+                                            {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
                                             {{ Form::close() }}
+                                            <!--  -->
+                                            {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
+                                            {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
+                                            {{ Form::close() }}
+
                                         </li>
                                     </ul>
                                 </div>
@@ -196,6 +211,15 @@
             $('#delete_user_confirmation_modal').modal('hide');
             $($current_submit_button).click();
         });
+// ---------------------------
+// ---------------------------
+        // on click on edit_user button the user will be redirected to the users.edit view
+        $(document).on('click', '#edit_user', function(){
+            $current_submit_button = 'input[value="' + $('#edit_user_form').attr('value') + '"]#edit_user_form';
+            $($current_submit_button).click();
+            console.log($current_submit_button);
+        });
+
     </script>
 
 @endsection

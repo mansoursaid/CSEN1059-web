@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Input;
 
 use App\User;
 use DB;
@@ -14,7 +15,7 @@ class UsersController extends Controller
 
 
     public function __construct() {
-        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex', 'destroy']]);
+        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex', 'destroy', 'edit', 'update']]);
     }
 
     /**
@@ -103,17 +104,20 @@ class UsersController extends Controller
     public function update($id, Request $request)
     {
         $user = $this->get_user($id);
+        $oldType = $user->type;
 
-        // validations
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'type' => 'required|max:2',
-        ]);
+        $selectedType = Input::get('types');
+        $user->type = $selectedType;
+        if($user->save()){
+            $request->session()->flash('status', 'user_update_success');
+        }
+        else
+        {
+            $request->session()->flash('status', 'user_update_failure');
+        }
 
-        $user->update($request->all());
-        return redirect('users');
+        return redirect(lcfirst(User::IntTypeToStr($oldType))."s");
+
     }
 
     public function destroy($id, Request $request)
