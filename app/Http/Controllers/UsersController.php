@@ -122,7 +122,7 @@ class UsersController extends Controller
 
     public function usersAddAndIndex(Request $request){
 
-        $usersTypeStr = $request->path();
+        $usersTypeStr = ucfirst(rtrim($request->path(), "s"));
         $usersTypeInt = User::strTypeToInt($usersTypeStr);
 
         $users =  User::where('type', '=', $usersTypeInt)->get();

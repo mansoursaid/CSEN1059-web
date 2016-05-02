@@ -49,12 +49,12 @@ class User extends Authenticatable
 
     public function tickets()
     {
-        return $this->belongsToMany('App\Tickets');
+        return $this->belongsToMany('App\Ticket');
     }
 
     public function projects()
     {
-        return $this->belongsToMany('App\Projects');
+        return $this->belongsToMany('App\Project');
     }
 
     public function notifications()
@@ -81,11 +81,11 @@ class User extends Authenticatable
 
     public static function strTypeToInt($strType)
     {
-        if($strType == 'admins')
+        if($strType == 'admin')
         {
             return '00';
         }
-        elseif($strType == 'supervisors')
+        elseif($strType == 'supervisor')
         {
             return '01';
         }
@@ -98,14 +98,14 @@ class User extends Authenticatable
     {
         if($intType == 00 )
         {
-            return 'admins';
+            return 'Admin';
         }
         elseif($intType == 01)
         {
-            return 'supervisor';
+            return 'Supervisor';
         }
         else {
-            return 'agent';
+            return 'Agent';
         }
     }
 }

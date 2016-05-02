@@ -20,7 +20,7 @@
        <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Support {{ $usersTypeStr }}
+                <!-- Support {{ $usersTypeStr }}s -->
             </h1>
         </section>
 
@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Add a new Support {{ $usersTypeStr }}</h3>
+                            <h3 class="box-title">Add a new {{ $usersTypeStr }}</h3>
                         </div>
 
                         {!! Form::open(array('url' => '/users', 'method' => 'POST', 'class' => 'form-horizontal')) !!}
@@ -58,146 +58,66 @@
                         {!! Form::close() !!}
                     </div>
                 </div>
+                <div class="col-md-6">
+                    @if (count($errors))
+                        <div class="box box-solid box-danger">
+                            <div class="box-header">
+                              <h3 class="box-title">Error!</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div><!-- /.box-body -->
+                          </div>
+                    @endif
+                </div>
             </div>
             <!-- Shows the errors in the form -->
             <!--  -->
-            @if (count($errors))
-                <div class="box box-solid box-danger">
-                    <div class="box-header">
-                      <h3 class="box-title">Error!</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div><!-- /.box-body -->
-                  </div>
-            @endif
-            <!--  -->
             <div class="row">
-                <h1 class="page-header" style="margin-left: 10px;">Supervisors</h1>
-                <div class="col-md-4">
-
-                    <div class="box box-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-yellow">
-                            <div class="widget-user-image">
-                                <img class="img-circle" src="dist/img/user7-128x128.jpg" alt="User Avatar">
+                <h1 class="page-header" style="margin-left: 10px;">All {{ $usersTypeStr }}s</h1>
+                   @foreach ($users as $user)
+                       <div class="col-md-4">
+                            <div class="box box-widget widget-user-2">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-yellow">
+                                    <div class="widget-user-image">
+                                        {{ Html::image('user-avatar.jpg', 'alt', array( 'class' => 'img-circle' )) }}
+                                    </div>
+                                    <!-- /.widget-user-image -->
+                                    <h3 class="widget-user-username">{{$user->name}}</h3>
+                                    <h5 class="widget-user-desc">{{$usersTypeStr}}</h5>
+                                </div>
+                                <div class="box-footer no-padding">
+                                    <ul class="nav nav-stacked">
+                                        <li><a href="#">Projects
+                                            @if($user->projects()->count() == 0)
+                                                <span class="pull-right badge bg-blue">
+                                                    -
+                                                </span>
+                                            @else
+                                                @foreach ($user->projects() as $project)
+                                                    <span class="pull-right badge bg-blue">
+                                                        {{$project->name}}
+                                                    </span>
+                                                @endforeach
+                                            @endif
+                                            </a>
+                                        </li>
+                                        <li><a href="#">Tickets
+                                                <span class="pull-right badge bg-aqua">
+                                                    {{$user->tickets()->count()}}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">Nadia Carmichael</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
                         </div>
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Projects <span class="pull-right badge bg-blue">PHP</span></a></li>
-                                <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
-                                <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
-                                <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="box box-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-gray-light">
-                            <div class="widget-user-image">
-                                <img class="img-circle" src="dist/img/user7-128x128.jpg" alt="User Avatar">
-                            </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">Nadia Carmichael</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
-                        </div>
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Projects <span class="pull-right badge bg-blue">Rails</span></a></li>
-                                <li><a href="#">Tickets <span class="pull-right badge bg-aqua">5</span></a></li>
-                                <li><a href="#">Closed tickets <span class="pull-right badge bg-green">12</span></a></li>
-                                <li><a href="#">Open tickets <span class="pull-right badge bg-red">3</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="box box-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-light-blue-active">
-                            <div class="widget-user-image">
-                                <img class="img-circle" src="dist/img/user7-128x128.jpg" alt="User Avatar">
-                            </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">Nadia Carmichael</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
-                        </div>
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Projects <span class="pull-right badge bg-blue">IOS</span></a></li>
-                                <li><a href="#">Tickets <span class="pull-right badge bg-aqua">5</span></a></li>
-                                <li><a href="#">Closed tickets <span class="pull-right badge bg-green">12</span></a></li>
-                                <li><a href="#">Open tickets <span class="pull-right badge bg-red">3</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="box box-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-aqua-gradient">
-                            <div class="widget-user-image">
-                                <img class="img-circle" src="dist/img/user7-128x128.jpg" alt="User Avatar">
-                            </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">Nadia Carmichael</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
-                        </div>
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Projects <span class="pull-right badge bg-blue">Android</span></a></li>
-                                <li><a href="#">Tickets <span class="pull-right badge bg-aqua">5</span></a></li>
-                                <li><a href="#">Closed tickets <span class="pull-right badge bg-green">12</span></a></li>
-                                <li><a href="#">Open tickets <span class="pull-right badge bg-red">3</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="box box-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-green">
-                            <div class="widget-user-image">
-                                <img class="img-circle" src="dist/img/user7-128x128.jpg" alt="User Avatar">
-                            </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">Nadia Carmichael</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
-                        </div>
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Projects <span class="pull-right badge bg-blue">HR</span></a></li>
-                                <li><a href="#">Tickets <span class="pull-right badge bg-aqua">5</span></a></li>
-                                <li><a href="#">Closed tickets <span class="pull-right badge bg-green">12</span></a></li>
-                                <li><a href="#">Open tickets <span class="pull-right badge bg-red">3</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
+                @endforeach
             </div>
 
         </section><!-- /.content -->
