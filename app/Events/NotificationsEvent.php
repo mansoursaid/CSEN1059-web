@@ -3,8 +3,10 @@
 namespace App\Events;
 
 use App\Events\Event;
+use Carbon\Carbon;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
 
 class NotificationsEvent extends Event implements ShouldBroadcast
 {
@@ -17,11 +19,12 @@ class NotificationsEvent extends Event implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
+        date_default_timezone_set('Africa/Cairo');
         $this->data = array(
-            'message'=> 'You can claim a new ticket now.',
-            'at' => '10pm'
+            'message'=> $message,
+            'at' => Carbon::now()->toDateTimeString()
         );
     }
 
