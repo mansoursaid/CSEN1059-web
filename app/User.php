@@ -81,11 +81,11 @@ class User extends Authenticatable
 
     public static function strTypeToInt($strType)
     {
-        if($strType == 'admin')
+        if($strType == 'admin' || $strType == 'Admin' || $strType == 'admins' )
         {
             return '00';
         }
-        elseif($strType == 'supervisor')
+        elseif($strType == 'supervisor' || $strType == 'Supervisor' || $strType == 'supervisors')
         {
             return '01';
         }

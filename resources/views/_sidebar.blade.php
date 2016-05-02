@@ -44,9 +44,9 @@
                         <a href="#"><i class="fa fa-link"></i> <span>Admin panel</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu" style="display: none;">
                             <li><a href="projects.html">Projects</a></li>
-                            <li><a href="administrators.html">Administrators</a></li>
-                            <li><a href="/supervisors">Support supervisors</a></li>
-                            <li class="active"><a href="agents.html">Support agents</a></li>
+                            <li><a href="/admins" onClick="window.location.reload()">Administrators</a></li>
+                            <li><a href="/supervisors" onClick="window.location.reload()">Support supervisors</a></li>
+                            <li><a href="/agents" onClick="window.location.reload()">Support agents</a></li>
                             <li><a href="customers.html">Customers</a></li>
                             <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>
                         </ul>

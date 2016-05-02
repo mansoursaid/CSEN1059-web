@@ -88,7 +88,9 @@ class UsersController extends Controller
            $request->session()->flash('status', 'success');
         }
 
-        return redirect('/supervisors');
+        $route = lcfirst(User::IntTypeToStr($type).'s');
+
+        return redirect($route);
     }
 
     public function edit($id)
