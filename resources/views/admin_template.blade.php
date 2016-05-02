@@ -24,11 +24,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </h1> -->
 
             @yield('flash_messages')
-            <!-- You can dynamically generate breadcrumbs here -->
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
-            </ol>
         </section>
 
         <!-- Main content -->

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use DB;
+use Auth;
 // use MailNotification;
 
 class UsersController extends Controller
@@ -13,7 +14,7 @@ class UsersController extends Controller
 
 
     public function __construct() {
-        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex']]);
+        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex', 'destroy']]);
     }
 
     /**
@@ -115,11 +116,24 @@ class UsersController extends Controller
         return redirect('users');
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
+        $current_user = Auth::user();
+        if($current_user->id == $id){
+            $request->session()->flash('status', 'do_not_delete_self');
+            return back();
+        }
+
         $user = $this->get_user($id);
-        $user->delete();
-        return redirect('users');
+        if($user->delete()){
+            $request->session()->flash('status', 'user_delete_success');
+        }
+        else
+        {
+            $request->session()->flash('status', 'user_delete_failure');
+        }
+
+        return back();
     }
 
     public function usersAddAndIndex(Request $request){

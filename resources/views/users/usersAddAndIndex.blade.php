@@ -2,15 +2,30 @@
 
 @section('flash_messages')
     @if (session('status'))
-        @if (session('status') == 'success')
+        @if (session('status') == 'user_added_success')
             <div class="alert alert-success alert-dismissible">
                 <i class="icon fa fa-check"></i>
                 {{ session('object') }} added successfully!
             </div>
-        @else
+        @elseif (session('status') == 'user_added_failure')
             <div class="alert alert-danger alert-dismissible">
                 <i class="icon fa fa-ban"></i>
                 {{ session('object') }} was not added!
+            </div>
+        @elseif (session('status') == 'user_delete_success')
+            <div class="alert alert-success alert-dismissible">
+                <i class="icon fa fa-check"></i>
+                User deleted!
+            </div>
+        @elseif (session('status') == 'user_delete_failure')
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                Failed to delete user!
+            </div>
+        @else (session('status') == 'do_not_delete_self')
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                You can not delete yourself!
             </div>
         @endif
     @endif
@@ -79,6 +94,8 @@
             <!--  -->
             <div class="row">
                 <h1 class="page-header" style="margin-left: 10px;">All {{ $usersTypeStr }}s</h1>
+
+                @if ($users->count() > 0)
                    @foreach ($users as $user)
                        <div class="col-md-4">
                             <div class="box box-widget widget-user-2">
@@ -113,13 +130,72 @@
                                                 </span>
                                             </a>
                                         </li>
+                                        <!--  -->
+                                        <li>
+                                            <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
+                                            <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
+                                        </li>
+                                        <!--  -->
+                                        <li id="visually-hidden">
+                                            {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
+                                            {!! Form::submit($user->id, array('id' => 'delete_user_form', 'value' => $user->id)) !!}
+                                            {{ Form::close() }}
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                @endforeach
-            </div>
+                    @endforeach
+                @else
+                    <div>
+                        <h4 style="margin-left: 15px;">0 employees under this category!</h4>
+                    </div>
 
+                @endif
+            </div>
         </section><!-- /.content -->
+<!--  -->
+        <div class="modal" id="delete_user_confirmation_modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Warning!!</h4>
+              </div>
+              <div class="modal-body">
+                <p style="text-align:center">Are you sure you want to delete this user</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No, Cancel</button>
+                <button type="button" id="confirm_delete_user" class="btn btn-primary">Yes, Delete</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+<!--  -->
+@endsection
+
+@section('custom_scripts')
+
+    <script>
+        //stores the submit button id for the delete_user_form form
+        var $current_submit_button;
+
+        // on click on delete_user button a confirmation modal will appear & we will store the button id
+        $(document).on('click', '#delete_user', function(){
+            $('#delete_user_confirmation_modal').modal('show');
+            $current_submit_button = 'input[value="' + $('#delete_user_form').attr('value') + '"]#delete_user_form';
+            console.log($current_submit_button);
+        });
+
+        // if user confirms delete the user is deleted
+        $(document).on('click', '#confirm_delete_user', function(){
+            $('#delete_user_confirmation_modal').modal('hide');
+            $($current_submit_button).click();
+        });
+    </script>
 
 @endsection
