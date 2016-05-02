@@ -29,21 +29,16 @@
 *   The generated routes can be checked using 'php artisan route:list' command
 */
 
-Route::get('/', function () {
+Route::get('/', function(){
     return view('auth/login');
 });
 
-
-Route::post('reply', 'TweetsController@replyToTicket');
-
-
 Route::resource('tickets', 'TicketsController');
-
 Route::resource('projects', 'ProjectsController');
 Route::resource('users', 'UsersController');
-Route::get('/supervisors', 'UsersController@supervisors');
-
-
+Route::get('/supervisors', 'UsersController@usersAddAndIndex');
+Route::get('/agents', 'UsersController@usersAddAndIndex');
+Route::get('/admins', 'UsersController@usersAddAndIndex');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -51,6 +46,7 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('mentions', 'TweetsController@index');
+Route::post('reply', 'TweetsController@replyToTicket');
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
 Route::get('/genlink', 'GenLinkPaypalController@generateLink');

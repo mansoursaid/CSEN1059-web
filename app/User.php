@@ -49,12 +49,12 @@ class User extends Authenticatable
 
     public function tickets()
     {
-        return $this->belongsToMany('App\Tickets');
+        return $this->belongsToMany('App\Ticket');
     }
 
     public function projects()
     {
-        return $this->belongsToMany('App\Projects');
+        return $this->belongsToMany('App\Project');
     }
 
     public function notifications()
@@ -74,10 +74,38 @@ class User extends Authenticatable
     }
 
 
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
+    public static function strTypeToInt($strType)
+    {
+        if($strType == 'admin' || $strType == 'Admin' || $strType == 'admins' )
+        {
+            return '00';
+        }
+        elseif($strType == 'supervisor' || $strType == 'Supervisor' || $strType == 'supervisors')
+        {
+            return '01';
+        }
+        else {
+            return '10';
+        }
+    }
+
+    public static function IntTypeToStr($intType)
+    {
+        if($intType == 00 )
+        {
+            return 'Admin';
+        }
+        elseif($intType == 01)
+        {
+            return 'Supervisor';
+        }
+        else {
+            return 'Agent';
+        }
+    }
 }
