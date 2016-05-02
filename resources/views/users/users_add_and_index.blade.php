@@ -1,5 +1,21 @@
 @extends('admin_template')
 
+@section('flash_messages')
+    @if (session('status'))
+        @if (session('status') == 'success')
+            <div class="alert alert-success alert-dismissible">
+                <i class="icon fa fa-check"></i>
+                {{ session('object') }} added successfully!
+            </div>
+        @else
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                {{ session('object') }} was not added!
+            </div>
+        @endif
+    @endif
+@endsection
+
 @section('content')
 
        <!-- Content Header (Page header) -->
@@ -33,12 +49,7 @@
                                         {!! Form::text('email', null, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                                <div class="form-group">
-									{!! Form::label('password', 'Password: ', array('class' => 'col-sm-2 control-label')) !!}
-                                    <div class="col-sm-10">
-                                        {!! Form::password('password', array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
+                                {{ Form::hidden('password', str_random(8) )}}
                                 {{ Form::hidden('type', $usersTypeInt) }}
                             </div>
                             <div class="box-footer">
@@ -50,12 +61,22 @@
                 </div>
             </div>
             <!-- Shows the errors in the form -->
-			<ul>
-			  @foreach($errors->all() as $error)
-			    <li>{{ $error }}</li>
-			  @endforeach
-			</ul>
-
+            <!--  -->
+            @if (count($errors))
+                <div class="box box-solid box-danger">
+                    <div class="box-header">
+                      <h3 class="box-title">Error!</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><!-- /.box-body -->
+                  </div>
+            @endif
+            <!--  -->
             <div class="row">
                 <h1 class="page-header" style="margin-left: 10px;">Supervisors</h1>
                 <div class="col-md-4">

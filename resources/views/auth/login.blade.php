@@ -12,9 +12,9 @@
                         <div class="col-md-6 col-md-offset-3">
                         <!--  -->
                             @if (count($errors))
-                                <div class="box box-solid box-warning">
+                                <div class="box box-solid box-danger">
                                     <div class="box-header">
-                                      <h3 class="box-title">Warning!</h3>
+                                      <h3 class="box-title">Error!</h3>
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
                                         <ul>

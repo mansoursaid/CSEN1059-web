@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use DB;
@@ -51,7 +52,7 @@ class UsersController extends Controller
     {
         // validations
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|min:3|max:12|regex:/[a-zA-Z\ ]+$/',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'type' => 'required|max:2',
@@ -68,7 +69,21 @@ class UsersController extends Controller
         //send email to user with his user name and password
         \App\MailNotification::mailInvitation([$user], $name, $email, $password, $type);
 
-        return redirect('users');
+        // check that the email has been sent
+        $request->session()->flash('object', $name);
+        if( count(Mail::failures()) > 0 ) {
+
+           $request->session()->flash('status', 'failure');
+
+           foreach(Mail::failures as $email_address) {
+               error_log(" - $email_address <br />");
+            }
+        }
+        else {
+           $request->session()->flash('status', 'success');
+        }
+
+        return redirect('/supervisors');
     }
 
     public function edit($id)

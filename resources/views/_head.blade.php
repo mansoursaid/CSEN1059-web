@@ -16,6 +16,12 @@
     -->
     <link href="{{ asset("/bower_components/admin-lte/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
 
+    <style>
+    .alert {
+        margin-bottom: 0px;
+    }
+    </style>
+
     @yield('custom_links')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
