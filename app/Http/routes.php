@@ -53,7 +53,9 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 Route::get('mentions', 'TweetsController@index');
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
-Route::get('/genlink', 'GenLinkPaypalController@generateLink');
+Route::get('/paypal/create', 'GenLinkPaypalController@create');
+Route::post('/paypal/store', 'GenLinkPaypalController@store');
+
 
 //Route::get('/conv/{id}', 'TweetsController@getConversation');
 //Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
