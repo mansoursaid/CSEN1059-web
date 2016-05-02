@@ -1,10 +1,10 @@
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <i class="fa fa-bell-o"></i>
-    <span class="label label-warning">{{ 10 }}</span>
+    <span class="label label-warning myNotificationCounter">{{ 0 }}</span>
 </a>
 <ul class="dropdown-menu">
-    <li class="header">You have {{ 10 }} notifications</li>
+    <li class="header">You have <span class="myNotificationCounter">{{ 0 }}</span> notifications</li>
     <li>
         <!-- Inner Menu: contains the notifications -->
         <ul class="menu">
@@ -26,6 +26,7 @@
         // $('#notification').text($('#notification').text() + "\n" + message.data.message);
         console.log("hello");
         $('#empty_li').after("<li><a href='#'> <i class='fa fa-users text-aqua'></i>" + message.data.message + "</a></li>");
+        $('span.myNotificationCounter').text(parseInt($('span.myNotificationCounter').text()) + 1);
     });
 </script>
 
