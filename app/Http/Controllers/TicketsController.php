@@ -175,6 +175,20 @@ class TicketsController extends Controller
 
     }
 
+    public function assign_to($id){
+        try{
+            $ticket = Ticket::findOrFail($id);
+            $name = Input::get('assigned_to');
+            $user =  User::where('name', $name)->first();
+            $uid = $user->id;
+            $ticket->assigned_to = $uid;
+            $ticket->save();
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+    }
+
     /*public function deleteStatus($id){
         $ticket = get_ticket($id);
         $ticket->status = 0;
