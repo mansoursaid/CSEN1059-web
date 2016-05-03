@@ -43,8 +43,7 @@
                 <div class="box-body" style="display: block;">
                     <!--Logo-->
                     <div class="widget-user-image">
-                        <img class="img-square" src="{{ asset('robusta_logo.png') }}" alt="Logo">
-                    </div>
+                        <img class="img-square" src="{{ asset('robusta_logo.png') }}" alt="Logo" style="height: 80px; width: 80px;">
                     <div class="upload-image-container" style="border-bottom:1px solid gray; padding-bottom: 10px; margin-bottom:10px;">
                         <div class="about-section" style="margin-top:25px;">
                             <div class="text-content">
