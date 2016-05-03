@@ -53,7 +53,7 @@ class MailNotification {
             array_push($emails, $user->email);
         }
 
-        Mail::send('mails.mailInvitation', ['name' => $name, 'email' => $email,
+        mail::queue('mails.mailInvitation', ['name' => $name, 'email' => $email,
                 'password' => $password, 'type' => $type],
             function($message) use ($emails)
             {
