@@ -10,6 +10,11 @@ use Auth;
 
 class ProjectsController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('isAdmin', ['only' => ['projectsAddAndIndex', 'destroy', 'edit', 'update']]);
+    }
+
     public function index(){
         $projects = Project::all();
         return $projects;
@@ -45,20 +50,47 @@ class ProjectsController extends Controller
         return back();
     }
 
-    public function destroy(Project $project){
-        $project->delete();
+    public function destroy($id, Request $request){
+        $project = Project::find($id);
+
+        if($project->delete())
+        {
+            $request->session()->flash('status', 'project_delete_success');
+        }
+        else
+        {
+            $request->session()->flash('status', 'project_delete_failure');
+        }
+
+        return back();
     }
 
     public function edit($id){
-        $project = Project::findOrfail($id);
-        return view('projects.edit')->with('project',$project);
+
+        $project = Project::find($id);
+        return view('projects.edit', compact('project'));
     }
 
-    public function update($id){
-        $project = Project::findOrfail($id);
-        $project->name = Input::get('name');
-        $project->save();
-        return $project;
+    public function update($id, Request $request){
+
+        $project = Project::find($id);
+
+        $newName = $request->name;
+        $newDescription = $request->description;
+
+        $project->name = $newName;
+        $project->description = $newDescription;
+
+        if($project->save()){
+            $request->session()->flash('status', 'project_update_success');
+        }
+        else
+        {
+            $request->session()->flash('status', 'project_update_failure');
+        }
+
+        return redirect("projects");
+
     }
 
     public function projectsAddAndIndex(Request $request){

@@ -108,4 +108,10 @@ class User extends Authenticatable
             return 'Agent';
         }
     }
+
+    public static function getName($id)
+    {
+        $user = User::find($id);
+        return ucfirst($user->name);
+    }
 }
