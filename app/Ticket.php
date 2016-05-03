@@ -80,8 +80,12 @@ class Ticket extends Model
     public function get_name($id)
     {
         
-        $user = User::findOrFail($id);
-        $name = $user->name;
+        $user = User::find($id);
+        if(isset($user)){
+            $name = $user->name;
+        }else{
+            $name = "";
+        }
         return $name;
        
         
