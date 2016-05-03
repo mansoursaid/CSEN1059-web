@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use App\TwitterFunctions;
+use App\Ticket;
+use App\Customer;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 
@@ -37,5 +40,45 @@ class TweetsController extends Controller
         return $newTweets;
 
     }
+
+
+    public function replyToTicket(Request $request) {
+
+        $rules = array(
+            'status' => 'required|between:1,100',
+            'last_tweet_id' => 'required',
+            'ticket_id' => 'required'
+        );
+
+
+        $this->validate($request,$rules);
+
+
+
+        $tweetId = Input::get('last_tweet_id');
+
+        $status = Input::get('status');
+
+        $ticketId = Input::get('ticket_id');
+
+        $ticket = Ticket::findOrFail($ticketId);
+
+        $ticketTweetId = $ticket->tweet_id;
+
+        $customer = Customer::findOrFail($ticket->customer_id);
+
+        $status = "@" . $customer->twitter_handle . " " . $status;
+
+
+
+        $newStatus = TwitterFunctions::replyToTweet($tweetId, $status, $ticketTweetId);
+
+//        return redirect('tickets/'.$ticketId);
+
+        return redirect()->action('TicketsController@show', [$ticketId]);
+    }
+
+
+
 
 }

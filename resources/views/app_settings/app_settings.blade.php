@@ -10,14 +10,12 @@
     @if (session('status'))
         @if (session('status') == 'success')
             <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                <i class="icon fa fa-check"></i>
                 {{ session('object') }} was changed successfully!
             </div>
         @else
             <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                <i class="icon fa fa-ban"></i>
                 {{ session('object') }} was not changed!
             </div>
         @endif
