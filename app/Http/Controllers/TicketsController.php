@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-use Redirect;
+use Validator;
 
 class TicketsController extends Controller
 {
@@ -151,16 +151,15 @@ class TicketsController extends Controller
 
     }
 
-    public function update($id){
-        try {
-            $ticket = Ticket::findOrFail($id);
-            $ticket->status = Input::get('status');
-            $ticket->save();
-            return Redirect::back();
-        }catch (ModelNotFoundException $ex){
-            return view('errors.404');
+    public function update(Request $request, Ticket $ticket){
+        $validator = Validator::make($request->all(),[
+            'urgency' => 'digits_between:0,1',
+            'premium' => 'boolean',
+            //'status' => 'digits_between:0,1',  don't know the status codes
+        ]);
+        if($ticket->update($request->all())) {
+            //redirect
         }
-
     }
 
     /*public function deleteStatus($id){
