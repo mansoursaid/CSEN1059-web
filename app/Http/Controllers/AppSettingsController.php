@@ -122,20 +122,20 @@ class AppSettingsController extends Controller
         $rules = array('file' => 'required|image',);
         $validator = Validator::make($file, $rules);
         if ($validator->fails()) {
-            return Redirect::to('upload')->withInput()->withErrors($validator);
+            return Redirect::to('app_settings')->withInput()->withErrors($validator);
         }
         else {
             if (Input::file('file')->isValid()) {
                 $destinationPath = base_path() . '/public';
                 $extension = Input::file('file')->getClientOriginalExtension();
-                $fileName = rand(11111,99999).'.'.$extension;
+                $fileName = 'robusta_logo.png';
                 Input::file('file')->move($destinationPath, $fileName);
                 Session::flash('success', 'Upload successfully');
-                return Redirect::to('upload');
+                return Redirect::to('app_settings');
             }
             else {
                 Session::flash('error', 'uploaded file is not valid');
-                return Redirect::to('upload');
+                return Redirect::to('app_settings');
             }
         }
     }

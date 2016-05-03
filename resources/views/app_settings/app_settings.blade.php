@@ -45,17 +45,31 @@
                     <div class="widget-user-image">
                         <img class="img-circle" src="{{ asset('robusta_logo.png') }}" alt="Logo">
                     </div>
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <input type="file" id="exampleInputFile">
-
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                    <div class="about-section">
+                        <div class="text-content">
+                            <div class="span7 offset1">
+                                @if(Session::has('success'))
+                                    <div class="alert-box success">
+                                        <h2>{!! Session::get('success') !!}</h2>
+                                    </div>
+                                @endif
+                                <div class="secure">Choose Logo</div>
+                                {!! Form::open(array('url'=>'upload','method'=>'POST', 'files'=>true)) !!}
+                                <div class="control-group">
+                                    <div class="controls">
+                                        {!! Form::file('file') !!}
+                                        <p class="errors">{!!$errors->first('file')!!}</p>
+                                        @if(Session::has('error'))
+                                            <p class="errors">{!! Session::get('error') !!}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div id="success"> </div>
+                                {!! Form::submit('Submit', ['class' => 'btn btn-large btn-primary openbutton']) !!}
+                                {!! Form::close() !!}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-block btn-primary">Change logo</button>
-                        </div>
-                    </form>
+                    </div>
                     <!-- Color Picker -->
                     <form>
                         <div class="form-group">
