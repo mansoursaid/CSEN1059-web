@@ -110,6 +110,8 @@ class TicketsController extends Controller
             return $ticket;
 
         } else {
+
+
             $rules = array(
                 'tweet_id' => 'required',
                 'assigned_to' => 'required',
@@ -123,11 +125,15 @@ class TicketsController extends Controller
 
             $this->validate($request, $rules);
 
-            $customer = Customer::where('twitter_handle', Input::get('tweet_handle'))->first();
-            if ($customer == null) {
+            $customers = Customer::where('twitter_handle', Input::get('tweet_handle'));
+            if ($customers == null || $customers->count() == 0) {
                 $customer = new Customer();
                 $customer->twitter_handle = Input::get('tweet_handle');
+                $customer->email = 'temp'.Carbon::now();
                 $customer->save();
+            }
+            else {
+                $customer = $customers->first();
             }
 
 
