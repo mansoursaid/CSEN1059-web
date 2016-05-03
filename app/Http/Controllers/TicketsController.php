@@ -147,14 +147,14 @@ class TicketsController extends Controller
             $ticket->urgency = Input::get('urgency'); // will be changed later
             $ticket->premium = Input::get('premium');
             $ticket->save();
-            try {
-                $user = User::findOrFail($ticket->assigned_to);
-                NotificationHandler::makeNotification($user, $ticket);
-            } catch(ModelNotFoundException $e) {
-                Session::flash('error', $e->getMessage());
-            } catch(\Exception $e) {
-                Session::flash('error', $e->getMessage());
-            }
+//            try {
+//                $user = \App\User::findOrFail($ticket->assigned_to);
+//                NotificationHandler::makeNotification($user, $ticket);
+//            } catch(ModelNotFoundException $e) {
+//                \Session::flash('error', $e->getMessage());
+//            } catch(\Exception $e) {
+//                \Session::flash('error', $e->getMessage());
+//            }
 
             return redirect()->action('TicketsController@show', [$ticket->id]);
 
@@ -188,8 +188,8 @@ class TicketsController extends Controller
             $ticket->status = Input::get('status');
             $ticket->save();
 
-            $user = User::findOrFail($ticket->assigned_to);
-            NotificationHandler::makeNotification($user, $ticket);
+//            $user = User::findOrFail($ticket->assigned_to);
+//            NotificationHandler::makeNotification($user, $ticket);
 
             return Redirect::back();
         } catch (ModelNotFoundException $ex) {
