@@ -35,15 +35,14 @@ class HomeController extends Controller
         }
 
 
-        $admins = \App\User::ofType(0)->get();
-        $supportSupervisors = \App\User::ofType(1)->get();
-        $supportAgents = \App\User::ofType(10)->get();
-
-
         try {
             $temp = $newTweets->errors;
-            return "Ta3ala b3d shwaya";
+            Cache::forget('new_tweets' . $count . "-" . $max_id);
+            return view('errors.api_error_rate_limit_exceed');
         } catch (\Exception $e) {
+            $admins = \App\User::ofType(0)->get();
+            $supportSupervisors = \App\User::ofType(1)->get();
+            $supportAgents = \App\User::ofType(10)->get();
             return view('home.index', compact('newTweets', 'admins', 'supportSupervisors', 'supportAgents'));
         }
 

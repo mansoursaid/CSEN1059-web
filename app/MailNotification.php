@@ -13,7 +13,7 @@ class MailNotification {
             array_push($emails, $user->email);
         }
 
-        Mail::send('mails.claim', ['id' => $ticket->id], function($message) use ($emails)
+        Mail::queue('mails.claim', ['id' => $ticket->id], function($message) use ($emails)
         {
             $message->to($emails)->subject('Claim a ticket');
         });
@@ -26,7 +26,7 @@ class MailNotification {
             array_push($emails, $user->email);
         }
 
-        Mail::send('mails.close', ['id' => $ticket->id], function($message) use ($emails)
+        Mail::queue('mails.close', ['id' => $ticket->id], function($message) use ($emails)
         {
             $message->to($emails)->subject('Close a ticket');
         });
@@ -39,7 +39,7 @@ class MailNotification {
             array_push($emails, $user->email);
         }
 
-        Mail::send('mails.cannotclaim', ['id' => $ticket->id], function($message) use ($emails)
+        Mail::queue('mails.cannotclaim', ['id' => $ticket->id], function($message) use ($emails)
         {
             $message->to($emails)->subject('Can not claim a ticket');
         });
@@ -53,7 +53,7 @@ class MailNotification {
             array_push($emails, $user->email);
         }
 
-        Mail::send('mails.mailInvitation', ['name' => $name, 'email' => $email,
+        Mail::queue('mails.mailInvitation', ['name' => $name, 'email' => $email,
                 'password' => $password, 'type' => $type],
             function($message) use ($emails)
             {
