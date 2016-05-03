@@ -62,8 +62,7 @@ Route::get('get_tweets/{maxId}', 'TweetsController@getTweets');
 Route::get('/mail', function() {
     $user = new \App\User();
     $user->email = "asktajweed@gmail.com";
-    $ticket = new \App\Ticket();
-    $ticket->id = 5;
+    $ticket = App\Ticket::first();
     \App\MailNotification::mailClaim([$user], $ticket);
     echo 'hello';
 });
@@ -82,7 +81,7 @@ Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecre
 
 Route::get('fire', function () {
     // this fires the event
-    event(new App\Events\NotificationsEvent());
+    event(new App\Events\NotificationsEvent("koko"));
     return "event fired";
 });
 
