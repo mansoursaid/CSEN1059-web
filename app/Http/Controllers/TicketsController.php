@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Ticket;
 use App\TwitterFunctions;
+use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Validator;
+use Redirect;
+use App\MailNotification;
+use App\NotificationHandler;
 
 class TicketsController extends Controller
 {
@@ -40,7 +44,7 @@ class TicketsController extends Controller
         $supportAgents = \App\User::ofType(10)->get();
 
 
-        $assignedToUser = $ticket->with('assigned_to')->first();
+        $assignedToUser = User::findOrFail($ticket->assigned_to);
 
 
         if (Cache::has('conv'."-".$ticket->tweet_id))
@@ -125,7 +129,12 @@ class TicketsController extends Controller
             $ticket->urgency = Input::get('urgency'); // will be changed later
             $ticket->premium = Input::get('premium');
             $ticket->save();
+
+            $user = User::findOrFail($ticket->assigned_to);
+            NotificationHandler::makeNotification($user, $ticket);
+
             return redirect()->action('TicketsController@show', [$ticket->id]);
+
 
         }
 
@@ -155,12 +164,17 @@ class TicketsController extends Controller
         $validator = Validator::make($request->all(),[
             'urgency' => 'digits_between:0,1',
             'premium' => 'boolean',
-            //'status' => 'digits_between:0,1',  don't know the status codes
+            'status' => 'digits_between:0,2',
         ]);
+        if($validator->fails()) {
+            //redirect with error message
+        }
         if($ticket->update($request->all())) {
-            //redirect
+            //redirect with ok
         }
     }
+
+    
 
     /*public function deleteStatus($id){
         $ticket = get_ticket($id);

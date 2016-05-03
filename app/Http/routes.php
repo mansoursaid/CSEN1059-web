@@ -49,7 +49,9 @@ Route::get('mentions', 'TweetsController@index');
 Route::post('reply', 'TweetsController@replyToTicket');
 
 Route::get('/paypal', 'GenLinkPaypalController@handleTransaction');
-Route::get('/genlink', 'GenLinkPaypalController@generateLink');
+Route::get('/paypal/create', 'GenLinkPaypalController@create');
+Route::post('/paypal/store', 'GenLinkPaypalController@store');
+
 
 //Route::get('/conv/{id}', 'TweetsController@getConversation');
 //Route::get('/reply/{id}/{status}', 'TweetsController@replyToTweet');
@@ -60,8 +62,7 @@ Route::get('get_tweets/{maxId}', 'TweetsController@getTweets');
 Route::get('/mail', function() {
     $user = new \App\User();
     $user->email = "asktajweed@gmail.com";
-    $ticket = new \App\Ticket();
-    $ticket->id = 5;
+    $ticket = App\Ticket::first();
     \App\MailNotification::mailClaim([$user], $ticket);
     echo 'hello';
 });
@@ -80,7 +81,7 @@ Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecre
 
 Route::get('fire', function () {
     // this fires the event
-    event(new App\Events\NotificationsEvent());
+    event(new App\Events\NotificationsEvent("koko"));
     return "event fired";
 });
 
