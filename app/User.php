@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
     /**
@@ -48,11 +49,65 @@ class User extends Authenticatable
 
     public function tickets()
     {
-        return $this->belongsToMany('App\Tickets');
+        return $this->belongsToMany('App\Ticket');
     }
 
     public function projects()
     {
-        return $this->belongsToMany('App\Projects');
+        return $this->belongsToMany('App\Project');
     }
+
+    public function notifications()
+    {
+        return $this->belongsToMany('App\Notification');
+    }
+
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    public static function strTypeToInt($strType)
+    {
+        if($strType == 'admin' || $strType == 'Admin' || $strType == 'admins' )
+        {
+            return '00';
+        }
+        elseif($strType == 'supervisor' || $strType == 'Supervisor' || $strType == 'supervisors')
+        {
+            return '01';
+        }
+        else {
+            return '10';
+        }
+    }
+
+    public static function IntTypeToStr($intType)
+    {
+        if($intType == 00 )
+        {
+            return 'Admin';
+        }
+        elseif($intType == 01)
+        {
+            return 'Supervisor';
+        }
+        else {
+            return 'Agent';
+        }
+    }
+
+    
 }

@@ -19,29 +19,42 @@ use PayPal\Api\Payment;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 
+use Illuminate\Support\Facades\Input;
+
 class GenLinkPaypalController extends Controller
 {
     //
 
-    public function generateLink() {
+    public function create() {
+        return view('paypal.create');
+    }
 
+    public function store(Request $request) {
+//        dd($request);
         $paypal = new ApiContext(new OAuthTokenCredential(PaypalConfig::getClientID(), PaypalConfig::getSecretKey()));
 
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
 
+        $price = Input::get('price');
+        $quantity = Input::get('quantity');
+        $currency = Input::get('currency');
+        $name = Input::get('name');
+
+//        dd($quantity * $price);
+
         $item1 = new Item();
-        $item1->setName('Premium Service')
-            ->setCurrency('USD')
-            ->setQuantity(1)
-            ->setPrice(30);
+        $item1->setName($name)
+            ->setCurrency($currency)
+            ->setQuantity($quantity)
+            ->setPrice($price);
 
         $itemList = new ItemList();
         $itemList->setItems(array($item1));
 
         $amount = new Amount();
-        $amount->setCurrency("USD")
-            ->setTotal(30);
+        $amount->setCurrency($currency)
+            ->setTotal($quantity * $price);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
@@ -60,13 +73,27 @@ class GenLinkPaypalController extends Controller
             ->setTransactions(array($transaction));
 
         try{
+
             $payment->create($paypal);
-        } catch(Exception $e) {
+//            dd('hello');
+        }catch (\PayPal\Exception\PayPalConnectionException $ex) {
+//            echo $ex->getCode(); // Prints the Error Code
+//            echo $ex->getData(); // Prints the detailed error message
+//            die($ex);
+            return response()->json([
+                'message' => 'Try again',
+            ], 404);
+        } catch (\Exception $ex) {
+//            die($ex);
+            return response()->json([
+                'message' => 'Try again',
+            ], 404);
         }
 
         $approvalUrl = $payment->getApprovalLink();
 
-        echo $approvalUrl;
+//        return $approvalUrl;
+        return response()->json(['link' => $approvalUrl]);
 
 
     }

@@ -1,0 +1,1 @@
+The ticket with id {{ $id }} has been closed. You can claim another one.

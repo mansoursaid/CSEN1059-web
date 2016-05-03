@@ -1,0 +1,1 @@
+You have claimed 3 tickets. You can not claim other tickets till one of your three tickets is closed.
