@@ -33,15 +33,17 @@ class TicketShowMiddleware
             $assignedTo = null;
 
             if ($ticket->assigned_to != null) {
-                $assignedTo = User::findOrFail($assignedTo);
+                $assignedTo = User::findOrFail($ticket->assigned_to);
             }
 
             $usersInvited = Invitation::where('ticket_id', $ticketId)->where('user_invited', $currentUser->id)->get();
 
 
-            if ($currentUser->type == 0 || ($assignedTo != null && $assignedTo == $currentUser->id) || $usersInvited->count() > 0) {
+            if ($currentUser->type == 0 || ($assignedTo != null && $assignedTo->id == $currentUser->id) || $usersInvited->count() > 0) {
                 return $next($request);
             }
+
+            return view('errors.404');
 
 
         } else {
