@@ -42,20 +42,20 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             $groupedTickets = \App\Ticket::where('status', '<', 2);
 
-            $admins2 = \App\User::ofType(0)->get();
+            $admins = \App\User::ofType(0)->get();
             $supportSupervisors2 = \App\User::ofType(1)->get();
             $supportAgents2 = \App\User::ofType(10)->get();
 
-            $admins = [];
+//            $admins = [];
             $supportAgents = [];
             $supportSupervisors = [];
 
-            foreach($admins2 as $admin) {
-                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
-                if ($assignedTickets < 3) {
-                    array_push($admins, $admin);
-                }
-            }
+//            foreach($admins2 as $admin) {
+//                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
+//                if ($assignedTickets < 3) {
+//                    array_push($admins, $admin);
+//                }
+//            }
 
 
             foreach($supportSupervisors2 as $supportSupervisor) {
