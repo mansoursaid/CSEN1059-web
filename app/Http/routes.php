@@ -33,6 +33,7 @@ Route::get('/', function(){
     return view('auth/login');
 });
 
+
 Route::resource('tickets', 'TicketsController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('users', 'UsersController');

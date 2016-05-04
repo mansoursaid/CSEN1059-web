@@ -287,18 +287,6 @@ class TicketsController extends Controller
         }
     }
 
-    /*public function deleteStatus($id){
-        $ticket = get_ticket($id);
-        $ticket->status = 0;
-        $ticket->save();
-        return $ticket;
-
-    }
-
-
-
-
-    }*/
-
-
+    
+    
 }

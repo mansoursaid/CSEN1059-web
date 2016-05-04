@@ -134,12 +134,35 @@
                                             @endif
                                             </a>
                                         </li>
-                                        <li><a href="#">Tickets
+                                        <li><a >Tickets
                                                 <span class="pull-right badge bg-aqua">
                                                     {{$user->tickets()->count()}}
                                                 </span>
                                             </a>
                                         </li>
+                                        <ul style="padding-right: 35px;">
+                                               <li>
+                                                   <a >Open Tickets
+                                                       <span class="pull-right badge bg-aqua">
+                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status1"] }}
+                                                       </span>
+                                                   </a>
+                                               </li>
+                                               <li>
+                                                   <a >In Progress Tickets
+                                                       <span class="pull-right badge bg-aqua">
+                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status2"] }}
+                                                       </span>
+                                                   </a>
+                                               </li>
+                                               <li>
+                                                   <a >Closed Tickets
+                                                       <span class="pull-right badge bg-aqua">
+                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status3"] }}
+                                                       </span>
+                                                   </a>
+                                               </li>
+                                        </ul>
                                         <!--  -->
                                         <li>
                                             <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
