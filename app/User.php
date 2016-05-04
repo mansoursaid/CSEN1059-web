@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function projects()
     {
-        return $this->belongsToMany('App\Project');
+        return $this->belongsToMany('App\Project')->withTimestamps();
     }
 
     public function notifications()
@@ -109,5 +109,10 @@ class User extends Authenticatable
         }
     }
 
-    
+    public static function getName($id)
+    {
+        $user = User::find($id);
+        return ucfirst($user->name);
+    }
+
 }

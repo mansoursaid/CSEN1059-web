@@ -39,6 +39,7 @@ Route::resource('users', 'UsersController');
 Route::get('/supervisors', 'UsersController@usersAddAndIndex');
 Route::get('/agents', 'UsersController@usersAddAndIndex');
 Route::get('/admins', 'UsersController@usersAddAndIndex');
+Route::get('/projects', 'ProjectsController@projectsAddAndIndex');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
