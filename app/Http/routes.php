@@ -39,6 +39,7 @@ Route::resource('users', 'UsersController');
 Route::get('/supervisors', 'UsersController@usersAddAndIndex');
 Route::get('/agents', 'UsersController@usersAddAndIndex');
 Route::get('/admins', 'UsersController@usersAddAndIndex');
+Route::get('/projects', 'ProjectsController@projectsAddAndIndex');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -88,4 +89,6 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
+
 Route::get('/user/{user}/statistics', 'UsersController@statistics');
+Route::patch('/tickets/{id}/assign','TicketsController@assign_to');

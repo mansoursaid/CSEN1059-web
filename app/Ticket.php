@@ -77,4 +77,17 @@ class Ticket extends Model
             return 'open';
         }
     }
+    public function get_name($id)
+    {
+        
+        $user = User::find($id);
+        if(isset($user)){
+            $name = $user->name;
+        }else{
+            $name = "";
+        }
+        return $name;
+       
+        
+    }
 }
