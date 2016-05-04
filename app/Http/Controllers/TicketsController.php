@@ -63,8 +63,11 @@ class TicketsController extends Controller
             $admins = \App\User::ofType(0)->get();
             $supportSupervisors = \App\User::ofType(1)->get();
             $supportAgents = \App\User::ofType(10)->get();
+            $assignedToUser = null;
             try {
-                $assignedToUser = User::findOrFail($ticket->assigned_to);
+                if ($ticket->assigned_to != null) {
+                    $assignedToUser = User::findOrFail($ticket->assigned_to);
+                }
             } catch (ModelNotFoundException $e) {
                 return view('errors.404');
             }
@@ -110,7 +113,7 @@ class TicketsController extends Controller
             return $ticket;
 
         } else {
-            
+
             $rules = array(
                 'tweet_id' => 'required',
                 'assigned_to' => 'required',
