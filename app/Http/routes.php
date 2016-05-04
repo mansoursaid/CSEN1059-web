@@ -89,4 +89,4 @@ Route::get('fire', function () {
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
 
-Route::resource('customer', 'CustomerController');
+Route::resource('customers', 'CustomerController');
