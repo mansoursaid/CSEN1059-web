@@ -4,8 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Invitation;
-use App\User;
-use App\Ticket;
+use App\NotificationHandler;
 
 class NotificationForInvitationProvider extends ServiceProvider
 {
@@ -32,16 +31,16 @@ class NotificationForInvitationProvider extends ServiceProvider
 
         });
 
-        Invitation::updated(function($invitation) {
-            try {
-                NotificationHandler::makeNotificationForUpdatingInvitation($invitation);
-
-            } catch(\Exception $e) {
-                \Session::flash('error', $e->getMessage());
-            }
-
-            return true;
-        });
+//        Invitation::updated(function($invitation) {
+//            try {
+//                NotificationHandler::makeNotificationForUpdatingInvitation($invitation);
+//
+//            } catch(\Exception $e) {
+//                \Session::flash('error', $e->getMessage());
+//            }
+//
+//            return true;
+//        });
 
     }
 
