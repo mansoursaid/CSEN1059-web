@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\User;
 use DB;
 use Auth;
+use Carbon\Carbon;
 // use MailNotification;
 
 class UsersController extends Controller
@@ -15,7 +17,7 @@ class UsersController extends Controller
 
 
     public function __construct() {
-        $this->middleware('auth', ['except' => ['create']]);
+        //$this->middleware('auth', ['except' => ['create']]);
         $this->middleware('isAdmin', ['only' => ['usersAddAndIndex', 'destroy', 'edit', 'update']]);
     }
 
@@ -149,5 +151,39 @@ class UsersController extends Controller
         $users =  User::where('type', '=', $usersTypeInt)->get();
 
         return view('users.usersAddAndIndex', compact('usersTypeStr', 'usersTypeInt','users'));
+    }
+
+    public function statistics(User $user){
+        $yesterday = Carbon::now()->subDays(1);
+        $one_week_ago = Carbon::now()->subWeeks(1);
+        $opened_last_week = Ticket::where('created_at', '>=', $one_week_ago)
+            ->where('created_at', '<=', $yesterday)
+            ->where('opened_by',$user->id)
+            ->get()->count();
+        $closed_last_week = Ticket::where('created_at', '>=', $one_week_ago)
+            ->where('created_at', '<=', $yesterday)
+            ->where('assigned_to',$user->id)
+            ->where('status', 2)
+            ->get()->count();
+        $open = Ticket::where('status', 0)
+            ->where('created_at', '>=', $one_week_ago)
+            ->where('created_at', '<=', $yesterday)
+            ->get()->count();
+        $pending = Ticket::where('status', 1)
+            ->where('created_at', '>=', $one_week_ago)
+            ->where('created_at', '<=', $yesterday)
+            ->get()->count();
+        $closed = Ticket::where('status', 2)
+            ->where('created_at', '>=', $one_week_ago)
+            ->where('created_at', '<=', $yesterday)
+            ->get()->count();
+
+        return [
+            'Opened last week' => $opened_last_week,
+            'closed last week' => $closed_last_week,
+            'opened count' => $open,
+            'pending count' => $pending,
+            'closed count' => $closed
+        ];
     }
 }
