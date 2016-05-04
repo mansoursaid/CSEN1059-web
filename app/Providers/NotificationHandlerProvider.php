@@ -7,6 +7,8 @@ use App\Ticket;
 use Illuminate\Support\Facades\Auth;
 use App\NotificationHandler;
 use App\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Session;
 
 class NotificationHandlerProvider extends ServiceProvider
 {
@@ -18,15 +20,23 @@ class NotificationHandlerProvider extends ServiceProvider
     public function boot()
     {
 
-//        Ticket::saved(function ($ticket) {
-//
-//            $user = $ticket->with('assigned_to')->first();
-//
-//            NotificationHandler::makeNotification($user, $ticket);
-//
-//            return true;
-//
-//        });
+        Ticket::saved(function ($ticket) {
+
+            try {
+                if ($ticket->assigned_to != null && $ticket->assigned_to != -1) {
+                    $user = \App\User::findOrFail($ticket->assigned_to);
+                    NotificationHandler::makeNotification($user, $ticket);
+                }
+            } catch(ModelNotFoundException $e) {
+                \Session::flash('error', $e->getMessage());
+            } catch(\Exception $e) {
+                \Session::flash('error', $e->getMessage());
+            }
+
+
+            return true;
+
+        });
 
     }
 

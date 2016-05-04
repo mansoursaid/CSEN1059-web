@@ -15,7 +15,7 @@
             @endforeach
         </ul>
     </li>
-    <li class="footer"><a href="#">View all</a></li>
+    <li class="footer"><a href="{{ action('NotificationsController@index') }}">View all</a></li>
 </ul>
 
 
