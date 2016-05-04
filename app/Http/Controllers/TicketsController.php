@@ -123,6 +123,24 @@ class TicketsController extends Controller
 
 //            dd(Input::get());
 
+            $assignedTo = Input::get('assigned_to');
+            try {
+                $userAssigned = \App\User::findOrFail($assignedTo);
+                if ($userAssigned->type != 0) {
+
+                    $ticketsNotClosedForUser = \App\Ticket::where('assigned_to', $assignedTo)->where('status', '<', 2)->get();
+                    if ($ticketsNotClosedForUser->count() >= 3) {
+                        $request->session()->flash('error', 'This user has been assigned to 3 tickets or more.');
+                        return response()->json('This user can not be assigned to the ticket', 422);
+                    }
+                }
+            } catch(ModelNotFoundException $e) {
+                return response()->json('This user can not be assigned to the ticket', 422);
+            } catch(\Exception $e) {
+                return response()->json('Error', 422);
+            }
+
+
             $this->validate($request, $rules);
 
             $customers = Customer::where('twitter_handle', Input::get('tweet_handle'));

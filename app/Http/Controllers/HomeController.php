@@ -25,6 +25,8 @@ class HomeController extends Controller
         $count = 2;
         $max_id = 0;
 
+        $newTweets = [];
+
         if (Cache::has('new_tweets' . $count . "-" . $max_id)) {
             $newTweets = Cache::get('new_tweets' . $count . "-" . $max_id);
 
@@ -59,7 +61,7 @@ class HomeController extends Controller
 
 
             foreach($supportSupervisors2 as $supportSupervisor) {
-                $assignedTickets = $groupedTickets->where('assigned_to', $supportSupervisor->id)->count();
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportSupervisor->id)->get()->count();
                 if ($assignedTickets < 3) {
                     array_push($supportSupervisors, $supportSupervisor);
                 }
@@ -67,11 +69,13 @@ class HomeController extends Controller
 
 
             foreach($supportAgents2 as $supportAgent) {
-                $assignedTickets = $groupedTickets->where('assigned_to', $supportAgent->id)->count();
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportAgent->id)->get()->count();
                 if ($assignedTickets < 3) {
                     array_push($supportAgents, $supportAgent);
                 }
             }
+
+
 
             return view('home.index', compact('newTweets', 'admins', 'supportSupervisors', 'supportAgents'));
         }
