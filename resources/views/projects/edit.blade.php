@@ -25,7 +25,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2">Project Name</label>
                                         <div class="col-sm-10 ">
-                                            <input type="text" name ="name" class="form-control">
+                                            <input type="text" name ="name" class="form-control" value="{{$project->name}}">
                                         </div>
                                     </div>
                                     <br>
@@ -34,15 +34,15 @@
                                     <div class="form-group">
                                         <label class="col-sm-2">Project Desc.</label>
                                         <div class="col-sm-10 ">
-                                            <textarea type="text" name="description" class="form-control"></textarea>
+                                            <textarea type="text" name="description" class="form-control" style="height:100px;">
+                                                {{ltrim($project->description)}}
+                                            </textarea>
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="box-footer">
+                                    <div class="box-footer" style="padding-top: 100px;">
                                         <input class="btn btn-primary pull-right" type="submit" value="Submit">
                                     </div>
-                                    <br>
-                                    <br>
                                 </form>
                             </div>
                         </div>
