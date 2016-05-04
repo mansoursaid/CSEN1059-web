@@ -307,6 +307,7 @@
                     "<div class='form-group'>" +
                     "<label>Assign to</label>" +
                     "<select name='assigned_to' class='form-control'>" +
+                    "<option value='-1'>NOT ASSIGNED</option>" +
                     "<optgroup label='Admins'></optgroup>" +
                     "@foreach($admins as $admin)" +
                     "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
@@ -322,8 +323,7 @@
                     "@endforeach" +
                     "</select>" +
                     "</div>" +
-
-
+                   
                     "<div class='form-group'>" +
                     "<label>Status</label>" +
                     "<select name='status' class='form-control'>" +

@@ -6,10 +6,14 @@ use App\Customer;
 use App\Ticket;
 use App\TwitterFunctions;
 use App\User;
+use App\Ticket_User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+
+use Mockery\CountValidator\Exception;
+
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Redirect;
@@ -26,6 +30,7 @@ class TicketsController extends Controller
         $tickets = Ticket::all();
         return view('tickets.index', compact('tickets'));
     }
+
 
     public function show($id)
     {
@@ -51,20 +56,53 @@ class TicketsController extends Controller
 
 
         try {
-
             $temp = $conversation->errors;
 
             Cache::forget('conv' . "-" . $ticket->tweet_id);
 
-            return view('errors.api.error.rate.limit.exceed');
+
+            return view('errors.api_error_rate_limit_exceed');
 
         } catch (\Exception $e) {
 
+            $groupedTickets = \App\Ticket::where('status', '<', 2);
+
             $admins = \App\User::ofType(0)->get();
-            $supportSupervisors = \App\User::ofType(1)->get();
-            $supportAgents = \App\User::ofType(10)->get();
+            $supportSupervisors2 = \App\User::ofType(1)->get();
+            $supportAgents2 = \App\User::ofType(10)->get();
+
+//            $admins = [];
+            $supportAgents = [];
+            $supportSupervisors = [];
+
+//            foreach($admins2 as $admin) {
+//                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
+//                if ($assignedTickets < 3) {
+//                    array_push($admins, $admin);
+//                }
+//            }
+
+
+            foreach($supportSupervisors2 as $supportSupervisor) {
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportSupervisor->id)->get()->count();
+                if ($assignedTickets < 3) {
+                    array_push($supportSupervisors, $supportSupervisor);
+                }
+            }
+
+
+            foreach($supportAgents2 as $supportAgent) {
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportAgent->id)->get()->count();
+                if ($assignedTickets < 3) {
+                    array_push($supportAgents, $supportAgent);
+                }
+            }
+            
+            $assignedToUser = null;
             try {
-                $assignedToUser = User::findOrFail($ticket->assigned_to);
+                if ($ticket->assigned_to != null) {
+                    $assignedToUser = User::findOrFail($ticket->assigned_to);
+                }
             } catch (ModelNotFoundException $e) {
                 return view('errors.404');
             }
@@ -73,6 +111,7 @@ class TicketsController extends Controller
 
 
         return view('tickets.show', compact('ticket', 'conversation', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser'));
+
     }
 
     public function create()
@@ -87,6 +126,8 @@ class TicketsController extends Controller
         if (Input::get('online') == null) {
             $rules = array(
                 'tweet_id' => 'required',
+
+
                 'premium' => 'required',
                 'urgency' => 'required',
                 'opened_by' => 'required',
@@ -111,7 +152,6 @@ class TicketsController extends Controller
 
         } else {
 
-
             $rules = array(
                 'tweet_id' => 'required',
                 'assigned_to' => 'required',
@@ -125,13 +165,15 @@ class TicketsController extends Controller
 
             $assignedTo = Input::get('assigned_to');
             try {
-                $userAssigned = \App\User::findOrFail($assignedTo);
-                if ($userAssigned->type != 0) {
+                if (intval($assignedTo) > 0) {
+                    $userAssigned = \App\User::findOrFail($assignedTo);
+                    if ($userAssigned->type != 0) {
 
-                    $ticketsNotClosedForUser = \App\Ticket::where('assigned_to', $assignedTo)->where('status', '<', 2)->get();
-                    if ($ticketsNotClosedForUser->count() >= 3) {
-                        $request->session()->flash('error', 'This user has been assigned to 3 tickets or more.');
-                        return response()->json('This user can not be assigned to the ticket', 422);
+                        $ticketsNotClosedForUser = \App\Ticket::where('assigned_to', $assignedTo)->where('status', '<', 2)->get();
+                        if ($ticketsNotClosedForUser->count() >= 3) {
+                            $request->session()->flash('error', 'This user has been assigned to 3 tickets or more.');
+                            return response()->json('This user can not be assigned to the ticket', 422);
+                        }
                     }
                 }
             } catch(ModelNotFoundException $e) {
@@ -159,7 +201,9 @@ class TicketsController extends Controller
             $ticket->tweet_id = Input::get('tweet_id');
             $user = Auth::user();
             $ticket->opened_by = $user->id;
-            $ticket->assigned_to = Input::get('assigned_to');
+            if (intval($assignedTo >= 1)) {
+                $ticket->assigned_to = Input::get('assigned_to');
+            }
             $ticket->customer_id = $customer->id; // will be changed later
             $ticket->status = Input::get('status'); // will be changed later
             $ticket->urgency = Input::get('urgency'); // will be changed later
@@ -197,6 +241,7 @@ class TicketsController extends Controller
             return view('errors.404');
         }
 
+
     }
 
     public function update($id)
@@ -214,6 +259,32 @@ class TicketsController extends Controller
             return view('errors.404');
         }
 
+    }
+ 
+    public function assign_to($id){
+        try{
+            $ticket = Ticket::find($id);
+            $uid = Input::get('assigned_to');
+            $oldid = Input::get('old_assigned');
+            $user = User::findOrfail($uid);
+            if(isset($user) && $uid != -1){
+                $myTickets = Ticket_User::where('user_id',$uid)->count();
+                if($myTickets < 3){
+                    $ticket->assigned_to = $uid;
+                    $myTicket = Ticket_User::where('ticket_id',$id)->where('user_id',$oldid)->first();
+                    if(isset($myTicket)){
+                        $ticket->users()->detach($oldid);
+                    }
+                        $ticket->users()->attach($uid);
+                    
+                }
+            }
+            $ticket->save();
+            
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
     }
 
     /*public function deleteStatus($id){
