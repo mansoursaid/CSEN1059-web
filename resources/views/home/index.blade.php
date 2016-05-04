@@ -323,13 +323,7 @@
                     "@endforeach" +
                     "</select>" +
                     "</div>" +
-                    "<form  class='myForm' action='' method='post' style='display:none'>
-                    {!! method_field('patch') !!}
-                    <input type='hidden' name='_token' value='{{ csrf_token()}}'/>
-                    <input class='val' type='text' name='assigned_to'><br><br>
-                    <input type='submit' value='Submit'>
-                    </form>"
-
+                   
                     "<div class='form-group'>" +
                     "<label>Status</label>" +
                     "<select name='status' class='form-control'>" +
