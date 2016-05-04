@@ -11,6 +11,7 @@ namespace App;
 use App\Ticket;
 use App\MailNotification;
 use App\Events\NotificationsEvent;
+use App\Invitation;
 
 
 class NotificationHandler
@@ -51,7 +52,13 @@ class NotificationHandler
     }
 
 
+    public static function makeNotificationForCreatingInvitation($invitation) {
 
+    }
+
+    public static function makeNotificationForUpdatingInvitation($invitation) {
+
+    }
 
 
 
