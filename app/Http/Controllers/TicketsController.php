@@ -296,15 +296,16 @@ class TicketsController extends Controller
     }*/
 
 
-    public function getTicketsPerAgent(){
-        $users = User::all();
-        $allTickets = array();
-        $status1 = 0;
-        $status2 = 0;
-        $status3 = 0;
-        foreach ($users as $user){
-            $id = $user->id;
-            $name = $user->name;
+    public function getTicketsPerAgent($id){
+        try{
+            $users = User::find($id);
+            $allTickets = array();
+            $status1 = 0;
+            $status2 = 0;
+            $status3 = 0;
+            //foreach ($users as $user){
+               // $id = $user->id;
+               // $name = $user->name;
             $tickets = Ticket_User::where('user_id', $id)->get();
             foreach ($tickets as $ticket){
                 $status = $ticket->status;
@@ -316,11 +317,11 @@ class TicketsController extends Controller
                     $status3++;
                 }
             }
-            #$tmp = array($name => sizeof($tickets));
-            $tmp = array($name => array('status1' => $status1 ,'status2' => $status2 ,'status3' => $status3 ));
-            $allTickets[] = $tmp;
+                #$tmp = array($name => sizeof($tickets));
+            $allTickets[] = array('status1' => $status1 ,'status2' => $status2 ,'status3' => $status3 );
+               
+            return $allTickets;
         }
-        return $allTickets;
     }
 
     }
