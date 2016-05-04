@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+
+use Mockery\CountValidator\Exception;
+
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Redirect;
@@ -26,6 +29,7 @@ class TicketsController extends Controller
         $tickets = Ticket::all();
         return view('tickets.index', compact('tickets'));
     }
+
 
     public function show($id)
     {
@@ -76,6 +80,7 @@ class TicketsController extends Controller
 
 
         return view('tickets.show', compact('ticket', 'conversation', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser'));
+
     }
 
     public function create()
@@ -90,6 +95,8 @@ class TicketsController extends Controller
         if (Input::get('online') == null) {
             $rules = array(
                 'tweet_id' => 'required',
+
+
                 'premium' => 'required',
                 'urgency' => 'required',
                 'opened_by' => 'required',
@@ -202,6 +209,7 @@ class TicketsController extends Controller
         } catch (ModelNotFoundException $ex) {
             return view('errors.404');
         }
+
 
     }
 

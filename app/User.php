@@ -114,4 +114,5 @@ class User extends Authenticatable
         $user = User::find($id);
         return ucfirst($user->name);
     }
+
 }
