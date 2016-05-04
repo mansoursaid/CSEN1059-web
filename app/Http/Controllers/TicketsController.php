@@ -56,10 +56,10 @@ class TicketsController extends Controller
 
 
         try {
-
             $temp = $conversation->errors;
 
             Cache::forget('conv' . "-" . $ticket->tweet_id);
+
 
             return view('errors.api.error.rate.limit.exceed');
 
