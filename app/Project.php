@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     protected $fillable = [
-        'name', 'description',
+        'name', 'description', 'created_by',
     ];
 
     protected $table = 'projects';
 
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->withTimestamps();
     }
 }
