@@ -55,6 +55,7 @@
                 <li><a href="/tickets"><i class="fa fa-link"></i> <span>All tickets</span></a></li>
                 <li><a href="statistics.html"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
                 <li><a href="my_settings.html"><i class="fa fa-link"></i> <span>Settings</span></a></li>
+                <li><a href="/customers"><i class="fa fa-link"></i> <span>Customers</span></a></li>
             </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
