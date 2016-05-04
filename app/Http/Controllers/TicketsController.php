@@ -6,6 +6,7 @@ use App\Customer;
 use App\Ticket;
 use App\TwitterFunctions;
 use App\User;
+use App\Ticket_User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -174,15 +175,27 @@ class TicketsController extends Controller
         }
 
     }
-
+ 
     public function assign_to($id){
         try{
-            $ticket = Ticket::findOrFail($id);
-            $name = Input::get('assigned_to');
-            $user =  User::where('name', $name)->first();
-            $uid = $user->id;
-            $ticket->assigned_to = $uid;
+            $ticket = Ticket::find($id);
+            $uid = Input::get('assigned_to');
+            $oldid = Input::get('old_assigned');
+            $user = User::findOrfail($uid);
+            if(isset($user) && $uid != -1){
+                $myTickets = Ticket_User::where('user_id',$uid)->count();
+                if($myTickets < 3){
+                    $ticket->assigned_to = $uid;
+                    $myTicket = Ticket_User::where('ticket_id',$id)->where('user_id',$oldid)->first();
+                    if(isset($myTicket)){
+                        $ticket->users()->detach($oldid);
+                    }
+                        $ticket->users()->attach($uid);
+                    
+                }
+            }
             $ticket->save();
+            
             return Redirect::back();
         }catch (ModelNotFoundException $ex){
             return view('errors.404');

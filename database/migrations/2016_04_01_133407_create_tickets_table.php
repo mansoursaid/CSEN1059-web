@@ -29,10 +29,7 @@ class CreateTicketsTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->foreign('assigned_to')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+           
             $table->timestamps();
         });
     }
