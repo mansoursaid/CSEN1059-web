@@ -23,8 +23,10 @@ class NotificationHandlerProvider extends ServiceProvider
         Ticket::saved(function ($ticket) {
 
             try {
-                $user = \App\User::findOrFail($ticket->assigned_to);
-                NotificationHandler::makeNotification($user, $ticket);
+                if ($ticket->assigned_to != null && $ticket->assigned_to != -1) {
+                    $user = \App\User::findOrFail($ticket->assigned_to);
+                    NotificationHandler::makeNotification($user, $ticket);
+                }
             } catch(ModelNotFoundException $e) {
                 \Session::flash('error', $e->getMessage());
             } catch(\Exception $e) {
