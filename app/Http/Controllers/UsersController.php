@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Input;
 use App\User;
 use DB;
 use Auth;
-// use MailNotification;
 
 class UsersController extends Controller
 {
@@ -42,13 +41,13 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        return $users;
     }
 
     public function show($id)
     {
         $user = $this->get_user($id);
-        return view('users.show', compact('user'));
+        return $user;
     }
 
     public function create()

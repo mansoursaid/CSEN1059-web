@@ -22,6 +22,7 @@ class ProjectsController extends Controller
     public function create(){
         return view('projects.create');
     }
+
     public function store(Request $request){
         $rules = array(
             'name'=>'required',
@@ -35,13 +36,16 @@ class ProjectsController extends Controller
         $project->save();
         return $project;
     }
+
     public function destroy(Project $project){
         $project->delete();
     }
+
     public function edit($id){
         $project = Project::findOrfail($id);
         return view('projects.edit')->with('project',$project);
     }
+
     public function update($id){
         $project = Project::findOrfail($id);
         $project->name = Input::get('name');
