@@ -19,7 +19,7 @@ class CreateTicketsTable extends Migration
             $table->integer('customer_id')->unsigned();
             $table->integer('status');
             $table->integer('opened_by')->unsigned();
-            $table->integer('assigned_to')->unsigned();
+            $table->integer('assigned_to')->unsigned()->nullable();
             $table->integer('urgency');
             $table->foreign('customer_id')
                 ->references('id')

@@ -74,7 +74,11 @@
                 <!-- form start -->
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <p>Assigned to :   <a href="/users/{{ $assignedToUser->id }}"> <b>{{ $assignedToUser->name }}</b></a> </p><br>
+                        @if($assignedToUser != null)
+                            <p>Assigned to :   <a href="/users/{{ $assignedToUser->id }}"> <b>{{ $assignedToUser->name }}</b></a> </p><br>
+                        @else
+                            <p>Not assigned</p>
+                        @endif
                         <p>Status : <span class="pull-right badge bg-green">{{ $ticket->status }}</span></p><br>
                         <p>Urgency : <span class="pull-right badge bg-red">{{ $ticket->urgency }}</span></p>
                         @if($ticket->premium)
