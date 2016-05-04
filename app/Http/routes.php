@@ -88,3 +88,4 @@ Route::get('fire', function () {
 
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
+Route::patch('/tickets/{id}/assign','TicketsController@assign_to');

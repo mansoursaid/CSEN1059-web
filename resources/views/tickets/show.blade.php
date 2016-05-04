@@ -99,7 +99,7 @@
                     <div class="margin">
                         <div class="form-group">
                             <label>Reassign to</label>
-                            <select class="form-control">
+                            <select id='reassignForm' class="form-control">
                                 <optgroup label="--Admins--">
                                     @foreach($admins as $admin)
                                         <option value="{{ $admin->id }}">{{ $admin->name }}</option>
@@ -119,7 +119,7 @@
                         </div>
                         <div class="form-group" style="float: right;">
                             {{--<button class="btn btn-default">Cancel</button>--}}
-                            <button class="btn btn-primary">Save</button>
+                            <button id="reassignBtn" class="btn btn-primary">Save</button>
                         </div>
                     </div>
 
@@ -167,7 +167,13 @@
         </div>
 
     </div>
-
+<form  class="myForm" action="/tickets/{{ $ticket->id }}/assign" method="post" style="display:none">
+    {!! method_field('patch') !!}
+    <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
+    <input class="val" type="text" name="assigned_to"><br><br>
+    <input class="val2" type="text" name="old_assigned"><br><br>
+    <input type="submit" value="Submit">
+</form>
 
 
 
@@ -181,5 +187,15 @@
             $('#lastTweetId').val(lastTimeLineLiId);
         });
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $("button#reassignBtn").click(function(){
+               $(".val").val($('#reassignForm').val());
+               $(".val2").val({{$ticket->assigned_to}});
+               $(".myForm").submit();
+            });
+            
+        });
+</script>
 
 @endsection
