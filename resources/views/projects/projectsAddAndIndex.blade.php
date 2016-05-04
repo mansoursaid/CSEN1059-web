@@ -117,8 +117,8 @@
                                         </li>
                                         <!--  -->
                                         <li style="margin-top: 20px;">
-                                            <input class="btn btn-info pull-right" id="edit_project" value="Edit" style="width:44%">
-                                            <input class="btn btn-info" id="delete_project" value="Delete" style="width:44%">
+                                            <input class="btn btn-info pull-right" id="edit_project" val="{{$project->id}}" value="Edit" style="width:44%">
+                                            <input class="btn btn-info" id="delete_project" val="{{$project->id}}" value="Delete" style="width:44%">
                                         </li>
                                         <!--  -->
                                         <li id="visually-hidden">
@@ -176,7 +176,7 @@
         // on click on delete_project button a confirmation modal will appear & we will store the project delete button id
         $(document).on('click', '#delete_project', function(){
             $('#delete_project_confirmation_modal').modal('show');
-            $current_submit_button = 'input[value="' + $('#delete_project_form').attr('value') + '"]#delete_project_form';
+            $current_submit_button = 'input[value="' + $(this).attr('val') + '"]#delete_project_form';
             console.log($current_submit_button);
         });
 
@@ -188,7 +188,7 @@
 
         // on click on edit_user button the user will be redirected to the users.edit view
         $(document).on('click', '#edit_project', function(){
-            $current_submit_button = 'input[value="' + $('#edit_project_form').attr('value') + '"]#edit_project_form';
+            $current_submit_button = 'input[value="' + $(this).attr('val') + '"]#edit_project_form';
             $($current_submit_button).click();
             console.log($current_submit_button);
         });
