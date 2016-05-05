@@ -92,3 +92,4 @@ Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
 Route::resource('customers', 'CustomerController');
 Route::patch('/tickets/{id}/assign','TicketsController@assign_to');
+Route::get('/tickets/{id}/claim','TicketsController@claim');
