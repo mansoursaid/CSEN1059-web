@@ -81,7 +81,9 @@ class TableSeeder extends Seeder
                 'status' => $faker->randomElement($ticket_status),
                 'opened_by' => $faker->randomElement($users),
                 'assigned_to' => null,
-                'urgency' => $faker->randomElement($ticket_urgency)
+                'urgency' => $faker->randomElement($ticket_urgency),
+                'title' => $faker->name,
+                'description' => $faker->text
             ]);
         }
 

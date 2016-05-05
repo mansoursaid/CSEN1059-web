@@ -65,47 +65,11 @@
 
         <div class="col-md-6" id="toAddATicket">
 
-
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Create ticket</h3>
-                </div>
-                <!-- /.box-header -->
-                <!-- form start -->
-                <form class="form-horizontal">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
-
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputEmail3" placeholder="Title">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail4" class="col-sm-2 control-label">Description</label>
-
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputEmail4" placeholder="Title">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword3" class="col-sm-2 control-label">Customer's email</label>
-
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="inputPassword3" placeholder="email">
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-info pull-right">Create</button>
-                    </div>
-                    <!-- /.box-footer -->
-                </form>
-            </div>
-
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Latest tickets</h3>
@@ -276,7 +240,7 @@
 //                    console.log('opened');
                 },
                 error: function () {
-                    alert('The ticket can not be opened. Try again!');
+                    alert('There is an error!');
 //                    console.log('not opened');
                 }
             });
@@ -308,22 +272,25 @@
                     "<label>Assign to</label>" +
                     "<select name='assigned_to' class='form-control'>" +
                     "<option value='-1'>NOT ASSIGNED</option>" +
+                    "@if(Auth::user()->type == 0)" +
                     "<optgroup label='Admins'></optgroup>" +
                     "@foreach($admins as $admin)" +
                     "<option value='{{ $admin->id }}'>{{ $admin->name }}</option>" +
                     "@endforeach" +
-
                     "<optgroup label='Support supervisors'></optgroup>" +
                     "@foreach($supportSupervisors as $supportSupervisor)" +
                     "<option value='{{ $supportSupervisor->id }}'>{{ $supportSupervisor->name }}</option>" +
                     "@endforeach" +
+                    "@endif" +
+                    "@if(Auth::user()->type < 2)" +
                     "<optgroup label='Support agents'></optgroup>" +
                     "@foreach($supportAgents as $supportAgent)" +
                     "<option value='{{ $supportAgent->id }}'>{{ $supportAgent->name }}</option>" +
                     "@endforeach" +
+                    "@endif" +
                     "</select>" +
                     "</div>" +
-                   
+
                     "<div class='form-group'>" +
                     "<label>Status</label>" +
                     "<select name='status' class='form-control'>" +

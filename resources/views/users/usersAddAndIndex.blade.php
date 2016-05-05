@@ -118,6 +118,7 @@
                                     <h3 class="widget-user-username">{{$user->name}}</h3>
                                     <h5 class="widget-user-desc">{{$usersTypeStr}}</h5>
                                 </div>
+                                @if(Auth::user()->type < 2)
                                 <div class="box-footer no-padding">
                                     <ul class="nav nav-stacked">
                                         <li><a href="#">Projects
@@ -164,23 +165,28 @@
                                                </li>
                                         </ul>
                                         <!--  -->
-                                        <li>
-                                            <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
-                                            <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
-                                        </li>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        @if (Auth::user()->type == 0)
+                                            <li>
+                                                <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
+                                                <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
+                                            </li>
                                         <!--  -->
-                                        <li id="visually-hidden">
-                                            {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
-                                            {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
-                                            {{ Form::close() }}
-                                            <!--  -->
-                                            {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
-                                            {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
-                                            {{ Form::close() }}
-
-                                        </li>
+                                            <li id="visually-hidden">
+                                                {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
+                                                {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
+                                                {{ Form::close() }}
+                                                <!--  -->
+                                                {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
+                                                {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
+                                                {{ Form::close() }}
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach

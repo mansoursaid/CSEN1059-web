@@ -116,20 +116,25 @@
                                             <div style="margin-left: 22px;">{{ App\User::getName($project->created_by) }}</div>
                                         </li>
                                         <!--  -->
-                                        <li style="margin-top: 20px;">
-                                            <input class="btn btn-info pull-right" id="edit_project" val="{{$project->id}}" value="Edit" style="width:44%">
-                                            <input class="btn btn-info" id="delete_project" val="{{$project->id}}" value="Delete" style="width:44%">
-                                        </li>
-                                        <!--  -->
-                                        <li id="visually-hidden">
-                                            {{ Form::open(array('route' => array('projects.destroy', $project->id), 'method' => 'delete')) }}
-                                            {!! Form::submit($project->id, array('id' => 'delete_project_form')) !!}
-                                            {{ Form::close() }}
+                                        <br>
+                                        <br>
+                                        <br>
+                                        @if (Auth::user()->type == 0)
+                                            <li style="margin-top: 20px;">
+                                                <input class="btn btn-info pull-right" id="edit_project" val="{{$project->id}}" value="Edit" style="width:44%">
+                                                <input class="btn btn-info" id="delete_project" val="{{$project->id}}" value="Delete" style="width:44%">
+                                            </li>
                                             <!--  -->
-                                            {{ Form::open(array('route' => array('projects.edit', $project->id), 'method' => 'get')) }}
-                                            {!! Form::submit($project->id, array('id' => 'edit_project_form')) !!}
-                                            {{ Form::close() }}
-                                        </li>
+                                            <li id="visually-hidden">
+                                                {{ Form::open(array('route' => array('projects.destroy', $project->id), 'method' => 'delete')) }}
+                                                {!! Form::submit($project->id, array('id' => 'delete_project_form')) !!}
+                                                {{ Form::close() }}
+                                                <!--  -->
+                                                {{ Form::open(array('route' => array('projects.edit', $project->id), 'method' => 'get')) }}
+                                                {!! Form::submit($project->id, array('id' => 'edit_project_form')) !!}
+                                                {{ Form::close() }}
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>

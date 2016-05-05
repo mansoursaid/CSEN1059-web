@@ -46,6 +46,21 @@ class MailNotification {
 
     }
 
+    public static function mailCreateInvitation($users, $ticketId, $time, $user2) {
+            dd($users);
+        $emails = [];
+        foreach ($users as $user) {
+            array_push($emails, $user->email);
+        }
+
+        Mail::queue('mails.create_invitation', ['userName' => $user2->name, 'ticketId' => $ticketId, 'time' => $time],
+            function($message) use ($emails)
+            {
+                $message->to($emails)->subject('Ticket invitation');
+            });
+    }
+
+
     public static function mailInvitation($users, $name, $email, $password, $type) {
 
         $emails = [];

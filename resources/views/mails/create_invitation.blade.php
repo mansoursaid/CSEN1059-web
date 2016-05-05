@@ -1,0 +1,1 @@
+{{ $userName }} has invited you to ticket with id {{ $ticketId }} at {{ $time }}

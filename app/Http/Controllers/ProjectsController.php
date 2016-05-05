@@ -12,7 +12,7 @@ class ProjectsController extends Controller
 {
 
     public function __construct() {
-        $this->middleware('isAdmin', ['only' => ['projectsAddAndIndex', 'destroy', 'edit', 'update']]);
+        $this->middleware('isAdmin', ['only' => ['destroy', 'edit', 'update']]);
     }
 
     public function index(){

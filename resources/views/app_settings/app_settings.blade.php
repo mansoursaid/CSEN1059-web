@@ -43,19 +43,34 @@
                 <div class="box-body" style="display: block;">
                     <!--Logo-->
                     <div class="widget-user-image">
-                        <img class="img-circle" src="{{ asset('robusta_logo.png') }}" alt="Logo">
-                    </div>
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <input type="file" id="exampleInputFile">
-
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        <img class="img-square" style="width:100px; height:100px;" src="{{ asset('robusta_logo.png') }}" alt="Logo" style="height: 80px; width: 80px;">
+                    <div class="upload-image-container" style="border-bottom:1px solid gray; padding-bottom: 10px; margin-bottom:10px;">
+                        <div class="about-section" style="margin-top:25px;">
+                            <div class="text-content">
+                                <div class="span7 offset1">
+                                    @if(Session::has('success'))
+                                        <div class="alert-box success">
+                                            <h2>{!! Session::get('success') !!}</h2>
+                                        </div>
+                                    @endif
+                                    <div class="secure" style="float:left; margin-right:10px; padding-top:7px; font-weight:700;">Upload Logo</div>
+                                    {!! Form::open(array('url'=>'upload','method'=>'POST', 'files'=>true)) !!}
+                                    <div class="control-group" style="float:left; padding-top: 7px;">
+                                        <div class="controls">
+                                            {!! Form::file('file') !!}
+                                            <p class="errors">{!!$errors->first('file')!!}</p>
+                                            @if(Session::has('error'))
+                                                <p class="errors">{!! Session::get('error') !!}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div id="success"> </div>
+                                    {!! Form::submit('Submit', ['class' => 'btn btn-large btn-primary openbutton', 'style'=>'margin-left:84px;']) !!}
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-block btn-primary">Change logo</button>
-                        </div>
-                    </form>
+                    </div><!--./lin-container-->
                     <!-- Color Picker -->
                     <!--  -->
                     <!--  -->

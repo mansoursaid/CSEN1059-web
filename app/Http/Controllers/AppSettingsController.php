@@ -8,12 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Filesystem\Filesystem;
 
+
+use Validator;
+use Session;
+use Redirect;
 use App\Http\Requests;
 use Redirect;
 
 class AppSettingsController extends Controller
 {
-    //
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('isAdmin');
+    }
 
     public function showSettings(Request $request) {
 
@@ -143,6 +151,28 @@ class AppSettingsController extends Controller
     }
 
 
+    public function changeAppLogo() {
+        $file = array('file' => Input::file('file'));
+        $rules = array('file' => 'required|image',);
+        $validator = Validator::make($file, $rules);
+        if ($validator->fails()) {
+            return Redirect::to('app_settings')->withInput()->withErrors($validator);
+        }
+        else {
+            if (Input::file('file')->isValid()) {
+                $destinationPath = base_path() . '/public';
+                $extension = Input::file('file')->getClientOriginalExtension();
+                $fileName = 'robusta_logo.png';
+                Input::file('file')->move($destinationPath, $fileName);
+                Session::flash('success', 'Upload successfully');
+                return Redirect::to('app_settings');
+            }
+            else {
+                Session::flash('error', 'uploaded file is not valid');
+                return Redirect::to('app_settings');
+            }
+        }
+    }
 
 
 

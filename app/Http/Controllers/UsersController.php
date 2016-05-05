@@ -16,7 +16,7 @@ class UsersController extends Controller
 
     public function __construct() {
         $this->middleware('auth', ['except' => ['create']]);
-        $this->middleware('isAdmin', ['only' => ['usersAddAndIndex', 'destroy', 'edit', 'update']]);
+        $this->middleware('isAdmin', ['only' => ['destroy', 'edit', 'update']]);
     }
 
     /**
