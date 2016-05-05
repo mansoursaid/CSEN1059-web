@@ -11,12 +11,15 @@ namespace App;
 use App\Ticket;
 use App\MailNotification;
 use App\Events\NotificationsEvent;
+use App\Invitation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class NotificationHandler
 {
 
-    public static function makeNotification($user, $ticket) {
+    public static function makeNotification($user, $ticket)
+    {
 
         $newStatus = $ticket->status;
 
@@ -29,7 +32,6 @@ class NotificationHandler
         $mailCanNotClaim = false;
 
 
-
         if ($newStatus == 2) {
             $mailClose = true;
         }
@@ -40,7 +42,7 @@ class NotificationHandler
 
         if ($mailClose) {
             MailNotification::mailClaim([$user], $ticket);
-            event(new NotificationsEvent("The ticket with id ". $ticket->id." has been closed. You can claim another one.", $user));
+            event(new NotificationsEvent("The ticket with id " . $ticket->id . " has been closed. You can claim another one.", $user));
         }
 
         if ($mailCanNotClaim) {
@@ -51,9 +53,33 @@ class NotificationHandler
     }
 
 
+    public static function makeNotificationForCreatingInvitation($invitation)
+    {
+
+        try {
+            $userCreateInv = User::findOrFail($invitation->created_by);
+            $userInvited = User::findOrFail($invitation->user_invited);
+            $ticket = Ticket::findOrFail($invitation->ticket_id);
+
+            MailNotification::mailCreateInvitation([$userInvited], $ticket->id, $invitation->created_at, $userCreateInv);
+            event(new NotificationsEvent($userCreateInv->name.' has invited you to ticket with id '.$ticket->id.' at '.$invitation->created_at, $userInvited));
 
 
 
+        } catch(ModelNotFoundException $e) {
+            echo 'error';
+        } catch(\Exception $e) {
+            echo 'error';
+        }
+
+
+
+    }
+
+//    public static function makeNotificationForUpdatingInvitation($invitation)
+//    {
+//
+//    }
 
 
 }
