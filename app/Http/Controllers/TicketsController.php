@@ -23,6 +23,10 @@ use App\NotificationHandler;
 class TicketsController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('toShowTicket', ['only' => ['show']]);
+    }
 
     public function index()
     {
