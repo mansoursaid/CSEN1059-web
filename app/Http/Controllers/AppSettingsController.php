@@ -6,10 +6,14 @@ use App\PaypalConfig;
 use App\TwitterConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Filesystem\Filesystem;
+
+
 use Validator;
 use Session;
 use Redirect;
 use App\Http\Requests;
+use Redirect;
 
 class AppSettingsController extends Controller
 {
@@ -120,6 +124,32 @@ class AppSettingsController extends Controller
 
         return redirect()->action('AppSettingsController@showSettings');
     }
+
+    public function changeApplicationColor(Request $request) {
+
+        $theme = config('app_theme.appTheme'); //retrive
+
+        $array = config('app_theme');
+
+        $value = Input::get('theme-name');
+
+        $array['appTheme'] = $value; //set  the value
+
+        $data = var_export($array, 1);
+
+        $fileSystem = new Filesystem();
+
+        if($fileSystem->put(app_path() . "/../config/app_theme.php", "<?php\n return $data ;")) {
+            return Redirect::back();
+        } else {
+            return Redirect::back();
+        }
+
+
+
+
+    }
+
 
     public function changeAppLogo() {
         $file = array('file' => Input::file('file'));

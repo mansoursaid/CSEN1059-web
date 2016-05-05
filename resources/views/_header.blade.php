@@ -2,7 +2,9 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo"><b>Admin</b>LTE</a>
+    <a href="index2.html" class="logo">
+        <img class="img-square" style="width:50px; height:50px;" src="{{ asset('robusta_logo.png') }}" alt="Logo">
+    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">

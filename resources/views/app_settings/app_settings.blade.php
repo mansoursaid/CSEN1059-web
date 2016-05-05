@@ -72,21 +72,46 @@
                         </div>
                     </div><!--./lin-container-->
                     <!-- Color Picker -->
-                    <form>
-                        <div class="form-group">
-                            <label>Color picker:</label>
-
-                            <div class="input-group my-colorpicker2 colorpicker-element">
-                                <input type="text" class="form-control">
-
-                                <div class="input-group-addon">
-                                    <i style="background-color: rgb(0, 0, 0);"></i>
-                                </div>
-                            </div>
-                            <!-- /.input group -->
+                    <!--  -->
+                    <!--  -->
+                    <hr>
+                    <p>Change the color of the application</p>
+                    <div class="box-body no-padding">
+                          <table id="layout-skins-list" class="table table-striped bring-up nth-2-center">
+                            <thead>
+                              <tr>
+                                <th style="width: 210px;">Skin Class</th>
+                                <th>Preview</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><code>skin-blue</code></td>
+                                <td><a href="#" data-skin="skin-blue" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a></td>
+                              </tr>
+                              <tr>
+                                <td><code>skin-yellow</code></td>
+                                <td><a href="#" data-skin="skin-yellow" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a></td>
+                              </tr>
+                              <tr>
+                                <td><code>skin-purple</code></td>
+                                <td><a href="#" data-skin="skin-purple" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a></td>
+                              </tr>
+                              <tr>
+                                <td><code>skin-red</code></td>
+                                <td><a href="#" data-skin="skin-red" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a></td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-block btn-primary">Confirm</button>
+                    <!--  -->
+                    <form id="change_app_theme" action="/changeApplicationColor" method="post" id="visually-hidden">
+                        <div class="input-group">
+                            <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
+                            <input type="hidden" id="theme-name" name="theme-name" value="{{ config('app_theme.appTheme') }}" class="form-control">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary btn-flat"></button>
+                                </span>
                         </div>
                     </form>
                     <!-- /.form group -->
@@ -94,8 +119,6 @@
                 <!-- /.box-body -->
             </div>
         </div>
-
-
     </div>
     <div class="row">
 
@@ -289,10 +312,10 @@
 
     <script src="{{ asset('/bower_components/admin-lte/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
     <script>
-        $(function () {
-            //color picker with addon
-            $(".my-colorpicker2").colorpicker();
-
+        $(document).on('click', 'tbody a', function(){
+            var $new_skin = $(this).attr('data-skin');
+            $('input#theme-name').attr('value', $new_skin);
+            $('form#change_app_theme').submit();
         });
     </script>
 

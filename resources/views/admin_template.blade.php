@@ -5,7 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
     @include('_head')
-<body class="skin-blue">
+<body class="{{ config('app_theme.appTheme') }}">
 <div class="wrapper">
 
     <!-- Header -->
