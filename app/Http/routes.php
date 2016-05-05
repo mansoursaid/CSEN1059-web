@@ -76,6 +76,8 @@ Route::post('change_twitter_consumer_key', 'AppSettingsController@changeTwitterC
 Route::post('change_twitter_consumer_key_secret', 'AppSettingsController@changeTwitterConsumerKeySecret');
 Route::post('change_twitter_access_token', 'AppSettingsController@changeTwitterAccessToken');
 Route::post('change_twitter_access_token_secret', 'AppSettingsController@changeTwitterAccessTokenSecret');
+Route::post('changeApplicationColor', 'AppSettingsController@changeApplicationColor');
+
 
 Route::post('change_paypal_client_id', 'AppSettingsController@changePaypalClientID');
 Route::post('change_paypal_secret_key', 'AppSettingsController@changePaypalSecretKey');

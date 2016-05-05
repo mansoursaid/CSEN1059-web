@@ -90,13 +90,13 @@
                           </table>
                         </div>
                     <!--  -->
-                    <form action="change_app_thenem" method="post">
+                    <form id="change_app_theme" action="/changeApplicationColor" method="post" id="visually-hidden">
                         <div class="input-group">
                             <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                            <input type="text" name="twitter_consumer_key_secret" value="{{ $twitterConsumerKeySecret }}" placeholder="Twitter consumer key secret" class="form-control">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-primary btn-flat">Change</button>
-                                    </span>
+                            <input type="hidden" name="color_class_name" value="the color class" class="form-control">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary btn-flat"></button>
+                                </span>
                         </div>
                     </form>
                     <!-- /.form group -->
