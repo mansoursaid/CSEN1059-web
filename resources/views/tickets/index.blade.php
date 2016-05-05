@@ -181,7 +181,7 @@
                                         @foreach($tickets as $ticket)
                                             <tr role="row" class="odd"
                                             @if(is_null($ticket->assigned_to))
-                                                bgcolor="#adff2f"
+                                                style="background-color: #adff2f"
                                             @endif>
                                                 <td class="sorting_1">{{ $ticket->id}}</td>
                                                 <td>{{ $ticket->get_name($ticket->opened_by)}}</td>
