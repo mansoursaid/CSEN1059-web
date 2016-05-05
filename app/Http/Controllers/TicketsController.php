@@ -291,6 +291,29 @@ class TicketsController extends Controller
         }
     }
 
+    public function claim(){
+        try{
+            $ticket = Ticket::find($id);
+            $uid = Auth::user()->id;
+            $user = User::findOrfail($uid);
+            if(isset($user) && $uid != -1){
+                if($user->type != 00){
+                    $myTickets = Ticket::where('assigned_to', $uid)->count();
+                    if($myTickets < 3){
+                        $ticket->assigned_to = $uid;
+                    }
+                }else{
+                    $ticket->assigned_to = $uid;
+                }
+            }
+            $ticket->save();
+            
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+    }
+
     
     
 }
