@@ -77,6 +77,28 @@ class Ticket extends Model
             return 'open';
         }
     }
+
+    public function get_urgency($id){
+        if($id == 0){
+            return 'Low';
+        }
+        if($id == 1){
+            return 'Medium';
+        }
+        if($id == 2){
+            return 'High';
+        }
+    }
+
+    public function get_premium($id){
+        if($id == 0){
+            return 'No';
+        }
+        if($id == 1){
+            return 'Yes';
+        }
+    }
+
     public function get_name($id)
     {
         
