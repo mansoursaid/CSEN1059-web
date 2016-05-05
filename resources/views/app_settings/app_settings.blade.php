@@ -59,7 +59,7 @@
                     <!-- Color Picker -->
                     <form>
                         <div class="form-group">
-                            <label>Color picker with addon:</label>
+                            <label>Color picker:</label>
 
                             <div class="input-group my-colorpicker2 colorpicker-element">
                                 <input type="text" class="form-control">

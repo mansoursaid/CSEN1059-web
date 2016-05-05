@@ -157,7 +157,10 @@
                                     <tbody>
 
                                     @foreach($tickets as $ticket)
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd"
+                                        @if($ticket->assigned_to == null)
+                                            bgcolor="#adff2f"
+                                        @endif>
                                         <td class="sorting_1">{{ $ticket->id}}</td>
                                         <td>{{ $ticket->get_name($ticket->opened_by)}}</td>
                                         <td class="">{{ $ticket->get_name($ticket->customer_id)}}</td>
