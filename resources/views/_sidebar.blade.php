@@ -39,7 +39,7 @@
                 <li class="header">Sections</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li><a href="home.html"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
-                @if (Auth::user()->type == 0)
+                @if (Auth::user())
                     <li class="treeview">
                         <a href="#"><i class="fa fa-link"></i> <span>Admin panel</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu" style="display: none;">
@@ -48,14 +48,14 @@
                             <li><a href="/supervisors" onClick="window.location.reload()">Support supervisors</a></li>
                             <li><a href="/agents" onClick="window.location.reload()">Support agents</a></li>
                             <li><a href="/customers">Customers</a></li>
-                            <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>
                         </ul>
                     </li>
                 @endif
                 <li><a href="/tickets"><i class="fa fa-link"></i> <span>All tickets</span></a></li>
-                <li><a href="statistics.html"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
-                <li><a href="my_settings.html"><i class="fa fa-link"></i> <span>Settings</span></a></li>
-                <li><a href="/customers"><i class="fa fa-link"></i> <span>Customers</span></a></li>
+                <li><a href="statistics"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
+                @if (Auth::user()->type == 0)
+                    <li><a href="/app_settings"><i class="fa fa-link"></i> <span>Settings</span></a></li>
+                @endif
             </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->

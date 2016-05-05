@@ -164,21 +164,25 @@
                                                </li>
                                         </ul>
                                         <!--  -->
-                                        <li>
-                                            <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
-                                            <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
-                                        </li>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        @if (Auth::user()->type == 0)
+                                            <li>
+                                                <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
+                                                <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
+                                            </li>
                                         <!--  -->
-                                        <li id="visually-hidden">
-                                            {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
-                                            {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
-                                            {{ Form::close() }}
-                                            <!--  -->
-                                            {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
-                                            {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
-                                            {{ Form::close() }}
-
-                                        </li>
+                                            <li id="visually-hidden">
+                                                {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
+                                                {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
+                                                {{ Form::close() }}
+                                                <!--  -->
+                                                {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
+                                                {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
+                                                {{ Form::close() }}
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
