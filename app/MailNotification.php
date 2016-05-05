@@ -47,7 +47,7 @@ class MailNotification {
     }
 
     public static function mailCreateInvitation($users, $ticketId, $time, $user2) {
-
+            dd($users);
         $emails = [];
         foreach ($users as $user) {
             array_push($emails, $user->email);

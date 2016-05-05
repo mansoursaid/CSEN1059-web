@@ -124,16 +124,18 @@
                         <div class="form-group">
                             <label>Reassign to</label>
                             <select id='reassignForm' class="form-control">
-                                <optgroup label="--Admins--">
-                                    @foreach($admins as $admin)
-                                        <option value="{{ $admin->id }}">{{ $admin->name }}</option>
-                                    @endforeach
-                                </optgroup>
-                                <optgroup label="--Support supervisors--">
-                                    @foreach($supportSupervisors as $supportSupervisor)
-                                        <option value="{{ $supportSupervisor->id }}">{{ $supportSupervisor->name }}</option>
-                                    @endforeach
-                                </optgroup>
+                                @if (Auth::user()->type == 0)
+                                    <optgroup label="--Admins--">
+                                        @foreach($admins as $admin)
+                                            <option value="{{ $admin->id }}">{{ $admin->name }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                    <optgroup label="--Support supervisors--">
+                                        @foreach($supportSupervisors as $supportSupervisor)
+                                            <option value="{{ $supportSupervisor->id }}">{{ $supportSupervisor->name }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endif
                                 <optgroup label="--Support agents--">
                                     @foreach($supportAgents as $supportAgent)
                                         <option value="{{ $supportAgent->id }}">{{ $supportAgent->name }}</option>
@@ -253,6 +255,7 @@
                 $(".valTicket").val({{$ticket->id}});
                 $(".myFormInvite").submit();
             });
+
 
 
         });

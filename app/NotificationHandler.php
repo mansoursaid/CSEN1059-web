@@ -61,6 +61,12 @@ class NotificationHandler
             $userInvited = User::findOrFail($invitation->user_invited);
             $ticket = Ticket::findOrFail($invitation->ticket_id);
 
+            $notification =  new Notification();
+            $notification->status = 0;
+            $notification->user_id = $invitation->user_invited;
+            $notification->message = $userCreateInv->name.' has invited you to ticket with id '.$ticket->id.' at '.$invitation->created_at;
+            $notification->save();
+
             MailNotification::mailCreateInvitation([$userInvited], $ticket->id, $invitation->created_at, $userCreateInv);
             event(new NotificationsEvent($userCreateInv->name.' has invited you to ticket with id '.$ticket->id.' at '.$invitation->created_at, $userInvited));
 
@@ -68,8 +74,10 @@ class NotificationHandler
 
         } catch(ModelNotFoundException $e) {
             echo 'error';
+            return true;
         } catch(\Exception $e) {
             echo 'error';
+            return true;
         }
 
 
