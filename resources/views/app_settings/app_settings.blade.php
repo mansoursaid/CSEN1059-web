@@ -93,7 +93,7 @@
                     <form id="change_app_theme" action="/changeApplicationColor" method="post" id="visually-hidden">
                         <div class="input-group">
                             <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                            <input type="hidden" name="color_class_name" value="the color class" class="form-control">
+                            <input type="hidden" id="theme-name" name="theme-name" value="{{ config('app_theme.appTheme') }}" class="form-control">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-primary btn-flat"></button>
                                 </span>
@@ -299,10 +299,8 @@
     <script>
         $(document).on('click', 'tbody a', function(){
             var $new_skin = $(this).attr('data-skin');
-            var $old_skin = $('body').attr('class');
-
-            $('body').addClass($new_skin).removeClass($old_skin);
-
+            $('input#theme-name').attr('value', $new_skin);
+            $('form#change_app_theme').submit();
         });
     </script>
 
