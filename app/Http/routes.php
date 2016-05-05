@@ -91,4 +91,7 @@ Route::get('fire', function () {
 Route::resource('notifications', 'NotificationsController',
     ['only' => ['index']]);
 Route::resource('customers', 'CustomerController');
-Route::patch('/tickets/{id}/assign','TicketsController@assign_to');
+Route::resource('customers', 'CustomerController');
+
+Route::get('/customers/{id}/openTicket','CustomerController@openTicket');
+Route::post('/customers/{id}','CustomerController@openTicketUpdate');

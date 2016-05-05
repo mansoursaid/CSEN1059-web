@@ -1,5 +1,21 @@
 @extends('admin_template')
 
+@section('flash_messages')
+    @if (session('status'))
+        @if (session('status') == 'customer_ticket_success')
+            <div class="alert alert-success alert-dismissible">
+                <i class="icon fa fa-check"></i>
+                Customer ticket added successfully!
+            </div>
+        @elseif (session('status') == 'customer_ticket_failure')
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                Customer ticket was not added!
+            </div>
+        @endif
+    @endif
+@endsection
+
 @section('content')
     <section class="content">
 
