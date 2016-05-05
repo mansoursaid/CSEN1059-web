@@ -57,23 +57,72 @@
                         </div>
                     </form>
                     <!-- Color Picker -->
-                    <form>
-                        <div class="form-group">
-                            <label>Color picker with addon:</label>
-
-                            <div class="input-group my-colorpicker2 colorpicker-element">
-                                <input type="text" class="form-control">
-
-                                <div class="input-group-addon">
-                                    <i style="background-color: rgb(0, 0, 0);"></i>
-                                </div>
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-block btn-primary">Confirm</button>
-                        </div>
-                    </form>
+<!--  -->
+<!--  -->
+<hr>
+<p>Change the color of the application</p>
+<div class="box-body no-padding">
+      <table id="layout-skins-list" class="table table-striped bring-up nth-2-center">
+        <thead>
+          <tr>
+            <th style="width: 210px;">Skin Class</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>skin-blue</code></td>
+            <td><a href="#" data-skin="skin-blue" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-blue-light</code></td>
+            <td><a href="#" data-skin="skin-blue-light" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-yellow</code></td>
+            <td><a href="#" data-skin="skin-yellow" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-yellow-light</code></td>
+            <td><a href="#" data-skin="skin-yellow-light" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-green</code></td>
+            <td><a href="#" data-skin="skin-green" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-green-light</code></td>
+            <td><a href="#" data-skin="skin-green-light" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-purple</code></td>
+            <td><a href="#" data-skin="skin-purple" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-purple-light</code></td>
+            <td><a href="#" data-skin="skin-purple-light" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-red</code></td>
+            <td><a href="#" data-skin="skin-red" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-red-light</code></td>
+            <td><a href="#" data-skin="skin-red-light" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-black</code></td>
+            <td><a href="#" data-skin="skin-black" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+          <tr>
+            <td><code>skin-black-light</code></td>
+            <td><a href="#" data-skin="skin-black-light" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+<!--  -->
+<!--  -->
                     <!-- /.form group -->
                 </div>
                 <!-- /.box-body -->
@@ -274,9 +323,11 @@
 
     <script src="{{ asset('/bower_components/admin-lte/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
     <script>
-        $(function () {
-            //color picker with addon
-            $(".my-colorpicker2").colorpicker();
+        $(document).on('click', 'tbody a', function(){
+            var $new_skin = $(this).attr('data-skin');
+            var $old_skin = $('body').attr('class');
+
+            $('body').addClass($new_skin).removeClass($old_skin);
 
         });
     </script>
