@@ -103,7 +103,7 @@ class TicketsController extends Controller
                     array_push($supportAgents, $supportAgent);
                 }
             }
-            
+
             $assignedToUser = null;
             try {
                 if ($ticket->assigned_to != null) {
@@ -274,7 +274,7 @@ class TicketsController extends Controller
         }
 
     }
- 
+
     public function assign_to($id){
         try{
             $ticket = Ticket::find($id);
@@ -290,17 +290,40 @@ class TicketsController extends Controller
                         $ticket->users()->detach($oldid);
                     }
                         $ticket->users()->attach($uid);
-                    
+
                 }
             }
             $ticket->save();
-            
+
             return Redirect::back();
         }catch (ModelNotFoundException $ex){
             return view('errors.404');
         }
     }
 
-    
-    
+    public function claim($id){
+        try{
+            $ticket = Ticket::find($id);
+            $uid = Auth::user()->id;
+            $user = User::findOrfail($uid);
+            if(isset($user) && $uid != -1){
+                if($user->type != 00){
+                    $myTickets = Ticket::where('assigned_to', $uid)->where('status','<', 2)->get()->count();
+                    if($myTickets < 3){
+                        $ticket->assigned_to = $uid;
+                    }
+                }else{
+                    $ticket->assigned_to = $uid;
+                }
+            }
+            $ticket->save();
+
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
+    }
+
+
+
 }

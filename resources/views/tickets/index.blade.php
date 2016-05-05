@@ -182,9 +182,14 @@
                                             <tr role="row" class="odd">
                                                 <td class="sorting_1">{{ $ticket->id}}</td>
                                                 <td>{{ $ticket->get_name($ticket->opened_by)}}</td>
-                                                <td class="">{{ $ticket->get_name($ticket->customer_id)}}</td>
-                                                <td>{{ $ticket->get_name($ticket->assigned_to)}}</td>
-                                                <td><a href="ticket_show.html">Claim</a></td>
+                                                <td class="">{{ $ticket->getNameCustomer($ticket->customer_id)}}</td>
+                                                <td>
+                                                    @if($ticket->assigned_to == null)
+                                                        <a href="/tickets/{{$ticket->id}}/claim">Claim</a>
+                                                    @else
+                                                        {{ $ticket->get_name($ticket->assigned_to)}}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button"
@@ -352,10 +357,6 @@
 
 
         });
-
-
-
-
 
     </script>
 @endsection
