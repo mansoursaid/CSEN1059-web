@@ -240,7 +240,7 @@
 //                    console.log('opened');
                 },
                 error: function () {
-                    alert('The ticket can not be opened. Try again!');
+                    alert('There is an error!');
 //                    console.log('not opened');
                 }
             });

@@ -118,6 +118,7 @@
                                     <h3 class="widget-user-username">{{$user->name}}</h3>
                                     <h5 class="widget-user-desc">{{$usersTypeStr}}</h5>
                                 </div>
+                                @if(Auth::user()->type < 2)
                                 <div class="box-footer no-padding">
                                     <ul class="nav nav-stacked">
                                         <li><a href="#">Projects
@@ -185,6 +186,7 @@
                                         @endif
                                     </ul>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
