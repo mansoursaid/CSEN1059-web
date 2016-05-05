@@ -8,6 +8,8 @@ use Validator;
 use Response;
 use Redirect;
 use Session;
+use App\Ticket;
+use Auth;
 
 class CustomerController extends Controller
 {
@@ -98,5 +100,34 @@ class CustomerController extends Controller
         } else {
             return redirect()->action('CustomerController@edit', [$customers->id])->withErrors(['Failed']);
         }
+    }
+
+    public function openTicket($id) {
+
+        $customer = Customer::find($id);
+        return view('customers.openTicket', compact('customer'));
+    }
+
+    public function openTicketUpdate(Request $request, $cid) {
+
+        $customer = Customer::find($cid);
+        $rules = array(
+            'title' => 'required',
+            'description' => 'required',
+        );
+
+        $this->validate($request, $rules);
+
+        $ticket = new Ticket;
+        $ticket->opened_by = Auth::user()->id;
+        $ticket->customer_id = $cid;
+        $ticket->title = $request->title;
+        $ticket->description = $request->description;
+
+
+        $ticket->save();
+        $request->session()->flash('status', 'success');
+
+        return redirect("/tickets");
     }
 }

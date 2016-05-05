@@ -43,7 +43,8 @@
                                     <td></td>
                                 @endif
                                 <td>
-                                    <a href="{{ action('CustomerController@edit', [$customer->id]) }}">Edit</a>
+                                    <a href="{{ action('CustomerController@edit', [$customer->id]) }}">Edit</a>&nbsp;|&nbsp;
+                                    <a href="{{ action('CustomerController@openTicket', [$customer->id]) }}">Create Ticket</a>
                                     <br>
                                 </td>
                             </tr>

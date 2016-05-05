@@ -47,7 +47,7 @@
                             <li><a href="/admins" onClick="window.location.reload()">Administrators</a></li>
                             <li><a href="/supervisors" onClick="window.location.reload()">Support supervisors</a></li>
                             <li><a href="/agents" onClick="window.location.reload()">Support agents</a></li>
-                            <li><a href="customers.html">Customers</a></li>
+                            <li><a href="/customers">Customers</a></li>
                             <li><a href="tickets_attr.html">Statuses &amp; Urgencies</a></li>
                         </ul>
                     </li>
