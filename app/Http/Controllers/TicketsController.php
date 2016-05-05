@@ -31,8 +31,10 @@ class TicketsController extends Controller
     public function index()
     {
 
+        $myTickets = Ticket::where('assigned_to', Auth::id())->where('status', '<', 2)->get();
+
         $tickets = Ticket::all();
-        return view('tickets.index', compact('tickets'));
+        return view('tickets.index', compact('tickets', 'myTickets'));
     }
 
 
@@ -252,7 +254,15 @@ class TicketsController extends Controller
     {
         try {
             $ticket = Ticket::findOrFail($id);
-            $ticket->status = Input::get('status');
+            if (Input::get('status') != null) {
+                $ticket->status = Input::get('status');
+            }
+            if (Input::get('urgency') != null) {
+                $ticket->urgency = Input::get('urgency');
+            }
+            if (Input::get('premium') != null) {
+                $ticket->premium = Input::get('premium');
+            }
             $ticket->save();
 
 //            $user = User::findOrFail($ticket->assigned_to);
