@@ -84,9 +84,9 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'min:3',
-            'email' => 'email|unique:customers',
-            'phone_number' => 'numeric|unique:customers',
-            'twitter_handle' => 'regex:(@[a-zA-z0-9])|unique:customers'
+            'email' => 'email|unique:customers,email,'. $customers->id,
+            'phone_number' => 'numeric|unique:customers,phone_number,'.$customers->id,
+            'twitter_handle' => 'regex:(@[a-zA-z0-9])|unique:customers,twitter_handle,'.$customers->id
         ]);
         if ($validator->fails()) {
             Session::flash('error', $validator->messages());
