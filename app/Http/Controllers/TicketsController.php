@@ -301,7 +301,7 @@ class TicketsController extends Controller
         }
     }
 
-    public function claim(){
+    public function claim($id){
         try{
             $ticket = Ticket::find($id);
             $uid = Auth::user()->id;
