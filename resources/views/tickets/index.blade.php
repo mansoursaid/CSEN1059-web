@@ -166,7 +166,7 @@
                                             <tr role="row" class="odd">
                                                 <td class="sorting_1">{{ $ticket->id}}</td>
                                                 <td>{{ $ticket->get_name($ticket->opened_by)}}</td>
-                                                <td class="">{{ $ticket->get_name($ticket->customer_id)}}</td>
+                                                <td class="">{{ $ticket->getNameCustomer($ticket->customer_id)}}</td>
                                                 <td>
                                                     @if($ticket->assigned_to == null)
                                                         <a href="/tickets/{{$ticket->id}}/claim">Claim</a>
