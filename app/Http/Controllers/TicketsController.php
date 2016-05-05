@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Invitation;
 use App\Ticket;
 use App\TwitterFunctions;
 use App\User;
@@ -44,50 +45,44 @@ class TicketsController extends Controller
 
         try {
             $ticket = Ticket::findOrfail($id);
-//            return $ticket;
         } catch (ModelNotFoundException $e) {
             return view('errors.404');
         }
 
+        if ($ticket->tweet_id != null && $ticket->tweet_id != "") {
+            $title = null;
+            $description = null;
+            if (Cache::has('conv' . "-" . $ticket->tweet_id)) {
+                $conversation = Cache::get('conv' . "-" . $ticket->tweet_id);
 
-        if (Cache::has('conv' . "-" . $ticket->tweet_id)) {
-            $conversation = Cache::get('conv' . "-" . $ticket->tweet_id);
-
+            } else {
+                $conversation = TwitterFunctions::getConversation($ticket->tweet_id);
+                $expiresAt = Carbon::now()->addMinutes(1);
+                Cache::add('conv' . "-" . $ticket->tweet_id, $conversation, $expiresAt);
+            }
         } else {
-            $conversation = TwitterFunctions::getConversation($ticket->tweet_id);
-            $expiresAt = Carbon::now()->addMinutes(1);
-            Cache::add('conv' . "-" . $ticket->tweet_id, $conversation, $expiresAt);
+            $title = $ticket->title;
+            $description = $ticket->description;
         }
-
-        // $conversation = array_reverse($conversation);
 
 
         try {
-            $temp = $conversation->errors;
+                $temp = $conversation->errors;
 
-            Cache::forget('conv' . "-" . $ticket->tweet_id);
+                Cache::forget('conv' . "-" . $ticket->tweet_id);
 
 
-            return view('errors.api_error_rate_limit_exceed');
+                return view('errors.api_error_rate_limit_exceed');
 
         } catch (\Exception $e) {
-
             $groupedTickets = \App\Ticket::where('status', '<', 2);
 
             $admins = \App\User::ofType(0)->get();
             $supportSupervisors2 = \App\User::ofType(1)->get();
             $supportAgents2 = \App\User::ofType(10)->get();
 
-//            $admins = [];
             $supportAgents = [];
             $supportSupervisors = [];
-
-//            foreach($admins2 as $admin) {
-//                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
-//                if ($assignedTickets < 3) {
-//                    array_push($admins, $admin);
-//                }
-//            }
 
 
             foreach($supportSupervisors2 as $supportSupervisor) {
@@ -105,6 +100,8 @@ class TicketsController extends Controller
                 }
             }
 
+            $invitations = Invitation::where('ticket_id', $ticket->id)->orderBy('created_at', 'desc')->get();
+
             $assignedToUser = null;
             try {
                 if ($ticket->assigned_to != null) {
@@ -113,11 +110,11 @@ class TicketsController extends Controller
             } catch (ModelNotFoundException $e) {
                 return view('errors.404');
             }
-            return view('tickets.show', compact('ticket', 'conversation', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser'));
+            return view('tickets.show', compact('ticket', 'conversation', 'title', 'description', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser', 'supportSupervisors2', 'supportAgents2', 'invitations'));
         }
 
 
-        return view('tickets.show', compact('ticket', 'conversation', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser'));
+        return view('tickets.show', compact('ticket', 'conversation', 'title', 'description', 'admins', 'supportSupervisors', 'supportAgents', 'assignedToUser', 'supportSupervisors2', 'supportAgents2', 'invitations'));
 
     }
 
@@ -168,7 +165,6 @@ class TicketsController extends Controller
                 'premium' => 'required'
             );
 
-//            dd(Input::get());
 
             $assignedTo = Input::get('assigned_to');
             try {
@@ -216,14 +212,6 @@ class TicketsController extends Controller
             $ticket->urgency = Input::get('urgency'); // will be changed later
             $ticket->premium = Input::get('premium');
             $ticket->save();
-//            try {
-//                $user = \App\User::findOrFail($ticket->assigned_to);
-//                NotificationHandler::makeNotification($user, $ticket);
-//            } catch(ModelNotFoundException $e) {
-//                \Session::flash('error', $e->getMessage());
-//            } catch(\Exception $e) {
-//                \Session::flash('error', $e->getMessage());
-//            }
 
             return redirect()->action('TicketsController@show', [$ticket->id]);
 
@@ -251,17 +239,24 @@ class TicketsController extends Controller
 
     }
 
-    public function update(Request $request, Ticket $ticket){
-        $validator = Validator::make($request->all(),[
-            'urgency' => 'digits_between:0,1',
-            'premium' => 'boolean',
-            'status' => 'digits_between:0,2',
-        ]);
-        if($validator->fails()) {
-            //redirect with error message
-        }
-        if($ticket->update($request->all())) {
-            //redirect with ok
+    public function update($id)
+    {
+        try {
+            $ticket = Ticket::findOrFail($id);
+            if (Input::get('status') != null) {
+                $ticket->status = Input::get('status');
+            }
+            if (Input::get('urgency') != null) {
+                $ticket->urgency = Input::get('urgency');
+            }
+            if (Input::get('premium') != null) {
+                $ticket->premium = Input::get('premium');
+            }
+            $ticket->save();
+
+            return Redirect::back();
+        } catch (ModelNotFoundException $ex) {
+            return view('errors.404');
         }
     }
 

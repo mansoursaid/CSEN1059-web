@@ -103,3 +103,6 @@ Route::get('/customers/{id}/openTicket','CustomerController@openTicket');
 Route::post('/customers/{id}','CustomerController@openTicketUpdate');
 Route::patch('/tickets/{id}/assign','TicketsController@assign_to');
 Route::get('/tickets/{id}/claim','TicketsController@claim');
+
+Route::resource('invitations', 'InvitationsController',
+    ['only' => ['store']]);

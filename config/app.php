@@ -158,6 +158,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\NotificationHandlerProvider::class,
+        App\Providers\NotificationForInvitationProvider::class,
 
     ],
 

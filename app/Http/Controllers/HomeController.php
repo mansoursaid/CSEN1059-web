@@ -53,17 +53,8 @@ class HomeController extends Controller
             $supportSupervisors2 = \App\User::ofType(1)->get();
             $supportAgents2 = \App\User::ofType(10)->get();
 
-//            $admins = [];
             $supportAgents = [];
             $supportSupervisors = [];
-
-//            foreach($admins2 as $admin) {
-//                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
-//                if ($assignedTickets < 3) {
-//                    array_push($admins, $admin);
-//                }
-//            }
-
 
             foreach($supportSupervisors2 as $supportSupervisor) {
                 $assignedTickets = $groupedTickets->where('assigned_to', $supportSupervisor->id)->get()->count();

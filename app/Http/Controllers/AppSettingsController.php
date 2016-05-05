@@ -13,7 +13,11 @@ use App\Http\Requests;
 
 class AppSettingsController extends Controller
 {
-    //
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('isAdmin');
+    }
 
     public function showSettings(Request $request) {
 
