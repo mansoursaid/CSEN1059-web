@@ -115,6 +115,10 @@ class AppSettingsController extends Controller
         return redirect()->action('AppSettingsController@showSettings');
     }
 
+    public function changeApplicationColor(Request $request) {
+
+    }
+
 
 
 
