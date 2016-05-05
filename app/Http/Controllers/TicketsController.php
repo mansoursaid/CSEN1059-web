@@ -24,12 +24,18 @@ use App\NotificationHandler;
 class TicketsController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('toShowTicket', ['only' => ['show']]);
+    }
 
     public function index()
     {
 
+        $myTickets = Ticket::where('assigned_to', Auth::id())->where('status', '<', 2)->get();
+
         $tickets = Ticket::all();
-        return view('tickets.index', compact('tickets'));
+        return view('tickets.index', compact('tickets', 'myTickets'));
     }
 
 
@@ -98,7 +104,7 @@ class TicketsController extends Controller
                     array_push($supportAgents, $supportAgent);
                 }
             }
-            
+
             $assignedToUser = null;
             try {
                 if ($ticket->assigned_to != null) {
@@ -258,7 +264,7 @@ class TicketsController extends Controller
             //redirect with ok
         }
     }
- 
+
     public function assign_to($id){
         try{
             $ticket = Ticket::find($id);
@@ -274,31 +280,40 @@ class TicketsController extends Controller
                         $ticket->users()->detach($oldid);
                     }
                         $ticket->users()->attach($uid);
-                    
+
                 }
             }
             $ticket->save();
-            
+
             return Redirect::back();
         }catch (ModelNotFoundException $ex){
             return view('errors.404');
         }
     }
 
-    
+    public function claim($id){
+        try{
+            $ticket = Ticket::find($id);
+            $uid = Auth::user()->id;
+            $user = User::findOrfail($uid);
+            if(isset($user) && $uid != -1){
+                if($user->type != 00){
+                    $myTickets = Ticket::where('assigned_to', $uid)->where('status','<', 2)->get()->count();
+                    if($myTickets < 3){
+                        $ticket->assigned_to = $uid;
+                    }
+                }else{
+                    $ticket->assigned_to = $uid;
+                }
+            }
+            $ticket->save();
 
-    /*public function deleteStatus($id){
-        $ticket = get_ticket($id);
-        $ticket->status = 0;
-        $ticket->save();
-        return $ticket;
-
+            return Redirect::back();
+        }catch (ModelNotFoundException $ex){
+            return view('errors.404');
+        }
     }
 
-
-
-
-    }*/
 
 
 }

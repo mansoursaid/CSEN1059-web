@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\NotificationHandler;
 use Illuminate\Contracts\Logging\Log;
+use App\Customer;
 
 class Ticket extends Model
 {
@@ -77,6 +78,28 @@ class Ticket extends Model
             return 'open';
         }
     }
+
+    public function get_urgency($id){
+        if($id == 0){
+            return 'Low';
+        }
+        if($id == 1){
+            return 'Medium';
+        }
+        if($id == 2){
+            return 'High';
+        }
+    }
+
+    public function get_premium($id){
+        if($id == 0){
+            return 'No';
+        }
+        if($id == 1){
+            return 'Yes';
+        }
+    }
+
     public function get_name($id)
     {
         
@@ -89,5 +112,28 @@ class Ticket extends Model
         return $name;
        
         
+    }
+
+    public function getNameCustomer($id)
+    {
+
+        $customer = Customer::find($id);
+        if(isset($customer)){
+            $name = $customer->name;
+            if ($name == null || $name=='') {
+                $name = $customer->twitter_handle;
+                if ($name == null || $name=='') {
+                    $name = $customer->email;
+                    if ($name == null || $name=='') {
+                        $name = $customer->phone_number;
+                    }
+                }
+            }
+        }else{
+            $name = "";
+        }
+        return $name;
+
+
     }
 }
