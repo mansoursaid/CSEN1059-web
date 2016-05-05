@@ -62,13 +62,13 @@
                         {!! Form::open(array('url' => '/users', 'method' => 'POST', 'class' => 'form-horizontal')) !!}
                             <div class="box-body">
                                 <div class="form-group">
-									{!! Form::label('name', 'Name: ', array('class' => 'col-sm-2 control-label')) !!}
+                                    {!! Form::label('name', 'Name: ', array('class' => 'col-sm-2 control-label')) !!}
                                     <div class="col-sm-10">
                                         {!! Form::text('name', null, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-									{!! Form::label('email', 'Email: ', array('class' => 'col-sm-2 control-label')) !!}
+                                    {!! Form::label('email', 'Email: ', array('class' => 'col-sm-2 control-label')) !!}
                                     <div class="col-sm-10">
                                         {!! Form::text('email', null, ['class' => 'form-control']) !!}
                                     </div>
@@ -102,87 +102,90 @@
             </div>
             <!-- Shows the errors in the form -->
             <!--  -->
+            
             <div class="row">
                 <h1 class="page-header" style="margin-left: 10px;">All {{ $usersTypeStr }}s</h1>
 
                 @if ($users->count() > 0)
                    @foreach ($users as $user)
-                       <div class="col-md-4">
-                            <div class="box box-widget widget-user-2">
-                                <!-- Add the bg color to the header using any of the bg-* classes -->
-                                <div class="widget-user-header bg-yellow">
-                                    <div class="widget-user-image">
-                                        {{ Html::image('user-avatar.jpg', 'alt', array( 'class' => 'img-circle' )) }}
+                        @if($user->type == 00 || $user->type == 01 )
+                           <div class="col-md-4">
+                                <div class="box box-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-yellow">
+                                        <div class="widget-user-image">
+                                            {{ Html::image('user-avatar.jpg', 'alt', array( 'class' => 'img-circle' )) }}
+                                        </div>
+                                        <!-- /.widget-user-image -->
+                                        <h3 class="widget-user-username">{{$user->name}}</h3>
+                                        <h5 class="widget-user-desc">{{$usersTypeStr}}</h5>
                                     </div>
-                                    <!-- /.widget-user-image -->
-                                    <h3 class="widget-user-username">{{$user->name}}</h3>
-                                    <h5 class="widget-user-desc">{{$usersTypeStr}}</h5>
-                                </div>
-                                <div class="box-footer no-padding">
-                                    <ul class="nav nav-stacked">
-                                        <li><a href="#">Projects
-                                            @if($user->projects()->count() == 0)
-                                                <span class="pull-right badge bg-blue">
-                                                    -
-                                                </span>
-                                            @else
-                                                @foreach ($user->projects() as $project)
+                                    <div class="box-footer no-padding">
+                                        <ul class="nav nav-stacked">
+                                            <li><a href="#">Projects
+                                                @if($user->projects()->count() == 0)
                                                     <span class="pull-right badge bg-blue">
-                                                        {{$project->name}}
+                                                        -
                                                     </span>
-                                                @endforeach
-                                            @endif
-                                            </a>
-                                        </li>
-                                        <li><a >Tickets
-                                                <span class="pull-right badge bg-aqua">
-                                                    {{$user->tickets()->count()}}
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <ul style="padding-right: 35px;">
-                                               <li>
-                                                   <a >Open Tickets
-                                                       <span class="pull-right badge bg-aqua">
-                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status1"] }}
-                                                       </span>
-                                                   </a>
-                                               </li>
-                                               <li>
-                                                   <a >In Progress Tickets
-                                                       <span class="pull-right badge bg-aqua">
-                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status2"] }}
-                                                       </span>
-                                                   </a>
-                                               </li>
-                                               <li>
-                                                   <a >Closed Tickets
-                                                       <span class="pull-right badge bg-aqua">
-                                                           {{ App\User::getTicketsPerAgent($user->id)[0]["status3"] }}
-                                                       </span>
-                                                   </a>
-                                               </li>
-                                        </ul>
-                                        <!--  -->
-                                        <li>
-                                            <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
-                                            <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
-                                        </li>
-                                        <!--  -->
-                                        <li id="visually-hidden">
-                                            {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
-                                            {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
-                                            {{ Form::close() }}
+                                                @else
+                                                    @foreach ($user->projects() as $project)
+                                                        <span class="pull-right badge bg-blue">
+                                                            {{$project->name}}
+                                                        </span>
+                                                    @endforeach
+                                                @endif
+                                                </a>
+                                            </li>
+                                            <li><a >Tickets
+                                                    <span class="pull-right badge bg-aqua">
+                                                        {{$user->tickets()->count()}}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <ul style="padding-right: 35px;">
+                                                   <li>
+                                                       <a >Open Tickets
+                                                           <span class="pull-right badge bg-aqua">
+                                                               {{ App\User::getTicketsPerAgent($user->id)[0]["status1"] }}
+                                                           </span>
+                                                       </a>
+                                                   </li>
+                                                   <li>
+                                                       <a >In Progress Tickets
+                                                           <span class="pull-right badge bg-aqua">
+                                                               {{ App\User::getTicketsPerAgent($user->id)[0]["status2"] }}
+                                                           </span>
+                                                       </a>
+                                                   </li>
+                                                   <li>
+                                                       <a >Closed Tickets
+                                                           <span class="pull-right badge bg-aqua">
+                                                               {{ App\User::getTicketsPerAgent($user->id)[0]["status3"] }}
+                                                           </span>
+                                                       </a>
+                                                   </li>
+                                            </ul>
                                             <!--  -->
-                                            {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
-                                            {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
-                                            {{ Form::close() }}
+                                            <li>
+                                                <input class="btn btn-info pull-right" id="edit_user" value="Edit" style="width:44%">
+                                                <input class="btn btn-info" id="delete_user" value="Delete" style="width:44%">
+                                            </li>
+                                            <!--  -->
+                                            <li id="visually-hidden">
+                                                {{ Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) }}
+                                                {!! Form::submit($user->id, array('id' => 'delete_user_form')) !!}
+                                                {{ Form::close() }}
+                                                <!--  -->
+                                                {{ Form::open(array('route' => array('users.edit', $user->id), 'method' => 'get')) }}
+                                                {!! Form::submit($user->id, array('id' => 'edit_user_form')) !!}
+                                                {{ Form::close() }}
 
-                                        </li>
-                                    </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 @else
                     <div>
