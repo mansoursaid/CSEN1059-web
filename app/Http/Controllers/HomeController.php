@@ -15,6 +15,11 @@ use App\Http\Requests;
 class HomeController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function getHome()
     {
 
@@ -24,6 +29,8 @@ class HomeController extends Controller
 
         $count = 2;
         $max_id = 0;
+
+        $newTweets = [];
 
         if (Cache::has('new_tweets' . $count . "-" . $max_id)) {
             $newTweets = Cache::get('new_tweets' . $count . "-" . $max_id);
@@ -35,15 +42,46 @@ class HomeController extends Controller
         }
 
 
-        $admins = \App\User::ofType(0)->get();
-        $supportSupervisors = \App\User::ofType(1)->get();
-        $supportAgents = \App\User::ofType(10)->get();
-
-
         try {
             $temp = $newTweets->errors;
-            return "Ta3ala b3d shwaya";
+            Cache::forget('new_tweets' . $count . "-" . $max_id);
+            return view('errors.api_error_rate_limit_exceed');
         } catch (\Exception $e) {
+            $groupedTickets = \App\Ticket::where('status', '<', 2);
+
+            $admins = \App\User::ofType(0)->get();
+            $supportSupervisors2 = \App\User::ofType(1)->get();
+            $supportAgents2 = \App\User::ofType(10)->get();
+
+//            $admins = [];
+            $supportAgents = [];
+            $supportSupervisors = [];
+
+//            foreach($admins2 as $admin) {
+//                $assignedTickets = $groupedTickets->where('assigned_to', $admin->id)->count();
+//                if ($assignedTickets < 3) {
+//                    array_push($admins, $admin);
+//                }
+//            }
+
+
+            foreach($supportSupervisors2 as $supportSupervisor) {
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportSupervisor->id)->get()->count();
+                if ($assignedTickets < 3) {
+                    array_push($supportSupervisors, $supportSupervisor);
+                }
+            }
+
+
+            foreach($supportAgents2 as $supportAgent) {
+                $assignedTickets = $groupedTickets->where('assigned_to', $supportAgent->id)->get()->count();
+                if ($assignedTickets < 3) {
+                    array_push($supportAgents, $supportAgent);
+                }
+            }
+
+
+
             return view('home.index', compact('newTweets', 'admins', 'supportSupervisors', 'supportAgents'));
         }
 

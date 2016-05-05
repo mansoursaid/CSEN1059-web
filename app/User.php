@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function projects()
     {
-        return $this->belongsToMany('App\Project');
+        return $this->belongsToMany('App\Project')->withTimestamps();
     }
 
     public function notifications()
@@ -108,4 +108,49 @@ class User extends Authenticatable
             return 'Agent';
         }
     }
+
+    public static function getName($id)
+    {
+        $user = User::find($id);
+        return ucfirst($user->name);
+    }
+    public static function getTicketsPerAgent($id){
+
+       try {
+           $user = User::find($id);
+           $allTickets = array();
+
+           $status1 = 0;
+           $status2 = 0;
+           $status3 = 0;
+
+           $tickets = Ticket::where('assigned_to', $id)->get();
+
+           foreach ($tickets as $ticket)
+           {
+               $status = $ticket->status;
+               if($status == 0)
+                {
+                   $status1++;
+                }
+               else if($status == 1)
+                {
+                   $status2++;
+                }
+               else
+                {
+                   $status3++;
+                }
+           }
+
+           $allTickets[] = array('status1' => $status1 ,'status2' => $status2 ,'status3' => $status3 );
+           return $allTickets;
+
+        } catch(ModelNotFoundException $ex) {
+
+           return view('errors.404');
+
+        }
+   }
+
 }
