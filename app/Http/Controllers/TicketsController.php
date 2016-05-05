@@ -308,7 +308,7 @@ class TicketsController extends Controller
             $user = User::findOrfail($uid);
             if(isset($user) && $uid != -1){
                 if($user->type != 00){
-                    $myTickets = Ticket::where('assigned_to', $uid)->count();
+                    $myTickets = Ticket::where('assigned_to', $uid)->where('status','<', 2)->get()->count();
                     if($myTickets < 3){
                         $ticket->assigned_to = $uid;
                     }
