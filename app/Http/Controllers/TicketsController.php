@@ -17,6 +17,7 @@ use Mockery\CountValidator\Exception;
 
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Validator;
 use Redirect;
 use App\MailNotification;
 use App\NotificationHandler;
@@ -257,7 +258,6 @@ class TicketsController extends Controller
         } catch (ModelNotFoundException $ex) {
             return view('errors.404');
         }
-
     }
 
     public function assign_to($id){
