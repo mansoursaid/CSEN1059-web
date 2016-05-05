@@ -3,67 +3,90 @@
 @section('content')
 
 
+
     <div class="row">
-        <div class="col-md-6">
-            <h2 class="page-header">Ticket's conversation</h2>
+        @if($title == null && $conversation != null)
+            <div class="col-md-6">
+                <h2 class="page-header">Ticket's conversation</h2>
 
-            <ul class="timeline" id="main_timeline">
-                @foreach($conversation as $newTweet)
+                <ul class="timeline" id="main_timeline">
+                    @foreach($conversation as $newTweet)
 
-                        <!-- timeline time label -->
-                <li class="time-label">
+                            <!-- timeline time label -->
+                    <li class="time-label">
                         <span class="bg-red">
 
                             {{ date('Y M d h:i:s', strtotime($newTweet->created_at))  }}
 
                         </span>
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <li id="{{ $newTweet->id }}" class="openTicket">
-                    <i class="fa fa-envelope bg-blue"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i></span>
-                        <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
-                        <div class="timeline-body">
-                            {{ $newTweet->text }}
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li id="{{ $newTweet->id }}" class="openTicket">
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i></span>
+                            <h3 class="timeline-header"><a href="#">{{ $newTweet->user->name }}</a></h3>
+                            <div class="timeline-body">
+                                {{ $newTweet->text }}
+                            </div>
                         </div>
+                    </li>
+                    <!-- END timeline item -->
+
+                    @endforeach
+
+                            <!-- END timeline item -->
+
+                </ul>
+
+                <ul class="timeline">
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+                </ul>
+
+                <form class="form-horizontal" method="POST" action="{{ action('TweetsController@replyToTicket') }}">
+                    <div class="box-body">
+                        <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
+                        <div class="form-group">
+                            <label>Reply</label>
+                            <textarea name="status" class="form-control" rows="3" placeholder="reply ..."></textarea>
+                        </div>
+                        <input type="hidden" name="ticket_id" value="{{ $ticket->id }}"/>
+                        <input id="lastTweetId" type="hidden" name="last_tweet_id" value=""/>
                     </div>
-                </li>
-                <!-- END timeline item -->
+                    <!-- /.box-body -->
+                    <!--<div class="box-footer">-->
+                    <button type="submit" class="btn btn-info pull-right">Send</button>
+                    <!--</div>-->
+                    <!-- /.box-footer -->
+                </form>
 
-                @endforeach
 
-                        <!-- END timeline item -->
+            </div>
+        @else
+            <div class="col-md-6">
 
-            </ul>
 
-            <ul class="timeline">
-                <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                </li>
-            </ul>
-
-            <form class="form-horizontal" method="POST" action="{{ action('TweetsController@replyToTicket') }}">
-                <div class="box-body">
-                    <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                    <div class="form-group">
-                        <label>Reply</label>
-                        <textarea name="status" class="form-control" rows="3" placeholder="reply ..."></textarea>
+                <div class="box box-widget widget-user-2">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-yellow">
+                        <h3 class="widget-user-username" style="text-align:left;margin-left:0;">Ticket title : <span
+                                    style="font-weight:700">{{ $title }}</span></h3>
                     </div>
-                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}"/>
-                    <input id="lastTweetId" type="hidden" name="last_tweet_id" value=""/>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a href="#">Ticket description</a>
+                                <div style="margin-left: 22px;">{{ $description }}</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <!-- /.box-body -->
-                <!--<div class="box-footer">-->
-                <button type="submit" class="btn btn-info pull-right">Send</button>
-                <!--</div>-->
-                <!-- /.box-footer -->
-            </form>
 
 
-
-        </div>
+            </div>
+        @endif
 
         <div class="col-md-6">
 
@@ -75,7 +98,8 @@
                 <form class="form-horizontal">
                     <div class="box-body">
                         @if($assignedToUser != null)
-                            <p>Assigned to :   <a href="/users/{{ $assignedToUser->id }}"> <b>{{ $assignedToUser->name }}</b></a> </p><br>
+                            <p>Assigned to : <a href="/users/{{ $assignedToUser->id }}">
+                                    <b>{{ $assignedToUser->name }}</b></a></p><br>
                         @else
                             <p>Not assigned</p>
                         @endif
@@ -135,19 +159,19 @@
                     <div class="margin">
                         <div class="form-group">
                             <label>Invite</label>
-                            <select class="form-control">
+                            <select class="form-control" id="userInv">
                                 <optgroup label="--Admins--">
                                     @foreach($admins as $admin)
                                         <option value="{{ $admin->id }}">{{ $admin->name }}</option>
                                     @endforeach
                                 </optgroup>
                                 <optgroup label="--Support supervisors--">
-                                    @foreach($supportSupervisors as $supportSupervisor)
+                                    @foreach($supportSupervisors2 as $supportSupervisor)
                                         <option value="{{ $supportSupervisor->id }}">{{ $supportSupervisor->name }}</option>
                                     @endforeach
                                 </optgroup>
                                 <optgroup label="--Support agents--">
-                                    @foreach($supportAgents as $supportAgent)
+                                    @foreach($supportAgents2 as $supportAgent)
                                         <option value="{{ $supportAgent->id }}">{{ $supportAgent->name }}</option>
                                     @endforeach
                                 </optgroup>
@@ -155,25 +179,54 @@
                         </div>
                         <div class="form-group" style="float: right;">
                             {{--<button class="btn btn-default">Cancel</button>--}}
-                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary" id="inviteBtn">Invite</button>
                         </div>
                     </div>
 
                 </div><!-- /.box-body -->
             </div>
 
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Users invitations</h3>
+                </div>
+                <div class="box-body">
+
+                    <div class="margin">
+
+                        @if($invitations != null && $invitations->count() > 0)
+                            @foreach($invitations as $invitation)
+                                <p> {{ \App\User::findOrFail($invitation->created_by)->name }} has
+                                    invited {{  \App\User::findOrFail($invitation->user_invited)->name }}
+                                    at {{ $invitation->created_at }}</p><br>
+                            @endforeach
+                        @else
+                            <p>No invitations</p>
+                        @endif
+
+                    </div>
+
+                </div><!-- /.box-body -->
+            </div>
 
 
         </div>
 
     </div>
-<form  class="myForm" action="/tickets/{{ $ticket->id }}/assign" method="post" style="display:none">
-    {!! method_field('patch') !!}
-    <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
-    <input class="val" type="text" name="assigned_to"><br><br>
-    <input class="val2" type="text" name="old_assigned"><br><br>
-    <input type="submit" value="Submit">
-</form>
+    <form class="myForm" action="/tickets/{{ $ticket->id }}/assign" method="post" style="display:none">
+        {!! method_field('patch') !!}
+        <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
+        <input class="val" type="text" name="assigned_to"><br><br>
+        <input class="val2" type="text" name="old_assigned"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <form class="myFormInvite" action="/invitations/" method="post" style="display:none">
+        <input type="hidden" name="_token" value="{{ csrf_token()}}"/>
+        <input class="valUserInvited" type="text" name="invited"><br><br>
+        <input class="valTicket" type="text" name="ticket"><br><br>
+        <input type="submit" value="Submit">
+    </form>
 
 
 
@@ -182,20 +235,27 @@
 @section('custom_scripts')
 
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             var lastTimeLineLiId = $("ul#main_timeline li:last-child").attr('id');
             $('#lastTweetId').val(lastTimeLineLiId);
         });
     </script>
     <script type="text/javascript">
         $(function () {
-            $("button#reassignBtn").click(function(){
-               $(".val").val($('#reassignForm').val());
-               $(".val2").val({{$ticket->assigned_to}});
-               $(".myForm").submit();
+            $("button#reassignBtn").click(function () {
+                $(".val").val($('#reassignForm').val());
+                $(".val2").val({{$ticket->assigned_to}});
+                $(".myForm").submit();
             });
-            
+
+            $("button#inviteBtn").click(function () {
+                $(".valUserInvited").val($('#userInv').val());
+                $(".valTicket").val({{$ticket->id}});
+                $(".myFormInvite").submit();
+            });
+
+
         });
-</script>
+    </script>
 
 @endsection
